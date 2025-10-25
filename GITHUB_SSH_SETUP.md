@@ -6,7 +6,19 @@ Este guia mostra como configurar SSH para fazer push/pull no GitHub de forma seg
 
 O ambiente de desenvolvimento já vem com `openssh-client` e `git` instalados.
 
-## Passo 1: Gerar Chave SSH
+## Passo 1: Criar o Diretório .ssh (se não existir)
+
+Primeiro, verifique se o diretório `.ssh` existe e crie-o se necessário:
+
+```bash
+# Criar diretório .ssh com permissões corretas
+mkdir -p ~/.ssh
+
+# Definir permissões corretas (importante para segurança)
+chmod 700 ~/.ssh
+```
+
+## Passo 2: Gerar Chave SSH
 
 Execute o seguinte comando no terminal:
 
@@ -29,7 +41,7 @@ Se preferir usar RSA (compatível com sistemas mais antigos):
 ssh-keygen -t rsa -b 4096 -C "seu.email@exemplo.com"
 ```
 
-## Passo 2: Iniciar o SSH Agent
+## Passo 3: Iniciar o SSH Agent
 
 ```bash
 eval "$(ssh-agent -s)"
@@ -37,7 +49,7 @@ eval "$(ssh-agent -s)"
 
 Você verá algo como: `Agent pid 12345`
 
-## Passo 3: Adicionar sua chave ao SSH Agent
+## Passo 4: Adicionar sua chave ao SSH Agent
 
 ```bash
 ssh-add ~/.ssh/id_ed25519
@@ -48,7 +60,7 @@ Se usou RSA, use:
 ssh-add ~/.ssh/id_rsa
 ```
 
-## Passo 4: Copiar a Chave Pública
+## Passo 5: Copiar a Chave Pública
 
 Copie o conteúdo da sua chave pública:
 
@@ -68,17 +80,17 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJl3dIeudNqd0DPMRD6OIh65tjkxFNOtwGcWB2gCgPhk
 
 **Copie todo o conteúdo** (desde `ssh-ed25519` até o final)
 
-## Passo 5: Adicionar a Chave no GitHub
+## Passo 6: Adicionar a Chave no GitHub
 
 1. Vá para GitHub: https://github.com/settings/keys
 2. Clique em **"New SSH key"**
 3. **Title:** Dê um nome descritivo (ex: "DevContainer - Projeto Email Signature")
 4. **Key type:** Authentication Key
-5. **Key:** Cole a chave pública que você copiou no Passo 4
+5. **Key:** Cole a chave pública que você copiou no Passo 5
 6. Clique em **"Add SSH key"**
 7. Confirme com sua senha do GitHub se solicitado
 
-## Passo 6: Testar a Conexão
+## Passo 7: Testar a Conexão
 
 ```bash
 ssh -T git@github.com
@@ -100,7 +112,7 @@ Hi seu-usuario! You've successfully authenticated, but GitHub does not provide s
 
 ✅ **Sucesso!** Sua chave SSH está configurada corretamente!
 
-## Passo 7: Criar Repositório no GitHub
+## Passo 8: Criar Repositório no GitHub
 
 ### Opção A: Criar novo repositório vazio no GitHub
 
@@ -124,7 +136,7 @@ gh repo create email-signature-generator --public --source=. --remote=origin --p
 gh repo create email-signature-generator --private --source=. --remote=origin --push
 ```
 
-## Passo 8: Adicionar Remote e Fazer Push
+## Passo 9: Adicionar Remote e Fazer Push
 
 ### Se criou pelo site (Opção A):
 
@@ -150,7 +162,7 @@ git push -u origin main
 
 O push já foi feito automaticamente! 🎉
 
-## Passo 9: Verificar no GitHub
+## Passo 10: Verificar no GitHub
 
 Abra o navegador em:
 ```
