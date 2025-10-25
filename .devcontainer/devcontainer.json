@@ -7,6 +7,21 @@
 
   "runArgs": ["--name=gen-sign-frontend-v1"],
 
+  // Montar volume para persistir chaves SSH entre rebuilds do container
+  "mounts": [
+    "source=gen-sign-ssh-volume,target=/home/node/.ssh,type=volume"
+  ],
+
+  // Features do DevContainer para Git e SSH
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -30,9 +45,11 @@
     }
   },
 
-  "postCreateCommand": "git --version && npm install",
+  // Executar setup de Git/SSH após criar o container
+  "postCreateCommand": "sudo chown -R node:node /home/node/.ssh && sudo chmod 700 /home/node/.ssh && bash .devcontainer/setup-git.sh && npm install",
 
-  "postStartCommand": "npm run dev",
+  // Não iniciar npm dev automaticamente para não conflitar com Claude Code
+  // "postStartCommand": "npm run dev",
 
   "forwardPorts": [3000],
 

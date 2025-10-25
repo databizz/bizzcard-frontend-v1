@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     lsb-release \
     openssh-client \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar GitHub CLI
@@ -36,7 +37,9 @@ ARG USER_GID=$USER_UID
 # Configurar usuário node que já existe na imagem base
 RUN groupmod --gid $USER_GID $USERNAME \
     && usermod --uid $USER_UID --gid $USER_GID $USERNAME \
-    && chown -R $USER_UID:$USER_GID /home/$USERNAME
+    && chown -R $USER_UID:$USER_GID /home/$USERNAME \
+    && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Instalar Oh My Zsh para o usuário node
 USER $USERNAME
