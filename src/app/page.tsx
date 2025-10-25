@@ -4,9 +4,13 @@ import { useState } from 'react';
 import SignatureForm from '@/components/SignatureForm';
 import SignaturePreview from '@/components/SignaturePreview';
 import EmailInstructions from '@/components/EmailInstructions';
+import SubscriptionBanner from '@/components/SubscriptionBanner';
+import SubscriptionMockControls from '@/components/SubscriptionMockControls';
 import { SignatureData } from '@/types/signature';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 
 export default function Home() {
+  const { limits, subscription } = useSubscription();
   const [signatureData, setSignatureData] = useState<SignatureData>({
     name: 'Seu Nome',
     role: 'Seu Cargo',
@@ -109,26 +113,51 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Subscription Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <SubscriptionBanner />
+      </div>
+
       {/* Preset Templates */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Templates Prontos</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-800">Templates Prontos</h2>
+            {subscription.plan === 'free' && (
+              <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+                FREE: apenas Minimalista disponível
+              </span>
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {presetTemplates.map((preset, index) => (
-              <button
-                key={index}
-                onClick={() => setSignatureData(preset.data)}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all text-left group"
-              >
-                <div className="text-3xl mb-2">{preset.icon}</div>
-                <div className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
-                  {preset.name}
-                </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  Clique para usar este estilo
-                </div>
-              </button>
-            ))}
+            {presetTemplates.map((preset, index) => {
+              const isAvailable = limits.availableTemplates.includes(preset.data.template);
+              const isLocked = !isAvailable;
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => isAvailable && setSignatureData(preset.data)}
+                  disabled={isLocked}
+                  className={`p-4 border-2 rounded-lg text-left transition-all relative ${
+                    isLocked
+                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
+                      : 'border-gray-200 hover:border-blue-500 hover:shadow-md group'
+                  }`}
+                >
+                  {isLocked && (
+                    <div className="absolute top-2 right-2 text-2xl">🔒</div>
+                  )}
+                  <div className="text-3xl mb-2">{preset.icon}</div>
+                  <div className={`font-semibold ${isLocked ? 'text-gray-500' : 'text-gray-800 group-hover:text-blue-600 transition-colors'}`}>
+                    {preset.name}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {isLocked ? '🔒 Upgrade para PRO' : 'Clique para usar este estilo'}
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -203,6 +232,9 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Mock Controls - Remove em produção */}
+      <SubscriptionMockControls />
     </main>
   );
 }

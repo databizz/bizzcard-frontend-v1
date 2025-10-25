@@ -1,12 +1,27 @@
 'use client';
 
 import { SignatureData } from '@/types/signature';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { generateUserId } from '@/lib/generateUserId';
+import { generateRedirectLinks } from '@/lib/generateRedirectLinks';
 
 interface SignaturePreviewProps {
   data: SignatureData;
 }
 
 export default function SignaturePreview({ data }: SignaturePreviewProps) {
+  const { limits } = useSubscription();
+
+  // Gerar ID único do usuário e links de redirecionamento
+  const userId = generateUserId(data.email);
+  const redirectLinks = generateRedirectLinks(userId, {
+    website: data.website,
+    phone: data.phone,
+    instagram: data.socialMedia?.instagram || '',
+    linkedin: data.socialMedia?.linkedin || '',
+    email: data.email,
+  });
+
   const getSignatureHTML = (): string => {
     switch (data.template) {
       case 'modern':
@@ -23,6 +38,17 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getModernTemplate = (): string => {
+    const watermark = limits.hasWatermark ? `
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
+        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
+          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">SignaturePro</a>
+        </div>
+        <div style="font-size: 10px; color: #aaa;">
+          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
+        </div>
+      </div>
+    ` : '';
+
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333;">
         <tr>
@@ -38,17 +64,20 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                   </div>
                   ${data.company ? `<div style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 12px;">${data.company}</div>` : ''}
                   <div style="margin-top: 12px;">
-                    ${data.phone ? `<div style="margin-bottom: 4px;">📱 <a href="tel:${data.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
+                    ${redirectLinks.phone ? `<div style="margin-bottom: 4px;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
                     ${data.email ? `<div style="margin-bottom: 4px;">✉️ <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ''}
-                    ${data.website ? `<div style="margin-bottom: 4px;">🌐 <a href="${data.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
+                    ${redirectLinks.website ? `<div style="margin-bottom: 4px;">🌐 <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
                     ${data.address ? `<div style="margin-bottom: 4px;">📍 ${data.address}</div>` : ''}
                   </div>
-                  ${data.socialMedia?.instagram || data.socialMedia?.linkedin ? `
+                  ${redirectLinks.instagram || redirectLinks.linkedin ? `
                     <div style="margin-top: 12px;">
-                      ${data.socialMedia.instagram ? `<a href="${data.socialMedia.instagram}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">Instagram</a>` : ''}
-                      ${data.socialMedia.linkedin ? `<a href="${data.socialMedia.linkedin}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ''}
+                      ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">Instagram</a>` : ''}
+                      ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ''}
                     </div>
                   ` : ''}
+                  <div style="margin-top: 12px; font-size: 9px; color: #ccc;">
+                    ID: ${userId}
+                  </div>
                 </td>
                 ${data.logo ? `
                   <td style="padding-left: 20px; vertical-align: top;">
@@ -60,6 +89,7 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; font-size: 11px; color: #999;">
               Esta mensagem e seus anexos contêm informações confidenciais e protegidas pelo privilégio legal de comunicação entre advogado e cliente.
             </div>
+            ${watermark}
           </td>
         </tr>
       </table>
@@ -67,6 +97,17 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getClassicTemplate = (): string => {
+    const watermark = limits.hasWatermark ? `
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
+        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
+          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">SignaturePro</a>
+        </div>
+        <div style="font-size: 10px; color: #aaa;">
+          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
+        </div>
+      </div>
+    ` : '';
+
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, serif; font-size: 14px; line-height: 1.6; color: #333;">
         <tr>
@@ -86,11 +127,21 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
               ${data.company ? `<div style="font-size: 15px; font-weight: bold; color: #333; margin-top: 8px;">${data.company}</div>` : ''}
             </div>
             <div style="text-align: center;">
-              ${data.phone ? `<div style="margin-bottom: 6px;"><strong>Tel:</strong> <a href="tel:${data.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
+              ${redirectLinks.phone ? `<div style="margin-bottom: 6px;"><strong>Tel:</strong> <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
               ${data.email ? `<div style="margin-bottom: 6px;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ''}
-              ${data.website ? `<div style="margin-bottom: 6px;"><strong>Web:</strong> <a href="${data.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
+              ${redirectLinks.website ? `<div style="margin-bottom: 6px;"><strong>Web:</strong> <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
               ${data.address ? `<div style="margin-top: 10px; font-size: 12px; color: #666;">${data.address}</div>` : ''}
             </div>
+            ${redirectLinks.instagram || redirectLinks.linkedin ? `
+              <div style="margin-top: 12px; text-align: center;">
+                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">Instagram</a>` : ''}
+                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="display: inline-block; margin-right: 8px; color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ''}
+              </div>
+            ` : ''}
+            <div style="margin-top: 12px; text-align: center; font-size: 9px; color: #ccc;">
+              ID: ${userId}
+            </div>
+            ${watermark}
           </td>
         </tr>
       </table>
@@ -98,6 +149,17 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getMinimalTemplate = (): string => {
+    const watermark = limits.hasWatermark ? `
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
+        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
+          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">SignaturePro</a>
+        </div>
+        <div style="font-size: 10px; color: #aaa;">
+          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
+        </div>
+      </div>
+    ` : '';
+
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #000;">
         <tr>
@@ -109,10 +171,20 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
               ${data.role}${data.company ? ` • ${data.company}` : ''}
             </div>
             <div style="font-size: 13px;">
-              ${data.phone ? `<span>${data.phone}</span> • ` : ''}
+              ${redirectLinks.phone ? `<a href="${redirectLinks.phone}" style="color: #000; text-decoration: none;">${data.phone}</a> • ` : ''}
               ${data.email ? `<a href="mailto:${data.email}" style="color: #000; text-decoration: none;">${data.email}</a>` : ''}
             </div>
-            ${data.website ? `<div style="font-size: 13px; margin-top: 4px;"><a href="${data.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
+            ${redirectLinks.website ? `<div style="font-size: 13px; margin-top: 4px;"><a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
+            ${redirectLinks.instagram || redirectLinks.linkedin ? `
+              <div style="font-size: 13px; margin-top: 4px;">
+                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="color: ${data.primaryColor}; text-decoration: none; margin-right: 8px;">Instagram</a>` : ''}
+                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ''}
+              </div>
+            ` : ''}
+            <div style="font-size: 9px; color: #ccc; margin-top: 8px;">
+              ID: ${userId}
+            </div>
+            ${watermark}
           </td>
         </tr>
       </table>
@@ -120,6 +192,17 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getCorporateTemplate = (): string => {
+    const watermark = limits.hasWatermark ? `
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
+        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
+          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">SignaturePro</a>
+        </div>
+        <div style="font-size: 10px; color: #aaa;">
+          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
+        </div>
+      </div>
+    ` : '';
+
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6;">
         <tr>
@@ -147,17 +230,21 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         <tr>
           <td style="padding: 20px; background: #ffffff; border: 1px solid #e0e0e0; border-top: none;">
             <div>
-              ${data.phone ? `<div style="margin-bottom: 6px; color: #333;">📱 <a href="tel:${data.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
+              ${redirectLinks.phone ? `<div style="margin-bottom: 6px; color: #333;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ''}
               ${data.email ? `<div style="margin-bottom: 6px; color: #333;">✉️ <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ''}
-              ${data.website ? `<div style="margin-bottom: 6px; color: #333;">🌐 <a href="${data.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
+              ${redirectLinks.website ? `<div style="margin-bottom: 6px; color: #333;">🌐 <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ''}
               ${data.address ? `<div style="margin-bottom: 6px; color: #666;">📍 ${data.address}</div>` : ''}
             </div>
-            ${data.socialMedia?.instagram || data.socialMedia?.linkedin ? `
+            ${redirectLinks.instagram || redirectLinks.linkedin ? `
               <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
-                ${data.socialMedia.instagram ? `<a href="${data.socialMedia.instagram}" style="display: inline-block; margin-right: 10px; padding: 5px 10px; background: ${data.primaryColor}; color: white; text-decoration: none; border-radius: 3px; font-size: 12px;">Instagram</a>` : ''}
-                ${data.socialMedia.linkedin ? `<a href="${data.socialMedia.linkedin}" style="display: inline-block; padding: 5px 10px; background: ${data.primaryColor}; color: white; text-decoration: none; border-radius: 3px; font-size: 12px;">LinkedIn</a>` : ''}
+                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="display: inline-block; margin-right: 10px; padding: 5px 10px; background: ${data.primaryColor}; color: white; text-decoration: none; border-radius: 3px; font-size: 12px;">Instagram</a>` : ''}
+                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="display: inline-block; padding: 5px 10px; background: ${data.primaryColor}; color: white; text-decoration: none; border-radius: 3px; font-size: 12px;">LinkedIn</a>` : ''}
               </div>
             ` : ''}
+            <div style="margin-top: 12px; font-size: 9px; color: #ccc;">
+              ID: ${userId}
+            </div>
+            ${watermark}
           </td>
         </tr>
       </table>
@@ -165,6 +252,12 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const copySignature = async () => {
+    // Verificar se pode copiar
+    if (!limits.canCopySignature) {
+      alert('⚠️ Assinatura Necessária\n\nVocê precisa de uma assinatura ativa para copiar assinaturas.\n\nClique em "Iniciar Teste Grátis" ou "Assinar Plano Anual" acima.');
+      return;
+    }
+
     const previewElement = document.getElementById('signature-preview');
     if (!previewElement) return;
 
@@ -212,17 +305,33 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
           <h3 className="text-lg font-semibold text-gray-800">Preview da Assinatura</h3>
           <button
             onClick={copySignature}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-md"
+            disabled={!limits.canCopySignature}
+            className={`px-6 py-3 rounded-lg transition-colors font-medium shadow-md ${
+              limits.canCopySignature
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
           >
-            📋 Copiar Assinatura
+            {limits.canCopySignature ? '📋 Copiar Assinatura' : '🔒 Assinatura Bloqueada'}
           </button>
         </div>
       </div>
       <div
         id="signature-preview"
-        className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-white"
+        className={`border-2 border-dashed rounded-lg p-4 ${
+          limits.canGenerateSignature
+            ? 'border-gray-300 bg-white'
+            : 'border-red-300 bg-red-50 opacity-60'
+        }`}
         dangerouslySetInnerHTML={{ __html: getSignatureHTML() }}
       />
+      {!limits.canGenerateSignature && (
+        <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
+          <p className="text-sm text-red-800 text-center font-medium">
+            🔒 Assinatura necessária para gerar e copiar assinaturas de email
+          </p>
+        </div>
+      )}
     </div>
   );
 }
