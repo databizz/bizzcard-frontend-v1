@@ -8,9 +8,11 @@ import SubscriptionBanner from '@/components/SubscriptionBanner';
 import SubscriptionMockControls from '@/components/SubscriptionMockControls';
 import { SignatureData } from '@/types/signature';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Home() {
   const { limits, subscription } = useSubscription();
+  const { t, language, setLanguage } = useLanguage();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function Home() {
 
   const presetTemplates = [
     {
-      name: 'Advogado / Advocacia',
+      name: t('lawyerLaw'),
       icon: '⚖️',
       data: {
         name: 'Seu Nome',
@@ -52,7 +54,7 @@ export default function Home() {
       },
     },
     {
-      name: 'Empresarial / Corporativo',
+      name: t('businessCorporate'),
       icon: '💼',
       data: {
         name: 'Seu Nome',
@@ -69,7 +71,7 @@ export default function Home() {
       },
     },
     {
-      name: 'Tecnologia / Startups',
+      name: t('technologyStartups'),
       icon: '🚀',
       data: {
         name: 'Seu Nome',
@@ -86,7 +88,7 @@ export default function Home() {
       },
     },
     {
-      name: 'Minimalista / Clean',
+      name: t('minimalistClean'),
       icon: '✨',
       data: {
         name: 'Seu Nome',
@@ -118,23 +120,36 @@ export default function Home() {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
                   GenSign
                 </h1>
-                <p className="text-xs text-gray-500">Professional Email Signatures</p>
+                <p className="text-xs text-gray-500">{t('professionalEmailSignatures')}</p>
               </div>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-600">
-              <span className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-2 text-sm text-gray-600">
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  {t('freeForever')}
+                </span>
+                <span className="text-gray-300">•</span>
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                  </svg>
+                  1000+ {t('users')}
+                </span>
+              </div>
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLanguage(language === 'pt-BR' ? 'en' : 'pt-BR')}
+                className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium text-gray-700"
+                title={language === 'pt-BR' ? 'Switch to English' : 'Mudar para Português'}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                 </svg>
-                Free Forever
-              </span>
-              <span className="text-gray-300">•</span>
-              <span className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
-                </svg>
-                1000+ Users
-              </span>
+                <span className="hidden sm:inline">{language === 'pt-BR' ? 'PT' : 'EN'}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -144,13 +159,13 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-3">
         <div className="text-center mb-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Create Your Perfect
+            {t('createYourPerfect')}
             <span className="block bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent mt-2 pb-1">
-              Email Signature
+              {t('emailSignature')}
             </span>
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4 mt-3">
-            Design professional email signatures in minutes. Stand out with custom templates, colors, and social links.
+            {t('heroDescription')}
           </p>
         </div>
 
@@ -163,12 +178,12 @@ export default function Home() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Quick Start Templates</h2>
-              <p className="text-sm text-gray-600 mt-1">Choose a template and customize it to match your brand</p>
+              <h2 className="text-2xl font-bold text-gray-900">{t('quickStartTemplates')}</h2>
+              <p className="text-sm text-gray-600 mt-1">{t('templatesDescription')}</p>
             </div>
             {isClient && subscription.plan === 'free' && (
               <span className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-600 px-4 py-2 rounded-full border border-gray-200 font-medium">
-                FREE: Minimal template available
+                {t('freeMinimalOnly')}
               </span>
             )}
           </div>
@@ -205,10 +220,10 @@ export default function Home() {
                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
                         </svg>
-                        PRO only
+                        {t('proOnly')}
                       </span>
                     ) : (
-                      'Click to apply'
+                      t('clickToApply')
                     )}
                   </div>
                 </button>
@@ -248,7 +263,7 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-2xl font-bold text-gray-900">
-              Pro Tips
+              {t('proTips')}
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -259,8 +274,8 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <strong className="text-gray-900 font-semibold block mb-1">Gmail Setup</strong>
-                <p className="text-sm text-gray-600">Configure "Signature defaults" in Gmail settings for automatic insertion in new emails.</p>
+                <strong className="text-gray-900 font-semibold block mb-1">{t('gmailSetup')}</strong>
+                <p className="text-sm text-gray-600">{t('gmailSetupDesc')}</p>
               </div>
             </div>
             <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
@@ -270,8 +285,8 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <strong className="text-gray-900 font-semibold block mb-1">Brand Colors</strong>
-                <p className="text-sm text-gray-600">Use your brand's color palette for a consistent professional look across all communications.</p>
+                <strong className="text-gray-900 font-semibold block mb-1">{t('brandColors')}</strong>
+                <p className="text-sm text-gray-600">{t('brandColorsDesc')}</p>
               </div>
             </div>
             <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
@@ -281,8 +296,8 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <strong className="text-gray-900 font-semibold block mb-1">Mobile Ready</strong>
-                <p className="text-sm text-gray-600">All signatures are fully responsive and look perfect on any device or email client.</p>
+                <strong className="text-gray-900 font-semibold block mb-1">{t('mobileReady')}</strong>
+                <p className="text-sm text-gray-600">{t('mobileReadyDesc')}</p>
               </div>
             </div>
             <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
@@ -292,8 +307,8 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <strong className="text-gray-900 font-semibold block mb-1">Logo Hosting</strong>
-                <p className="text-sm text-gray-600">Host your logo on Imgur, Dropbox, or your website with a public URL for best results.</p>
+                <strong className="text-gray-900 font-semibold block mb-1">{t('logoHosting')}</strong>
+                <p className="text-sm text-gray-600">{t('logoHostingDesc')}</p>
               </div>
             </div>
           </div>
@@ -312,22 +327,22 @@ export default function Home() {
                 <div className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                   GenSign
                 </div>
-                <p className="text-xs text-gray-400">Professional Email Signatures</p>
+                <p className="text-xs text-gray-400">{t('professionalEmailSignatures')}</p>
               </div>
             </div>
             <div className="flex flex-col md:flex-row items-center gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-indigo-400 transition-colors">About</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Features</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Pricing</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Contact</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">{t('about')}</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">{t('features')}</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">{t('pricing')}</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">{t('contact')}</a>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-700 text-center">
             <p className="text-gray-400 text-sm">
-              © 2025 GenSign. Create professional email signatures in minutes.
+              © 2025 GenSign. {t('allRightsReserved')}
             </p>
             <p className="text-gray-500 text-xs mt-2">
-              Built with ❤️ using Next.js and Tailwind CSS
+              {t('builtWith')} ❤️ {t('using')}
             </p>
           </div>
         </div>

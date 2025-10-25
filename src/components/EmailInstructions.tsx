@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EmailClient {
   id: string;
@@ -10,6 +11,7 @@ interface EmailClient {
 }
 
 export default function EmailInstructions() {
+  const { t } = useLanguage();
   const [activeClient, setActiveClient] = useState<string>('gmail');
 
   const emailClients: EmailClient[] = [
@@ -18,13 +20,13 @@ export default function EmailInstructions() {
       name: 'Gmail / Google Workspace',
       icon: '📧',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'Abra o Gmail e clique no ícone de engrenagem ⚙️ (canto superior direito)',
-        'Clique em "Ver todas as configurações"',
-        'Role até a seção "Assinatura"',
-        'Clique dentro da caixa de texto e pressione Ctrl+V (ou Cmd+V no Mac)',
-        '<strong>IMPORTANTE:</strong> Role mais abaixo até "Padrões de Assinatura" e selecione sua assinatura para "novos e-mails"',
-        'Role até o final da página e clique em "Salvar alterações"',
+        t('gmailStep1'),
+        t('gmailStep2'),
+        t('gmailStep3'),
+        t('gmailStep4'),
+        t('gmailStep5'),
+        t('gmailStep6'),
+        t('gmailStep7'),
       ],
     },
     {
@@ -32,13 +34,13 @@ export default function EmailInstructions() {
       name: 'Outlook Web (Office 365)',
       icon: '🌐',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'Abra o Outlook Web e clique no ícone de engrenagem ⚙️',
-        'Clique em "Ver todas as configurações do Outlook"',
-        'Vá em "Email" → "Redação e resposta"',
-        'Na seção "Assinatura de email", clique dentro da caixa',
-        'Pressione Ctrl+V (ou Cmd+V no Mac) para colar',
-        'Clique em "Salvar" no topo da página',
+        t('outlookWebStep1'),
+        t('outlookWebStep2'),
+        t('outlookWebStep3'),
+        t('outlookWebStep4'),
+        t('outlookWebStep5'),
+        t('outlookWebStep6'),
+        t('outlookWebStep7'),
       ],
     },
     {
@@ -46,14 +48,14 @@ export default function EmailInstructions() {
       name: 'Outlook Desktop (Windows)',
       icon: '💼',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'No Outlook, vá em "Arquivo" → "Opções"',
-        'Clique em "Email" no menu lateral',
-        'Clique no botão "Assinaturas..."',
-        'Clique em "Novo" para criar uma assinatura ou selecione uma existente',
-        'Clique dentro da caixa de edição e pressione Ctrl+V',
-        'Configure quando usar a assinatura (novos emails, respostas, etc.)',
-        'Clique em "OK" para salvar',
+        t('outlookDesktopStep1'),
+        t('outlookDesktopStep2'),
+        t('outlookDesktopStep3'),
+        t('outlookDesktopStep4'),
+        t('outlookDesktopStep5'),
+        t('outlookDesktopStep6'),
+        t('outlookDesktopStep7'),
+        t('outlookDesktopStep8'),
       ],
     },
     {
@@ -61,14 +63,14 @@ export default function EmailInstructions() {
       name: 'Apple Mail (macOS)',
       icon: '🍎',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'Abra o Apple Mail',
-        'Vá em "Mail" → "Preferências" (ou pressione Cmd+,)',
-        'Clique na aba "Assinaturas"',
-        'Clique no botão "+" para criar uma nova assinatura',
-        'Dê um nome para a assinatura',
-        'Clique no campo de edição à direita e pressione Cmd+V',
-        'Feche a janela (as alterações são salvas automaticamente)',
+        t('appleMailStep1'),
+        t('appleMailStep2'),
+        t('appleMailStep3'),
+        t('appleMailStep4'),
+        t('appleMailStep5'),
+        t('appleMailStep6'),
+        t('appleMailStep7'),
+        t('appleMailStep8'),
       ],
     },
     {
@@ -76,14 +78,14 @@ export default function EmailInstructions() {
       name: 'Thunderbird',
       icon: '🦅',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'Abra o Thunderbird',
-        'Vá em "Ferramentas" → "Configurações de Conta" (ou "Editar" → "Configurações de Conta")',
-        'Selecione a conta de email desejada',
-        'Marque a opção "Anexar assinatura"',
-        'Clique no botão "Escolher..." e selecione "Usar HTML"',
-        'Cole a assinatura (Ctrl+V) na caixa de texto',
-        'Clique em "OK" para salvar',
+        t('thunderbirdStep1'),
+        t('thunderbirdStep2'),
+        t('thunderbirdStep3'),
+        t('thunderbirdStep4'),
+        t('thunderbirdStep5'),
+        t('thunderbirdStep6'),
+        t('thunderbirdStep7'),
+        t('thunderbirdStep8'),
       ],
     },
     {
@@ -91,15 +93,15 @@ export default function EmailInstructions() {
       name: 'Yahoo Mail',
       icon: '🟣',
       steps: [
-        'Clique no botão "Copiar Assinatura" acima',
-        'Abra o Yahoo Mail',
-        'Clique no ícone de engrenagem ⚙️ (canto superior direito)',
-        'Clique em "Mais configurações"',
-        'No menu lateral, clique em "Redação de e-mails"',
-        'Role até a seção "Assinatura"',
-        'Ative a opção "Assinatura"',
-        'Clique na caixa de texto e pressione Ctrl+V (ou Cmd+V no Mac)',
-        'As alterações são salvas automaticamente',
+        t('yahooStep1'),
+        t('yahooStep2'),
+        t('yahooStep3'),
+        t('yahooStep4'),
+        t('yahooStep5'),
+        t('yahooStep6'),
+        t('yahooStep7'),
+        t('yahooStep8'),
+        t('yahooStep9'),
       ],
     },
   ];
@@ -108,7 +110,7 @@ export default function EmailInstructions() {
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
         <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-          💡 Como adicionar a assinatura no seu cliente de email
+          💡 {t('howToAddSignature')}
         </h3>
       </div>
 
@@ -163,8 +165,7 @@ export default function EmailInstructions() {
       {/* Quick Tip */}
       <div className="bg-yellow-50 border-t border-yellow-200 px-6 py-4">
         <p className="text-sm text-yellow-800">
-          <strong>💡 Dica:</strong> Se tiver dúvidas, procure por "como adicionar assinatura" nas
-          configurações do seu cliente de email. A maioria tem uma opção de busca interna.
+          <strong>💡 {t('tipLabel')}</strong> {t('emailInstructionsTip')}
         </p>
       </div>
     </div>

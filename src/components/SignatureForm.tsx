@@ -2,6 +2,7 @@
 
 import { SignatureData, TemplateType } from '@/types/signature';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useEffect, useState } from 'react';
 
 interface SignatureFormProps {
@@ -11,19 +12,21 @@ interface SignatureFormProps {
 
 export default function SignatureForm({ data, onChange }: SignatureFormProps) {
   const { limits, subscription } = useSubscription();
+  const { t } = useLanguage();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   const placeholders = {
-    name: 'Seu Nome',
-    role: 'Seu Cargo',
-    company: 'Sua Empresa',
-    phone: '+55 (00) 00000-0000',
-    email: 'seu.email@empresa.com.br',
-    website: 'https://www.suaempresa.com.br',
-    address: 'Cidade | Estado',
+    name: t('yourName'),
+    role: t('yourPosition'),
+    company: t('yourCompany'),
+    phone: t('yourPhone'),
+    email: t('yourEmail'),
+    website: t('yourWebsite'),
+    address: t('cityState'),
   };
 
   const handleChange = (field: keyof SignatureData, value: any) => {
@@ -50,10 +53,10 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
   };
 
   const templates: { value: TemplateType; label: string; description: string }[] = [
-    { value: 'modern', label: 'Modern', description: 'Clean design with colored border' },
-    { value: 'classic', label: 'Classic', description: 'Traditional and elegant' },
-    { value: 'minimal', label: 'Minimal', description: 'Simple and direct' },
-    { value: 'corporate', label: 'Corporate', description: 'Professional with flair' },
+    { value: 'modern', label: t('modern'), description: t('modernDesc') },
+    { value: 'classic', label: t('classic'), description: t('classicDesc') },
+    { value: 'minimal', label: t('minimal'), description: t('minimalDesc') },
+    { value: 'corporate', label: t('corporate'), description: t('corporateDesc') },
   ];
 
   return (
@@ -64,17 +67,17 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-gray-900">Customize</h3>
+        <h3 className="text-2xl font-bold text-gray-900">{t('customize')}</h3>
       </div>
 
       <div className="space-y-6">
         {/* Template Selection */}
         <div>
           <label className="block text-sm font-semibold text-gray-900 mb-3">
-            Choose Template
+            {t('chooseTemplate')}
             {isClient && subscription.plan === 'free' && (
               <span className="ml-2 text-xs text-gray-600 bg-gradient-to-r from-gray-100 to-gray-50 px-3 py-1 rounded-full border border-gray-200 font-medium">
-                FREE: Minimal only
+                {t('freeMinimalOnly')}
               </span>
             )}
           </label>
@@ -113,7 +116,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
         {/* Personal Information */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Nome Completo *
+            {t('fullName')} *
           </label>
           <input
             type="text"
@@ -121,13 +124,13 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('name', e.target.value)}
             onFocus={(e) => handleFocus(e, 'name')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="Seu Nome"
+            placeholder={t('yourName')}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Cargo *
+            {t('position')} *
           </label>
           <input
             type="text"
@@ -135,13 +138,13 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('role', e.target.value)}
             onFocus={(e) => handleFocus(e, 'role')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="Seu Cargo"
+            placeholder={t('yourPosition')}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Empresa
+            {t('company')}
           </label>
           <input
             type="text"
@@ -149,14 +152,14 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('company', e.target.value)}
             onFocus={(e) => handleFocus(e, 'company')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="Sua Empresa"
+            placeholder={t('yourCompany')}
           />
         </div>
 
         {/* Contact Information */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Telefone
+            {t('phone')}
           </label>
           <input
             type="tel"
@@ -164,13 +167,13 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('phone', e.target.value)}
             onFocus={(e) => handleFocus(e, 'phone')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="+55 (00) 00000-0000"
+            placeholder={t('yourPhone')}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email *
+            {t('email')} *
           </label>
           <input
             type="email"
@@ -178,13 +181,13 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('email', e.target.value)}
             onFocus={(e) => handleFocus(e, 'email')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="seu.email@empresa.com"
+            placeholder={t('yourEmail')}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Website
+            {t('website')}
           </label>
           <input
             type="url"
@@ -192,13 +195,13 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('website', e.target.value)}
             onFocus={(e) => handleFocus(e, 'website')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="https://www.suaempresa.com"
+            placeholder={t('yourWebsite')}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Endereço
+            {t('address')}
           </label>
           <input
             type="text"
@@ -206,14 +209,14 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             onChange={(e) => handleChange('address', e.target.value)}
             onFocus={(e) => handleFocus(e, 'address')}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder="Cidade | Estado"
+            placeholder={t('cityState')}
           />
         </div>
 
         {/* Logo URL */}
         <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            URL do Logo
+            {t('logoUrl')}
             {isClient && !limits.canUploadLogo && (
               <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
                 🔒 PRO
@@ -228,12 +231,12 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
               isClient && !limits.canUploadLogo ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
             }`}
-            placeholder={isClient && !limits.canUploadLogo ? 'Disponível apenas no plano PRO' : 'https://exemplo.com/logo.png'}
+            placeholder={isClient && !limits.canUploadLogo ? t('availableProOnly') : t('logoExample')}
           />
           <p className="text-xs text-gray-500 mt-1">
             {isClient && !limits.canUploadLogo
-              ? 'Upgrade para PRO para adicionar seu logo personalizado'
-              : 'Use um link público da sua logo (ex: Imgur, Dropbox, seu site)'
+              ? t('upgradeForLogo')
+              : t('logoTip')
             }
           </p>
         </div>
@@ -241,10 +244,10 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
         {/* Social Media */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Redes Sociais
+            {t('socialNetworks')}
             {isClient && limits.maxSocialNetworks === 1 && (
               <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                FREE: apenas 1 rede social
+                {t('onlyOneSocial')}
               </span>
             )}
           </label>
@@ -254,7 +257,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
               value={data.socialMedia?.instagram || ''}
               onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Instagram URL"
+              placeholder={t('instagramUrl')}
             />
             <div className="relative">
               <input
@@ -269,8 +272,8 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
                 }`}
                 placeholder={
                   isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
-                    ? '🔒 Limpe o Instagram ou faça upgrade para PRO'
-                    : 'LinkedIn URL'
+                    ? t('clearInstagramOrUpgrade')
+                    : t('linkedinUrl')
                 }
               />
               {isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram && (
@@ -282,7 +285,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
           </div>
           {isClient && !limits.canUseMultipleSocials && (
             <p className="text-xs text-gray-500 mt-2">
-              💡 Upgrade para PRO e adicione múltiplas redes sociais
+              {t('upgradeForMultipleSocials')}
             </p>
           )}
         </div>
@@ -291,7 +294,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Cor Primária
+              {t('primaryColor')}
               {isClient && !limits.canCustomizeColors && (
                 <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
                   🔒 PRO
@@ -322,7 +325,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Cor Secundária
+              {t('secondaryColor')}
               {isClient && !limits.canCustomizeColors && (
                 <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
                   🔒 PRO
@@ -355,7 +358,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
         {isClient && !limits.canCustomizeColors && (
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
             <p className="text-xs text-purple-700">
-              💡 Upgrade para PRO e personalize as cores da sua assinatura para combinar com sua marca
+              {t('upgradeForColors')}
             </p>
           </div>
         )}
