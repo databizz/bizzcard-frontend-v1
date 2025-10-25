@@ -1,19 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 
 export default function SubscriptionMockControls() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const {
     subscription,
     limits,
-    activateAnnualPlan,
+    activateFreePlan,
+    activateProPlan,
     startTrial,
     expireSubscription,
     updateSubscription,
     daysRemaining,
   } = useSubscription();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   if (!isOpen) {
     return (
@@ -85,8 +95,8 @@ export default function SubscriptionMockControls() {
             {limits.canCopySignature ? '✅ Sim' : '❌ Não'}
           </p>
           <p>
-            Usar Templates:{' '}
-            {limits.canUseTemplates ? '✅ Sim' : '❌ Não'}
+            Templates Disponíveis:{' '}
+            {limits.availableTemplates.length}
           </p>
           <p>
             Limite de Assinaturas:{' '}
@@ -107,10 +117,17 @@ export default function SubscriptionMockControls() {
         </button>
 
         <button
-          onClick={activateAnnualPlan}
+          onClick={activateProPlan}
           className="w-full px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm"
         >
-          ✅ Ativar Plano Anual
+          ✅ Ativar Plano PRO
+        </button>
+
+        <button
+          onClick={activateFreePlan}
+          className="w-full px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-sm"
+        >
+          🆓 Ativar Plano FREE
         </button>
 
         <button

@@ -1,4 +1,4 @@
-# SignaturePro - Gerador de Assinaturas de Email Profissionais
+# GenSign - Gerador de Assinaturas de Email Profissionais
 
 <div align="center">
 
@@ -15,9 +15,10 @@
 
 ## 🎯 O Que É?
 
-**SignaturePro** é uma aplicação web SaaS que permite criar assinaturas de email profissionais e personalizadas para uso em Gmail, Outlook e outros clientes de email.
+**GenSign** é uma aplicação web SaaS que permite criar assinaturas de email profissionais e personalizadas para uso em Gmail, Outlook e outros clientes de email.
 
 ### Funcionalidades Principais
+
 - ✉️ **Gerador visual** de assinaturas de email
 - 🎨 **4+ templates profissionais** (Moderno, Clássico, Minimalista, Corporativo)
 - 🏢 **Templates pré-configurados por indústria** (Advogado, Tech, Corporativo, etc.)
@@ -35,6 +36,7 @@
 **Objetivo:** Deixar o usuário experimentar e sentir necessidade do upgrade
 
 **Inclui:**
+
 - ✅ 1 template básico (Minimalista)
 - ✅ Campos essenciais (nome, cargo, empresa, email, telefone)
 - ✅ 1 rede social (Instagram OU LinkedIn)
@@ -43,6 +45,7 @@
 - ⚠️ **Marca d'água visível** no rodapé da assinatura
 
 **Limitações (gatilhos de conversão):**
+
 - ❌ Marca d'água em todos os emails enviados
 - ❌ Sem logo customizado
 - ❌ Sem personalização de cores
@@ -56,6 +59,7 @@
 **Objetivo:** Profissionais e empresas que querem assinatura sem limitações
 
 **Tudo do FREE + Recursos Premium:**
+
 - ✅ **4+ templates profissionais** (Modern, Classic, Minimal, Corporate)
 - ✅ **Templates por indústria** (Advogado, Tech, Corporativo, Saúde, etc.)
 - ✅ **SEM marca d'água** - assinatura limpa e profissional
@@ -70,6 +74,7 @@
 - ✅ Suporte prioritário
 
 **Público-alvo:**
+
 - 👔 Profissionais liberais (advogados, consultores, contadores)
 - 🚀 Startups e pequenas empresas
 - 💼 Equipes comerciais e vendas
@@ -106,6 +111,7 @@
 ## 🏗️ Arquitetura Técnica
 
 ### Frontend (Next.js 14)
+
 ```
 src/
 ├── app/                      # App Router do Next.js
@@ -130,6 +136,7 @@ src/
 ```
 
 ### Tecnologias Utilizadas
+
 - **Next.js 14** - Framework React com SSR
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling utility-first
@@ -141,6 +148,7 @@ src/
 ## 📊 Roadmap - Próximas Funcionalidades
 
 ### Fase 1 - MVP (✅ COMPLETO)
+
 - ✅ Sistema de planos FREE/PRO
 - ✅ Limites e restrições por plano
 - ✅ Marca d'água no plano FREE
@@ -148,24 +156,28 @@ src/
 - ✅ 4 templates profissionais
 
 ### Fase 2 - Monetização (🚧 Em Planejamento)
+
 - [ ] Integração de pagamento (Stripe/Mercado Pago)
 - [ ] Backend com autenticação (NextAuth.js)
 - [ ] Banco de dados (PostgreSQL/Supabase)
 - [ ] Painel de administração
 
 ### Fase 3 - Analytics (📋 Backlog)
+
 - [ ] API de rastreamento de cliques
 - [ ] Dashboard com métricas
 - [ ] Relatórios semanais/mensais
 - [ ] A/B testing de assinaturas
 
 ### Fase 4 - Equipes (📋 Backlog)
+
 - [ ] Plano Business (gestão de equipe)
 - [ ] Gerenciamento centralizado
 - [ ] Aprovação de assinaturas
 - [ ] Branding corporativo
 
 ### Fase 5 - Integrações (💡 Ideias)
+
 - [ ] Google Workspace integration
 - [ ] Microsoft 365 integration
 - [ ] CRM integrations (HubSpot, Salesforce)
@@ -241,6 +253,7 @@ docker-compose up -d app-prod
 ### 3. Usar Controles Mock (Desenvolvimento)
 
 No canto inferior direito da tela há controles para testar:
+
 - Alternar entre planos (FREE/PRO/Trial)
 - Simular expiração
 - Testar fluxo completo
@@ -263,12 +276,14 @@ npm run lint      # Executar linter
 Este projeto possui **dois Dockerfiles separados**:
 
 ### 1. Dockerfile (Raiz) - PRODUÇÃO
+
 - Build otimizado multi-stage
 - Imagem mínima (`node:20-alpine`)
 - Apenas dependências de produção
 - Usuário não-root para segurança
 
 ### 2. .devcontainer/Dockerfile - DESENVOLVIMENTO
+
 - Imagem completa (`node:20-bullseye`)
 - Git + GitHub CLI instalados
 - Zsh + Oh My Zsh
@@ -297,30 +312,35 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ## 📞 Contato & Suporte
 
 - 💬 Issues: [GitHub Issues](https://github.com/seu-usuario/signature-pro/issues)
-- 📧 Email: suporte@signaturepro.com
-- 🌐 Website: https://signaturepro.com
+- 📧 Email: suporte@gensign.app
+- 🌐 Website: https://gensign.com
 
 ---
 
 ## 💡 Por Que Este Produto Funciona?
 
 ### 1. **Dor Real**
+
 Todo profissional precisa de assinatura de email, mas:
+
 - Gmail/Outlook são confusos de configurar
 - Manter consistência de marca é difícil
 - Sem dados de engajamento
 
 ### 2. **Solução Simples**
+
 - Interface visual intuitiva
 - Copia com 1 clique
 - Templates prontos
 
 ### 3. **Freemium que Converte**
+
 - FREE frustra na hora certa (marca d'água)
 - Upgrade de R$ 9,90 = impulso de compra
 - Valor percebido >>> preço
 
 ### 4. **Mercado Grande**
+
 - Milhões de profissionais no Brasil
 - Crescimento de trabalho remoto
 - Branding pessoal em alta

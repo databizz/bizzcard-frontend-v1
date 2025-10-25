@@ -48,8 +48,8 @@
   // Executar setup de Git/SSH após criar o container
   "postCreateCommand": "sudo chown -R node:node /home/node/.ssh && sudo chmod 700 /home/node/.ssh && bash .devcontainer/setup-git.sh && npm install",
 
-  // Não iniciar npm dev automaticamente para não conflitar com Claude Code
-  // "postStartCommand": "npm run dev",
+  // Iniciar o servidor Next.js automaticamente em background quando o container reiniciar
+  "postStartCommand": "npm run dev > /tmp/nextjs.log 2>&1 &",
 
   "forwardPorts": [3000],
 

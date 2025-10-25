@@ -1,9 +1,20 @@
 'use client';
 
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useEffect, useState } from 'react';
 
 export default function SubscriptionBanner() {
   const { subscription, daysRemaining, activateFreePlan, activateProPlan, startTrial } = useSubscription();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Evita erro de hidratação renderizando apenas após o cliente estar pronto
+  if (!isClient) {
+    return null;
+  }
 
   // Plano PRO ativo
   if (subscription.status === 'active' && subscription.plan === 'pro') {

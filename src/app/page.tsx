@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SignatureForm from '@/components/SignatureForm';
 import SignaturePreview from '@/components/SignaturePreview';
 import EmailInstructions from '@/components/EmailInstructions';
@@ -11,6 +11,11 @@ import { useSubscription } from '@/contexts/SubscriptionContext';
 
 export default function Home() {
   const { limits, subscription } = useSubscription();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const [signatureData, setSignatureData] = useState<SignatureData>({
     name: 'Seu Nome',
     role: 'Seu Cargo',
@@ -25,7 +30,7 @@ export default function Home() {
     },
     primaryColor: '#3B82F6',
     secondaryColor: '#1E40AF',
-    template: 'modern',
+    template: 'minimal', // Começa com minimal que está sempre disponível
   });
 
   const presetTemplates = [
@@ -43,7 +48,7 @@ export default function Home() {
         socialMedia: { instagram: '', linkedin: '' },
         primaryColor: '#8B4513',
         secondaryColor: '#654321',
-        template: 'modern' as const,
+        template: 'minimal' as const, // Mudado para minimal pois modern pode estar bloqueado
       },
     },
     {
@@ -77,7 +82,7 @@ export default function Home() {
         socialMedia: { instagram: '', linkedin: '' },
         primaryColor: '#7C3AED',
         secondaryColor: '#5B21B6',
-        template: 'modern' as const,
+        template: 'minimal' as const, // Mudado para minimal pois modern pode estar bloqueado
       },
     },
     {
@@ -123,7 +128,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Templates Prontos</h2>
-            {subscription.plan === 'free' && (
+            {isClient && subscription.plan === 'free' && (
               <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
                 FREE: apenas Minimalista disponível
               </span>
@@ -131,7 +136,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {presetTemplates.map((preset, index) => {
-              const isAvailable = limits.availableTemplates.includes(preset.data.template);
+              const isAvailable = isClient ? limits.availableTemplates.includes(preset.data.template) : true;
               const isLocked = !isAvailable;
 
               return (
@@ -145,7 +150,7 @@ export default function Home() {
                       : 'border-gray-200 hover:border-blue-500 hover:shadow-md group'
                   }`}
                 >
-                  {isLocked && (
+                  {isClient && isLocked && (
                     <div className="absolute top-2 right-2 text-2xl">🔒</div>
                   )}
                   <div className="text-3xl mb-2">{preset.icon}</div>
@@ -153,7 +158,7 @@ export default function Home() {
                     {preset.name}
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
-                    {isLocked ? '🔒 Upgrade para PRO' : 'Clique para usar este estilo'}
+                    {isClient && isLocked ? '🔒 Upgrade para PRO' : 'Clique para usar este estilo'}
                   </div>
                 </button>
               );
