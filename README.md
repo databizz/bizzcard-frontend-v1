@@ -169,3 +169,34 @@ gh pr list
 ```
 
 **Importante**: Git está disponível **APENAS no ambiente de desenvolvimento** (DevContainer). A imagem de produção não inclui Git para manter o tamanho otimizado.
+
+## Configuração SSH para GitHub
+
+Para fazer push/pull do código no GitHub usando SSH, siga o guia completo:
+
+📖 **[Guia Completo: Configuração SSH para GitHub](./GITHUB_SSH_SETUP.md)**
+
+### Quick Start (Resumo):
+
+```bash
+# 1. Gerar chave SSH
+ssh-keygen -t ed25519 -C "seu.email@exemplo.com"
+
+# 2. Iniciar SSH agent
+eval "$(ssh-agent -s)"
+
+# 3. Adicionar chave ao agent
+ssh-add ~/.ssh/id_ed25519
+
+# 4. Mostrar chave pública (copiar e adicionar no GitHub)
+cat ~/.ssh/id_ed25519.pub
+
+# 5. Testar conexão
+ssh -T git@github.com
+
+# 6. Adicionar remote e fazer push
+git remote add origin git@github.com:SEU-USUARIO/SEU-REPOSITORIO.git
+git push -u origin main
+```
+
+Para instruções detalhadas e solução de problemas, consulte [GITHUB_SSH_SETUP.md](./GITHUB_SSH_SETUP.md)

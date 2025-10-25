@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     gnupg \
     lsb-release \
+    openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar GitHub CLI
