@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Ambiente de Produção
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: gen-sign-frontend-prod
+
+  # Ambiente de Desenvolvimento (opcional - use DevContainer para desenvolvimento)
+  app-dev:
+    build:
+      context: .devcontainer
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/workspace:cached
+      - node_modules:/workspace/node_modules
+    working_dir: /workspace
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    container_name: gen-sign-frontend-dev
+    profiles:
+      - dev
+
+volumes:
+  node_modules:
