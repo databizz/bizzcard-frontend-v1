@@ -112,7 +112,41 @@ Hi seu-usuario! You've successfully authenticated, but GitHub does not provide s
 
 ✅ **Sucesso!** Sua chave SSH está configurada corretamente!
 
-## Passo 8: Criar Repositório no GitHub
+## Passo 8: Configurar Git User e Email
+
+**IMPORTANTE:** Configure seu nome e email no Git. Use o **mesmo email** da sua conta GitHub:
+
+```bash
+# Configurar seu nome
+git config --global user.name "Seu Nome Completo"
+
+# Configurar seu email (use o mesmo do GitHub)
+git config --global user.email "seu.email@exemplo.com"
+```
+
+### Verificar as configurações:
+
+```bash
+# Ver todas as configurações
+git config --list
+
+# Ou verificar individualmente
+git config user.name
+git config user.email
+```
+
+Exemplo:
+```bash
+git config --global user.name "João Silva"
+git config --global user.email "joao.silva@gmail.com"
+```
+
+**Por que isso é importante?**
+- Seus commits ficarão associados ao seu perfil no GitHub
+- Seus contribuições aparecerão corretamente no seu perfil
+- Outros desenvolvedores saberão quem fez cada commit
+
+## Passo 9: Criar Repositório no GitHub
 
 ### Opção A: Criar novo repositório vazio no GitHub
 
@@ -136,7 +170,7 @@ gh repo create email-signature-generator --public --source=. --remote=origin --p
 gh repo create email-signature-generator --private --source=. --remote=origin --push
 ```
 
-## Passo 9: Adicionar Remote e Fazer Push
+## Passo 10: Adicionar Remote e Fazer Push
 
 ### Se criou pelo site (Opção A):
 
@@ -162,7 +196,7 @@ git push -u origin main
 
 O push já foi feito automaticamente! 🎉
 
-## Passo 10: Verificar no GitHub
+## Passo 11: Verificar no GitHub
 
 Abra o navegador em:
 ```

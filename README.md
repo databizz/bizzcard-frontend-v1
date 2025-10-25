@@ -194,10 +194,14 @@ ssh-add ~/.ssh/id_ed25519
 # 5. Mostrar chave pública (copiar e adicionar no GitHub)
 cat ~/.ssh/id_ed25519.pub
 
-# 6. Testar conexão
+# 6. Testar conexão (digite 'yes' quando perguntado)
 ssh -T git@github.com
 
-# 7. Adicionar remote e fazer push
+# 7. Configurar Git user e email (IMPORTANTE!)
+git config --global user.name "Seu Nome"
+git config --global user.email "seu.email@exemplo.com"
+
+# 8. Adicionar remote e fazer push
 git remote add origin git@github.com:SEU-USUARIO/SEU-REPOSITORIO.git
 git push -u origin main
 ```
