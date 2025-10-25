@@ -105,32 +105,70 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Gerador de Assinaturas de Email
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Crie assinaturas profissionais e personalizadas para seus emails
-          </p>
+      <div className="bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-600 to-cyan-600 rounded-xl shadow-lg">
+                <span className="text-white text-xl font-bold">G</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
+                  GenSign
+                </h1>
+                <p className="text-xs text-gray-500">Professional Email Signatures</p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center gap-2 text-sm text-gray-600">
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                Free Forever
+              </span>
+              <span className="text-gray-300">•</span>
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                </svg>
+                1000+ Users
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Subscription Banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-3">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Create Your Perfect
+            <span className="block bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent mt-2 pb-1">
+              Email Signature
+            </span>
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4 mt-3">
+            Design professional email signatures in minutes. Stand out with custom templates, colors, and social links.
+          </p>
+        </div>
+
+        {/* Subscription Banner */}
         <SubscriptionBanner />
       </div>
 
       {/* Preset Templates */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">Templates Prontos</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Quick Start Templates</h2>
+              <p className="text-sm text-gray-600 mt-1">Choose a template and customize it to match your brand</p>
+            </div>
             {isClient && subscription.plan === 'free' && (
-              <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
-                FREE: apenas Minimalista disponível
+              <span className="text-xs bg-gradient-to-r from-gray-100 to-gray-50 text-gray-600 px-4 py-2 rounded-full border border-gray-200 font-medium">
+                FREE: Minimal template available
               </span>
             )}
           </div>
@@ -144,21 +182,34 @@ export default function Home() {
                   key={index}
                   onClick={() => isAvailable && setSignatureData(preset.data)}
                   disabled={isLocked}
-                  className={`p-4 border-2 rounded-lg text-left transition-all relative ${
+                  className={`group relative p-6 rounded-2xl text-left transition-all duration-300 ${
                     isLocked
-                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
-                      : 'border-gray-200 hover:border-blue-500 hover:shadow-md group'
+                      ? 'bg-gray-50 border-2 border-gray-200 opacity-60 cursor-not-allowed'
+                      : 'bg-white border-2 border-gray-200 hover:border-indigo-400 hover:shadow-xl hover:scale-105 hover:-translate-y-1'
                   }`}
                 >
                   {isClient && isLocked && (
-                    <div className="absolute top-2 right-2 text-2xl">🔒</div>
+                    <div className="absolute top-3 right-3 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
+                      </svg>
+                    </div>
                   )}
-                  <div className="text-3xl mb-2">{preset.icon}</div>
-                  <div className={`font-semibold ${isLocked ? 'text-gray-500' : 'text-gray-800 group-hover:text-blue-600 transition-colors'}`}>
+                  <div className="text-4xl mb-3">{preset.icon}</div>
+                  <div className={`font-bold text-base mb-2 ${isLocked ? 'text-gray-500' : 'text-gray-900 group-hover:text-indigo-600 transition-colors'}`}>
                     {preset.name}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {isClient && isLocked ? '🔒 Upgrade para PRO' : 'Clique para usar este estilo'}
+                  <div className="text-xs text-gray-500">
+                    {isClient && isLocked ? (
+                      <span className="flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
+                        </svg>
+                        PRO only
+                      </span>
+                    ) : (
+                      'Click to apply'
+                    )}
                   </div>
                 </button>
               );
@@ -168,8 +219,8 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Form Column */}
           <div>
             <SignatureForm data={signatureData} onChange={setSignatureData} />
@@ -183,43 +234,66 @@ export default function Home() {
       </div>
 
       {/* Email Instructions */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <EmailInstructions />
       </div>
 
       {/* Quick Tips */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-4">
-            📌 Dicas Importantes
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
-            <div className="flex items-start gap-2">
-              <span className="text-xl">⚙️</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-gradient-to-br from-indigo-50 via-white to-cyan-50 border-2 border-indigo-100 rounded-3xl p-6 shadow-lg">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">
+              Pro Tips
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-start gap-3 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
               <div>
-                <strong>Google Workspace:</strong> Não esqueça de configurar os "Padrões de Assinatura"
-                para que a assinatura apareça automaticamente em novos emails.
+                <strong className="text-gray-900 font-semibold block mb-1">Gmail Setup</strong>
+                <p className="text-sm text-gray-600">Configure "Signature defaults" in Gmail settings for automatic insertion in new emails.</p>
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-xl">🎨</span>
+            <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+              </div>
               <div>
-                <strong>Personalização:</strong> Use o seletor de cores para combinar com a
-                identidade visual da sua empresa.
+                <strong className="text-gray-900 font-semibold block mb-1">Brand Colors</strong>
+                <p className="text-sm text-gray-600">Use your brand's color palette for a consistent professional look across all communications.</p>
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-xl">📱</span>
+            <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
               <div>
-                <strong>Mobile:</strong> As assinaturas são responsivas e funcionam
-                perfeitamente em dispositivos móveis.
+                <strong className="text-gray-900 font-semibold block mb-1">Mobile Ready</strong>
+                <p className="text-sm text-gray-600">All signatures are fully responsive and look perfect on any device or email client.</p>
               </div>
             </div>
-            <div className="flex items-start gap-2">
-              <span className="text-xl">🔗</span>
+            <div className="flex items-start gap-4 p-4 bg-white/60 backdrop-blur rounded-2xl border border-white/40">
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
               <div>
-                <strong>Links:</strong> Use URLs públicas para logos (Imgur, Dropbox,
-                ou seu próprio site).
+                <strong className="text-gray-900 font-semibold block mb-1">Logo Hosting</strong>
+                <p className="text-sm text-gray-600">Host your logo on Imgur, Dropbox, or your website with a public URL for best results.</p>
               </div>
             </div>
           </div>
@@ -227,14 +301,35 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-          <p className="text-gray-400">
-            Gerador de Assinaturas de Email - Crie assinaturas profissionais em minutos
-          </p>
-          <p className="text-gray-500 text-sm mt-2">
-            Desenvolvido com Next.js e Tailwind CSS
-          </p>
+      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-12 border-t border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-indigo-600 to-cyan-600 rounded-xl shadow-lg">
+                <span className="text-white text-xl font-bold">G</span>
+              </div>
+              <div>
+                <div className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                  GenSign
+                </div>
+                <p className="text-xs text-gray-400">Professional Email Signatures</p>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center gap-6 text-sm text-gray-400">
+              <a href="#" className="hover:text-indigo-400 transition-colors">About</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">Features</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">Pricing</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">Contact</a>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+            <p className="text-gray-400 text-sm">
+              © 2025 GenSign. Create professional email signatures in minutes.
+            </p>
+            <p className="text-gray-500 text-xs mt-2">
+              Built with ❤️ using Next.js and Tailwind CSS
+            </p>
+          </div>
         </div>
       </footer>
 

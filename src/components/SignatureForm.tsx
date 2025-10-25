@@ -50,24 +50,31 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
   };
 
   const templates: { value: TemplateType; label: string; description: string }[] = [
-    { value: 'modern', label: 'Moderno', description: 'Design clean com borda colorida' },
-    { value: 'classic', label: 'Clássico', description: 'Estilo tradicional e elegante' },
-    { value: 'minimal', label: 'Minimalista', description: 'Simples e direto' },
-    { value: 'corporate', label: 'Corporativo', description: 'Profissional com destaque' },
+    { value: 'modern', label: 'Modern', description: 'Clean design with colored border' },
+    { value: 'classic', label: 'Classic', description: 'Traditional and elegant' },
+    { value: 'minimal', label: 'Minimal', description: 'Simple and direct' },
+    { value: 'corporate', label: 'Corporate', description: 'Professional with flair' },
   ];
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg">
-      <h3 className="text-lg font-semibold text-gray-800 mb-6">Personalize sua Assinatura</h3>
+    <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-md">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </div>
+        <h3 className="text-2xl font-bold text-gray-900">Customize</h3>
+      </div>
 
       <div className="space-y-6">
         {/* Template Selection */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Escolha o Template
+          <label className="block text-sm font-semibold text-gray-900 mb-3">
+            Choose Template
             {isClient && subscription.plan === 'free' && (
-              <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                FREE: apenas Minimalista
+              <span className="ml-2 text-xs text-gray-600 bg-gradient-to-r from-gray-100 to-gray-50 px-3 py-1 rounded-full border border-gray-200 font-medium">
+                FREE: Minimal only
               </span>
             )}
           </label>
