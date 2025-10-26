@@ -47,6 +47,27 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
     });
   };
 
+  // Helper function to check if a field should be shown for the current platform
+  const shouldShowField = (fieldName: string): boolean => {
+    const platform = data.platform;
+
+    // Fields shown for all platforms
+    const alwaysShow = ['name', 'role', 'company', 'email'];
+    if (alwaysShow.includes(fieldName)) return true;
+
+    // Platform-specific fields
+    const platformFields: Record<string, string[]> = {
+      email: ['phone', 'website', 'address', 'logo', 'socialMedia'],
+      instagram: ['phone', 'website', 'socialMedia'],
+      linkedin: ['phone', 'website', 'address', 'logo', 'socialMedia'],
+      whatsapp: ['phone', 'whatsapp', 'website'],
+      embed: ['phone', 'website', 'address', 'logo', 'socialMedia'],
+      vcard: ['phone', 'whatsapp', 'website', 'address', 'socialMedia'],
+    };
+
+    return platformFields[platform]?.includes(fieldName) || false;
+  };
+
   const templates: { value: TemplateType; label: string; description: string }[] = [
     { value: 'modern', label: t('modern'), description: t('modernDesc') },
     { value: 'classic', label: t('classic'), description: t('classicDesc') },
@@ -167,132 +188,144 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('phone')}
-              </label>
-              <input
-                type="tel"
-                value={data.phone}
-                onChange={(e) => handleChange('phone', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
-                placeholder={t('yourPhone')}
-              />
-            </div>
+            {shouldShowField('phone') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('phone')}
+                </label>
+                <input
+                  type="tel"
+                  value={data.phone}
+                  onChange={(e) => handleChange('phone', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                  placeholder={t('yourPhone')}
+                />
+              </div>
+            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('whatsapp')}
-              </label>
-              <input
-                type="tel"
-                value={data.whatsapp || ''}
-                onChange={(e) => handleChange('whatsapp', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
-                placeholder={t('yourWhatsapp')}
-              />
-              <p className="text-xs text-gray-500 mt-1">{t('whatsappTipText')}</p>
-            </div>
+            {shouldShowField('whatsapp') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('whatsapp')}
+                </label>
+                <input
+                  type="tel"
+                  value={data.whatsapp || ''}
+                  onChange={(e) => handleChange('whatsapp', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                  placeholder={t('yourWhatsapp')}
+                />
+                <p className="text-xs text-gray-500 mt-1">{t('whatsappTipText')}</p>
+              </div>
+            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('websiteUrl')}
-              </label>
-              <input
-                type="url"
-                value={data.website}
-                onChange={(e) => handleChange('website', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
-                placeholder={t('yourWebsite')}
-              />
-            </div>
+            {shouldShowField('website') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('websiteUrl')}
+                </label>
+                <input
+                  type="url"
+                  value={data.website}
+                  onChange={(e) => handleChange('website', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                  placeholder={t('yourWebsite')}
+                />
+              </div>
+            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('address')}
-              </label>
-              <input
-                type="text"
-                value={data.address}
-                onChange={(e) => handleChange('address', e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
-                placeholder={t('cityState')}
-              />
-            </div>
+            {shouldShowField('address') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('address')}
+                </label>
+                <input
+                  type="text"
+                  value={data.address}
+                  onChange={(e) => handleChange('address', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                  placeholder={t('cityState')}
+                />
+              </div>
+            )}
 
             {/* Logo URL */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('logoUrl')}
-                {isClient && !limits.canUploadLogo && (
-                  <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
-                    🔒 PRO
-                  </span>
-                )}
-              </label>
-              <input
-                type="url"
-                value={data.logo || ''}
-                onChange={(e) => handleChange('logo', e.target.value)}
-                disabled={isClient && !limits.canUploadLogo}
-                className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
-                  isClient && !limits.canUploadLogo ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
-                }`}
-                placeholder={isClient && !limits.canUploadLogo ? t('availableProOnly') : t('logoExample')}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {isClient && !limits.canUploadLogo
-                  ? t('upgradeForLogo')
-                  : t('logoTip')
-                }
-              </p>
-            </div>
+            {shouldShowField('logo') && (
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('logoUrl')}
+                  {isClient && !limits.canUploadLogo && (
+                    <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
+                      🔒 PRO
+                    </span>
+                  )}
+                </label>
+                <input
+                  type="url"
+                  value={data.logo || ''}
+                  onChange={(e) => handleChange('logo', e.target.value)}
+                  disabled={isClient && !limits.canUploadLogo}
+                  className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
+                    isClient && !limits.canUploadLogo ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
+                  }`}
+                  placeholder={isClient && !limits.canUploadLogo ? t('availableProOnly') : t('logoExample')}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  {isClient && !limits.canUploadLogo
+                    ? t('upgradeForLogo')
+                    : t('logoTip')
+                  }
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Social Networks Section */}
-        <div className="border-t border-gray-200 pt-6">
-          <label className="block text-sm font-bold text-gray-900 mb-4">
-            {t('socialNetworks')}
-            {isClient && limits.maxSocialNetworks === 1 && (
-              <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                {t('onlyOneSocial')}
-              </span>
-            )}
-          </label>
-          <div className="space-y-3">
-            <input
-              type="url"
-              value={data.socialMedia?.instagram || ''}
-              onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
-              placeholder={t('instagramUrl')}
-            />
-            <div className="relative">
+        {shouldShowField('socialMedia') && (
+          <div className="border-t border-gray-200 pt-6">
+            <label className="block text-sm font-bold text-gray-900 mb-4">
+              {t('socialNetworks')}
+              {isClient && limits.maxSocialNetworks === 1 && (
+                <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                  {t('onlyOneSocial')}
+                </span>
+              )}
+            </label>
+            <div className="space-y-3">
               <input
                 type="url"
-                value={data.socialMedia?.linkedin || ''}
-                onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
-                disabled={isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram}
-                className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
-                  isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
-                    ? 'bg-gray-50 cursor-not-allowed opacity-60'
-                    : ''
-                }`}
-                placeholder={
-                  isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
-                    ? t('clearOrUpgrade')
-                    : t('linkedinUrl')
-                }
+                value={data.socialMedia?.instagram || ''}
+                onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+                placeholder={t('instagramUrl')}
               />
+              <div className="relative">
+                <input
+                  type="url"
+                  value={data.socialMedia?.linkedin || ''}
+                  onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
+                  disabled={isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram}
+                  className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
+                    isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
+                      ? 'bg-gray-50 cursor-not-allowed opacity-60'
+                      : ''
+                  }`}
+                  placeholder={
+                    isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
+                      ? t('clearOrUpgrade')
+                      : t('linkedinUrl')
+                  }
+                />
+              </div>
             </div>
+            {isClient && !limits.canUseMultipleSocials && (
+              <p className="text-xs text-gray-500 mt-2">
+                {t('upgradeForMultipleSocials')}
+              </p>
+            )}
           </div>
-          {isClient && !limits.canUseMultipleSocials && (
-            <p className="text-xs text-gray-500 mt-2">
-              {t('upgradeForMultipleSocials')}
-            </p>
-          )}
-        </div>
+        )}
 
         {/* QR Code Section */}
         <div className="border-t border-gray-200 pt-6">

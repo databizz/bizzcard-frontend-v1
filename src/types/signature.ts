@@ -1,3 +1,5 @@
+export type PlatformType = 'email' | 'instagram' | 'linkedin' | 'whatsapp' | 'embed' | 'vcard';
+
 export interface SignatureData {
   name: string;
   role: string;
@@ -7,6 +9,7 @@ export interface SignatureData {
   website: string;
   address: string;
   whatsapp?: string;
+  platform: PlatformType;
   socialMedia?: {
     instagram?: string;
     linkedin?: string;

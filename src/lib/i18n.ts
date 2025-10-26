@@ -22,8 +22,25 @@ export const translations = {
     // Platforms
     usedOnAllPlatforms: 'Use em Todas as Plataformas',
     platformsDescription: 'Seu cartão funciona perfeitamente em qualquer lugar',
+    selectPlatform: 'Selecione a Plataforma',
+    platformEmail: 'Email',
+    platformInstagram: 'Instagram',
+    platformLinkedin: 'LinkedIn',
+    platformWhatsapp: 'WhatsApp',
+    platformEmbed: 'Embed (Site)',
+    platformVcard: 'vCard',
     emailSignature: 'Assinatura de Email',
     emailSignatureDesc: 'Gmail, Outlook, Apple Mail e mais',
+    instagramBio: 'Bio do Instagram',
+    instagramBioDesc: 'Cartão otimizado para perfil do Instagram',
+    linkedinProfile: 'Perfil LinkedIn',
+    linkedinProfileDesc: 'Cartão profissional para LinkedIn',
+    whatsappStatus: 'Status WhatsApp',
+    whatsappStatusDesc: 'Compartilhe no status ou conversas',
+    embedWebsite: 'Embed em Site',
+    embedWebsiteDesc: 'Código para incorporar em seu website',
+    vcardDownload: 'Download vCard',
+    vcardDownloadDesc: 'Arquivo de contato para smartphones',
     socialMedia: 'Redes Sociais',
     socialMediaDesc: 'Instagram, LinkedIn, Facebook',
     messaging: 'Mensageria',
@@ -34,6 +51,8 @@ export const translations = {
     qrCodeDesc: 'Gere QR Code para compartilhar offline',
     vcard: 'vCard',
     vcardDesc: 'Formato padrão de contato digital',
+    copyrightFree: 'Criado com BizzCard',
+    copyrightRemoved: 'Copyright removido no plano PRO',
 
     // Templates
     quickStartTemplates: 'Templates Profissionais',
@@ -203,6 +222,9 @@ export const translations = {
     // Usage Instructions
     howToUse: 'Como Usar Seu Cartão',
     usageInstructions: 'Seu cartão digital BizzCard pode ser usado de várias formas',
+    howToAddSignature: 'Como Adicionar a Assinatura',
+    tipLabel: 'Dica:',
+    emailInstructionsTip: 'Depois de colar, você pode ajustar cores, fontes e tamanhos diretamente no editor do seu email.',
 
     // Email Instructions
     emailUsage: 'Email (Gmail, Outlook, Apple Mail)',
@@ -211,6 +233,65 @@ export const translations = {
     emailStep3: 'Encontre a seção "Assinatura"',
     emailStep4: 'Cole (Ctrl+V) na caixa de assinatura',
     emailStep5: 'Salve as configurações',
+
+    // Gmail Instructions
+    gmailStep1: 'Abra Gmail e clique na engrenagem (⚙️) no canto superior direito',
+    gmailStep2: 'Selecione "Ver todas as configurações"',
+    gmailStep3: 'Role até a seção "Assinatura" na aba "Geral"',
+    gmailStep4: 'Clique em "+ Criar nova" para adicionar uma assinatura',
+    gmailStep5: 'Dê um nome à assinatura',
+    gmailStep6: 'Cole o cartão copiado na caixa de edição',
+    gmailStep7: 'Role para baixo e clique em "Salvar alterações"',
+
+    // Outlook Web Instructions
+    outlookWebStep1: 'Faça login no Outlook Web (outlook.office.com)',
+    outlookWebStep2: 'Clique em ⚙️ Configurações > Ver todas as configurações do Outlook',
+    outlookWebStep3: 'Selecione "Email" > "Redação e resposta"',
+    outlookWebStep4: 'Na seção "Assinatura de email", clique em "+ Nova assinatura"',
+    outlookWebStep5: 'Dê um nome à assinatura',
+    outlookWebStep6: 'Cole seu cartão na caixa de edição',
+    outlookWebStep7: 'Clique em "Salvar"',
+
+    // Outlook Desktop Instructions
+    outlookDesktopStep1: 'Abra o Outlook Desktop',
+    outlookDesktopStep2: 'Clique em "Arquivo" > "Opções"',
+    outlookDesktopStep3: 'Selecione "Email" na barra lateral esquerda',
+    outlookDesktopStep4: 'Clique no botão "Assinaturas..."',
+    outlookDesktopStep5: 'Clique em "Novo" para criar uma assinatura',
+    outlookDesktopStep6: 'Dê um nome à assinatura',
+    outlookDesktopStep7: 'Cole seu cartão na caixa "Editar assinatura"',
+    outlookDesktopStep8: 'Clique em "OK" e depois "OK" novamente',
+
+    // Apple Mail Instructions
+    appleMailStep1: 'Abra o Apple Mail',
+    appleMailStep2: 'No menu, vá em Mail > Configurações (ou Preferências)',
+    appleMailStep3: 'Clique na aba "Assinaturas"',
+    appleMailStep4: 'Selecione a conta de email na coluna da esquerda',
+    appleMailStep5: 'Clique no botão "+" para adicionar nova assinatura',
+    appleMailStep6: 'Dê um nome à assinatura',
+    appleMailStep7: 'Cole seu cartão na caixa de edição à direita',
+    appleMailStep8: 'Feche a janela - as alterações são salvas automaticamente',
+
+    // Thunderbird Instructions
+    thunderbirdStep1: 'Abra o Thunderbird',
+    thunderbirdStep2: 'Vá em Ferramentas > Configurações da conta',
+    thunderbirdStep3: 'Selecione a conta de email na coluna da esquerda',
+    thunderbirdStep4: 'Marque a caixa "Anexar esta assinatura"',
+    thunderbirdStep5: 'Escolha "Usar HTML" se disponível',
+    thunderbirdStep6: 'Cole seu cartão na caixa de texto',
+    thunderbirdStep7: 'Clique em "OK" para salvar',
+    thunderbirdStep8: 'Teste enviando um email para si mesmo',
+
+    // Yahoo Mail Instructions
+    yahooStep1: 'Faça login no Yahoo Mail',
+    yahooStep2: 'Clique em ⚙️ Configurações no canto superior direito',
+    yahooStep3: 'Selecione "Mais configurações"',
+    yahooStep4: 'Clique em "Redação de email"',
+    yahooStep5: 'Role até "Assinatura"',
+    yahooStep6: 'Ative o toggle "Assinatura"',
+    yahooStep7: 'Cole seu cartão na caixa de edição',
+    yahooStep8: 'Selecione quando usar a assinatura (novos emails / respostas)',
+    yahooStep9: 'Clique em "Salvar" no topo da página',
 
     // Social Media Instructions
     socialUsage: 'Redes Sociais (Instagram, LinkedIn)',
@@ -283,8 +364,25 @@ export const translations = {
     // Platforms
     usedOnAllPlatforms: 'Use on All Platforms',
     platformsDescription: 'Your card works perfectly anywhere',
+    selectPlatform: 'Select Platform',
+    platformEmail: 'Email',
+    platformInstagram: 'Instagram',
+    platformLinkedin: 'LinkedIn',
+    platformWhatsapp: 'WhatsApp',
+    platformEmbed: 'Embed (Website)',
+    platformVcard: 'vCard',
     emailSignature: 'Email Signature',
     emailSignatureDesc: 'Gmail, Outlook, Apple Mail and more',
+    instagramBio: 'Instagram Bio',
+    instagramBioDesc: 'Card optimized for Instagram profile',
+    linkedinProfile: 'LinkedIn Profile',
+    linkedinProfileDesc: 'Professional card for LinkedIn',
+    whatsappStatus: 'WhatsApp Status',
+    whatsappStatusDesc: 'Share on status or conversations',
+    embedWebsite: 'Embed on Website',
+    embedWebsiteDesc: 'Code to embed on your website',
+    vcardDownload: 'vCard Download',
+    vcardDownloadDesc: 'Contact file for smartphones',
     socialMedia: 'Social Media',
     socialMediaDesc: 'Instagram, LinkedIn, Facebook',
     messaging: 'Messaging',
@@ -295,6 +393,8 @@ export const translations = {
     qrCodeDesc: 'Generate QR Code for offline sharing',
     vcard: 'vCard',
     vcardDesc: 'Standard digital contact format',
+    copyrightFree: 'Created with BizzCard',
+    copyrightRemoved: 'Copyright removed on PRO plan',
 
     // Templates
     quickStartTemplates: 'Professional Templates',
@@ -464,6 +564,9 @@ export const translations = {
     // Usage Instructions
     howToUse: 'How to Use Your Card',
     usageInstructions: 'Your BizzCard digital card can be used in many ways',
+    howToAddSignature: 'How to Add the Signature',
+    tipLabel: 'Tip:',
+    emailInstructionsTip: 'After pasting, you can adjust colors, fonts, and sizes directly in your email editor.',
 
     // Email Instructions
     emailUsage: 'Email (Gmail, Outlook, Apple Mail)',
@@ -472,6 +575,65 @@ export const translations = {
     emailStep3: 'Find the "Signature" section',
     emailStep4: 'Paste (Ctrl+V) into the signature box',
     emailStep5: 'Save settings',
+
+    // Gmail Instructions
+    gmailStep1: 'Open Gmail and click the gear (⚙️) in the top right corner',
+    gmailStep2: 'Select "See all settings"',
+    gmailStep3: 'Scroll to the "Signature" section in the "General" tab',
+    gmailStep4: 'Click "+ Create new" to add a signature',
+    gmailStep5: 'Give your signature a name',
+    gmailStep6: 'Paste the copied card in the editing box',
+    gmailStep7: 'Scroll down and click "Save Changes"',
+
+    // Outlook Web Instructions
+    outlookWebStep1: 'Sign in to Outlook Web (outlook.office.com)',
+    outlookWebStep2: 'Click ⚙️ Settings > View all Outlook settings',
+    outlookWebStep3: 'Select "Mail" > "Compose and reply"',
+    outlookWebStep4: 'In "Email signature" section, click "+ New signature"',
+    outlookWebStep5: 'Give your signature a name',
+    outlookWebStep6: 'Paste your card in the editing box',
+    outlookWebStep7: 'Click "Save"',
+
+    // Outlook Desktop Instructions
+    outlookDesktopStep1: 'Open Outlook Desktop',
+    outlookDesktopStep2: 'Click "File" > "Options"',
+    outlookDesktopStep3: 'Select "Mail" from the left sidebar',
+    outlookDesktopStep4: 'Click the "Signatures..." button',
+    outlookDesktopStep5: 'Click "New" to create a signature',
+    outlookDesktopStep6: 'Give your signature a name',
+    outlookDesktopStep7: 'Paste your card in the "Edit signature" box',
+    outlookDesktopStep8: 'Click "OK" then "OK" again',
+
+    // Apple Mail Instructions
+    appleMailStep1: 'Open Apple Mail',
+    appleMailStep2: 'In the menu, go to Mail > Settings (or Preferences)',
+    appleMailStep3: 'Click the "Signatures" tab',
+    appleMailStep4: 'Select the email account in the left column',
+    appleMailStep5: 'Click the "+" button to add a new signature',
+    appleMailStep6: 'Give your signature a name',
+    appleMailStep7: 'Paste your card in the editing box on the right',
+    appleMailStep8: 'Close the window - changes are saved automatically',
+
+    // Thunderbird Instructions
+    thunderbirdStep1: 'Open Thunderbird',
+    thunderbirdStep2: 'Go to Tools > Account Settings',
+    thunderbirdStep3: 'Select the email account in the left column',
+    thunderbirdStep4: 'Check the "Attach this signature" box',
+    thunderbirdStep5: 'Choose "Use HTML" if available',
+    thunderbirdStep6: 'Paste your card in the text box',
+    thunderbirdStep7: 'Click "OK" to save',
+    thunderbirdStep8: 'Test by sending an email to yourself',
+
+    // Yahoo Mail Instructions
+    yahooStep1: 'Sign in to Yahoo Mail',
+    yahooStep2: 'Click ⚙️ Settings in the top right corner',
+    yahooStep3: 'Select "More Settings"',
+    yahooStep4: 'Click "Writing email"',
+    yahooStep5: 'Scroll to "Signature"',
+    yahooStep6: 'Enable the "Signature" toggle',
+    yahooStep7: 'Paste your card in the editing box',
+    yahooStep8: 'Select when to use signature (new emails / replies)',
+    yahooStep9: 'Click "Save" at the top of the page',
 
     // Social Media Instructions
     socialUsage: 'Social Media (Instagram, LinkedIn)',

@@ -5,7 +5,7 @@ import SignatureForm from '@/components/SignatureForm';
 import SignaturePreview from '@/components/SignaturePreview';
 import SubscriptionBanner from '@/components/SubscriptionBanner';
 import SubscriptionMockControls from '@/components/SubscriptionMockControls';
-import { SignatureData } from '@/types/signature';
+import { SignatureData, PlatformType } from '@/types/signature';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Home() {
@@ -19,6 +19,7 @@ export default function Home() {
     email: 'seu.email@empresa.com.br',
     website: 'https://www.suaempresa.com.br',
     address: 'Cidade | Estado',
+    platform: 'email',
     socialMedia: {
       instagram: '',
       linkedin: '',
@@ -28,36 +29,47 @@ export default function Home() {
     template: 'minimal',
   });
 
-  const platformFeatures = [
+  const platformFeatures: Array<{
+    id: PlatformType;
+    icon: string;
+    title: string;
+    desc: string;
+  }> = [
     {
+      id: 'email',
       icon: '📧',
       title: t('emailSignature'),
       desc: t('emailSignatureDesc'),
     },
     {
+      id: 'instagram',
       icon: '📱',
-      title: t('socialMedia'),
-      desc: t('socialMediaDesc'),
+      title: t('instagramBio'),
+      desc: t('instagramBioDesc'),
     },
     {
+      id: 'linkedin',
+      icon: '💼',
+      title: t('linkedinProfile'),
+      desc: t('linkedinProfileDesc'),
+    },
+    {
+      id: 'whatsapp',
       icon: '💬',
-      title: t('messaging'),
-      desc: t('messagingDesc'),
+      title: t('whatsappStatus'),
+      desc: t('whatsappStatusDesc'),
     },
     {
+      id: 'embed',
       icon: '🌐',
-      title: t('website'),
-      desc: t('websiteDesc'),
+      title: t('embedWebsite'),
+      desc: t('embedWebsiteDesc'),
     },
     {
-      icon: '📲',
-      title: t('qrCode'),
-      desc: t('qrCodeDesc'),
-    },
-    {
+      id: 'vcard',
       icon: '💾',
-      title: t('vcard'),
-      desc: t('vcardDesc'),
+      title: t('vcardDownload'),
+      desc: t('vcardDownloadDesc'),
     },
   ];
 
@@ -124,24 +136,38 @@ export default function Home() {
       </div>
 
       {/* Platforms Section */}
-      <div className="py-16 bg-gray-50">
+      <div className="py-16 bg-gray-50" id="platforms">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 font-rubik">
-              {t('usedOnAllPlatforms')}
+              {t('selectPlatform')}
             </h3>
             <p className="text-lg text-gray-600 font-rubik">{t('platformsDescription')}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {platformFeatures.map((feature, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
+            {platformFeatures.map((feature) => (
+              <button
+                key={feature.id}
+                onClick={() => {
+                  setSignatureData({ ...signatureData, platform: feature.id });
+                  // Scroll to customize section
+                  document.getElementById('customize')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all border-2 text-left w-full ${
+                  signatureData.platform === feature.id
+                    ? 'border-primary-purple ring-2 ring-primary-purple ring-opacity-50'
+                    : 'border-gray-100 hover:border-primary-yellow'
+                }`}
               >
                 <div className="text-4xl mb-3">{feature.icon}</div>
                 <h4 className="text-lg font-bold text-gray-900 mb-2 font-rubik">{feature.title}</h4>
                 <p className="text-sm text-gray-600 font-rubik">{feature.desc}</p>
-              </div>
+                {signatureData.platform === feature.id && (
+                  <div className="mt-3 text-sm font-semibold text-primary-purple font-rubik">
+                    ✓ {language === 'pt-BR' ? 'Selecionado' : 'Selected'}
+                  </div>
+                )}
+              </button>
             ))}
           </div>
         </div>
@@ -246,7 +272,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-12 border-t border-gray-800">
+      <footer className="bg-gray-900 text-white border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
             <div className="flex items-center gap-3">

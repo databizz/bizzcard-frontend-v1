@@ -62,12 +62,9 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   const getWatermark = () => {
     return isClient && limits.hasWatermark
       ? `
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
-        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
-          ⚡ ${t('brandName')} - <a href="#" style="color: #84087E; text-decoration: none; font-weight: bold;">${t('tagline')}</a>
-        </div>
-        <div style="font-size: 10px; color: #aaa;">
-          ${t('freeForeverPlan')} • <a href="#" style="color: #FFC400; text-decoration: none;">Upgrade PRO</a>
+      <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid #eee; text-align: center;">
+        <div style="font-size: 10px; color: #999;">
+          ${t('copyrightFree')}
         </div>
       </div>
     `
@@ -458,7 +455,17 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-900">{t('preview')}</h3>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">{t('preview')}</h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {data.platform === 'email' && t('platformEmail')}
+                {data.platform === 'instagram' && t('platformInstagram')}
+                {data.platform === 'linkedin' && t('platformLinkedin')}
+                {data.platform === 'whatsapp' && t('platformWhatsapp')}
+                {data.platform === 'embed' && t('platformEmbed')}
+                {data.platform === 'vcard' && t('platformVcard')}
+              </p>
+            </div>
           </div>
           <button
             onClick={copySignature}
