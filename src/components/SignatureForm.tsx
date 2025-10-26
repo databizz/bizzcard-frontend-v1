@@ -19,27 +19,8 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
     setIsClient(true);
   }, []);
 
-  const placeholders = {
-    name: t('yourName'),
-    role: t('yourPosition'),
-    company: t('yourCompany'),
-    phone: t('yourPhone'),
-    email: t('yourEmail'),
-    website: t('yourWebsite'),
-    address: t('cityState'),
-  };
-
   const handleChange = (field: keyof SignatureData, value: any) => {
     onChange({ ...data, [field]: value });
-  };
-
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>, field: keyof typeof placeholders) => {
-    // Clear if it's a placeholder value
-    if (data[field] === placeholders[field]) {
-      handleChange(field, '');
-    }
-    // Select all text
-    e.target.select();
   };
 
   const handleSocialMediaChange = (platform: string, value: string) => {
@@ -52,22 +33,38 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
     });
   };
 
+  const handleQrCodeChange = (field: string, value: any) => {
+    onChange({
+      ...data,
+      qrCode: {
+        enabled: data.qrCode?.enabled || false,
+        url: data.qrCode?.url || '',
+        size: data.qrCode?.size || 'medium',
+        position: data.qrCode?.position || 'right',
+        ...data.qrCode,
+        [field]: value,
+      },
+    });
+  };
+
   const templates: { value: TemplateType; label: string; description: string }[] = [
     { value: 'modern', label: t('modern'), description: t('modernDesc') },
     { value: 'classic', label: t('classic'), description: t('classicDesc') },
     { value: 'minimal', label: t('minimal'), description: t('minimalDesc') },
     { value: 'corporate', label: t('corporate'), description: t('corporateDesc') },
+    { value: 'creative', label: t('creative'), description: t('creativeDesc') },
+    { value: 'elegant', label: t('elegant'), description: t('elegantDesc') },
   ];
 
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
+    <div className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 font-rubik">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-md">
+        <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-gray-900">{t('customize')}</h3>
+        <h3 className="text-xl font-bold text-gray-900">{t('customize')}</h3>
       </div>
 
       <div className="space-y-6">
@@ -76,7 +73,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
           <label className="block text-sm font-semibold text-gray-900 mb-3">
             {t('chooseTemplate')}
             {isClient && subscription.plan === 'free' && (
-              <span className="ml-2 text-xs text-gray-600 bg-gradient-to-r from-gray-100 to-gray-50 px-3 py-1 rounded-full border border-gray-200 font-medium">
+              <span className="ml-2 text-xs text-gray-600 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
                 {t('freeMinimalOnly')}
               </span>
             )}
@@ -91,12 +88,12 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
                   key={template.value}
                   onClick={() => isAvailable && handleChange('template', template.value)}
                   disabled={isLocked}
-                  className={`p-4 border-2 rounded-lg text-left transition-all relative ${
+                  className={`p-4 border-2 rounded-xl text-left transition-all relative font-rubik ${
                     data.template === template.value
-                      ? 'border-blue-600 bg-blue-50'
+                      ? 'border-primary-purple bg-primary-purple/5'
                       : isLocked
                       ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-gray-200 hover:border-primary-yellow'
                   }`}
                 >
                   {isClient && isLocked && (
@@ -105,7 +102,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
                   <div className="font-semibold text-sm">{template.label}</div>
                   <div className="text-xs text-gray-500 mt-1">{template.description}</div>
                   {isClient && isLocked && (
-                    <div className="text-xs text-purple-600 mt-1 font-medium">Upgrade PRO</div>
+                    <div className="text-xs text-primary-purple mt-1 font-medium">Upgrade PRO</div>
                   )}
                 </button>
               );
@@ -113,137 +110,149 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
           </div>
         </div>
 
-        {/* Personal Information */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('fullName')} *
-          </label>
-          <input
-            type="text"
-            value={data.name}
-            onChange={(e) => handleChange('name', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'name')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourName')}
-          />
+        {/* Personal Information Section */}
+        <div className="border-t border-gray-200 pt-6">
+          <h4 className="text-sm font-bold text-gray-900 mb-4">{t('personalInfo')}</h4>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('fullName')} *
+              </label>
+              <input
+                type="text"
+                value={data.name}
+                onChange={(e) => handleChange('name', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourName')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('position')} *
+              </label>
+              <input
+                type="text"
+                value={data.role}
+                onChange={(e) => handleChange('role', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourPosition')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('company')}
+              </label>
+              <input
+                type="text"
+                value={data.company}
+                onChange={(e) => handleChange('company', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourCompany')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('email')} *
+              </label>
+              <input
+                type="email"
+                value={data.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourEmail')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('phone')}
+              </label>
+              <input
+                type="tel"
+                value={data.phone}
+                onChange={(e) => handleChange('phone', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourPhone')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('whatsapp')}
+              </label>
+              <input
+                type="tel"
+                value={data.whatsapp || ''}
+                onChange={(e) => handleChange('whatsapp', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourWhatsapp')}
+              />
+              <p className="text-xs text-gray-500 mt-1">{t('whatsappTipText')}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('websiteUrl')}
+              </label>
+              <input
+                type="url"
+                value={data.website}
+                onChange={(e) => handleChange('website', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('yourWebsite')}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('address')}
+              </label>
+              <input
+                type="text"
+                value={data.address}
+                onChange={(e) => handleChange('address', e.target.value)}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
+                placeholder={t('cityState')}
+              />
+            </div>
+
+            {/* Logo URL */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('logoUrl')}
+                {isClient && !limits.canUploadLogo && (
+                  <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
+                    🔒 PRO
+                  </span>
+                )}
+              </label>
+              <input
+                type="url"
+                value={data.logo || ''}
+                onChange={(e) => handleChange('logo', e.target.value)}
+                disabled={isClient && !limits.canUploadLogo}
+                className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
+                  isClient && !limits.canUploadLogo ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
+                }`}
+                placeholder={isClient && !limits.canUploadLogo ? t('availableProOnly') : t('logoExample')}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                {isClient && !limits.canUploadLogo
+                  ? t('upgradeForLogo')
+                  : t('logoTip')
+                }
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('position')} *
-          </label>
-          <input
-            type="text"
-            value={data.role}
-            onChange={(e) => handleChange('role', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'role')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourPosition')}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('company')}
-          </label>
-          <input
-            type="text"
-            value={data.company}
-            onChange={(e) => handleChange('company', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'company')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourCompany')}
-          />
-        </div>
-
-        {/* Contact Information */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('phone')}
-          </label>
-          <input
-            type="tel"
-            value={data.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'phone')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourPhone')}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('email')} *
-          </label>
-          <input
-            type="email"
-            value={data.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'email')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourEmail')}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('website')}
-          </label>
-          <input
-            type="url"
-            value={data.website}
-            onChange={(e) => handleChange('website', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'website')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('yourWebsite')}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('address')}
-          </label>
-          <input
-            type="text"
-            value={data.address}
-            onChange={(e) => handleChange('address', e.target.value)}
-            onFocus={(e) => handleFocus(e, 'address')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            placeholder={t('cityState')}
-          />
-        </div>
-
-        {/* Logo URL */}
-        <div className="relative">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('logoUrl')}
-            {isClient && !limits.canUploadLogo && (
-              <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
-                🔒 PRO
-              </span>
-            )}
-          </label>
-          <input
-            type="url"
-            value={data.logo || ''}
-            onChange={(e) => handleChange('logo', e.target.value)}
-            disabled={isClient && !limits.canUploadLogo}
-            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-              isClient && !limits.canUploadLogo ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
-            }`}
-            placeholder={isClient && !limits.canUploadLogo ? t('availableProOnly') : t('logoExample')}
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            {isClient && !limits.canUploadLogo
-              ? t('upgradeForLogo')
-              : t('logoTip')
-            }
-          </p>
-        </div>
-
-        {/* Social Media */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        {/* Social Networks Section */}
+        <div className="border-t border-gray-200 pt-6">
+          <label className="block text-sm font-bold text-gray-900 mb-4">
             {t('socialNetworks')}
             {isClient && limits.maxSocialNetworks === 1 && (
               <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
@@ -256,7 +265,7 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
               type="url"
               value={data.socialMedia?.instagram || ''}
               onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
               placeholder={t('instagramUrl')}
             />
             <div className="relative">
@@ -265,22 +274,17 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
                 value={data.socialMedia?.linkedin || ''}
                 onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
                 disabled={isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram}
-                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                className={`w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
                   isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
                     ? 'bg-gray-50 cursor-not-allowed opacity-60'
                     : ''
                 }`}
                 placeholder={
                   isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram
-                    ? t('clearInstagramOrUpgrade')
+                    ? t('clearOrUpgrade')
                     : t('linkedinUrl')
                 }
               />
-              {isClient && limits.maxSocialNetworks === 1 && !!data.socialMedia?.instagram && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-purple-600 font-medium">
-                  PRO
-                </div>
-              )}
             </div>
           </div>
           {isClient && !limits.canUseMultipleSocials && (
@@ -290,78 +294,164 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
           )}
         </div>
 
-        {/* Colors */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('primaryColor')}
-              {isClient && !limits.canCustomizeColors && (
-                <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
+        {/* QR Code Section */}
+        <div className="border-t border-gray-200 pt-6">
+          <div className="flex items-center justify-between mb-4">
+            <label className="text-sm font-bold text-gray-900">
+              {t('qrCodeSettings')}
+              {isClient && !limits.canUploadLogo && (
+                <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
                   🔒 PRO
                 </span>
               )}
             </label>
-            <div className="flex items-center gap-3">
+            <label className="flex items-center cursor-pointer">
               <input
-                type="color"
-                value={data.primaryColor}
-                onChange={(e) => handleChange('primaryColor', e.target.value)}
-                disabled={isClient && !limits.canCustomizeColors}
-                className={`h-10 w-20 border border-gray-300 rounded ${
-                  !isClient || limits.canCustomizeColors ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
-                }`}
+                type="checkbox"
+                checked={data.qrCode?.enabled || false}
+                onChange={(e) => handleQrCodeChange('enabled', e.target.checked)}
+                disabled={isClient && !limits.canUploadLogo}
+                className="sr-only peer"
               />
-              <input
-                type="text"
-                value={data.primaryColor}
-                onChange={(e) => handleChange('primaryColor', e.target.value)}
-                disabled={isClient && !limits.canCustomizeColors}
-                className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  isClient && !limits.canCustomizeColors ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
-                }`}
-                placeholder="#3B82F6"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('secondaryColor')}
-              {isClient && !limits.canCustomizeColors && (
-                <span className="ml-2 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded font-medium">
-                  🔒 PRO
-                </span>
-              )}
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-yellow/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-purple"></div>
             </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={data.secondaryColor}
-                onChange={(e) => handleChange('secondaryColor', e.target.value)}
-                disabled={isClient && !limits.canCustomizeColors}
-                className={`h-10 w-20 border border-gray-300 rounded ${
-                  !isClient || limits.canCustomizeColors ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
-                }`}
-              />
-              <input
-                type="text"
-                value={data.secondaryColor}
-                onChange={(e) => handleChange('secondaryColor', e.target.value)}
-                disabled={isClient && !limits.canCustomizeColors}
-                className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  isClient && !limits.canCustomizeColors ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
-                }`}
-                placeholder="#1E40AF"
-              />
-            </div>
           </div>
-        </div>
-        {isClient && !limits.canCustomizeColors && (
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-            <p className="text-xs text-purple-700">
-              {t('upgradeForColors')}
+
+          {data.qrCode?.enabled && (
+            <div className="space-y-4 pl-4 border-l-2 border-primary-yellow">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('qrCodeUrl')}
+                </label>
+                <input
+                  type="url"
+                  value={data.qrCode?.url || ''}
+                  onChange={(e) => handleQrCodeChange('url', e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+                  placeholder={t('qrCodeExample')}
+                />
+                <p className="text-xs text-gray-500 mt-1">{t('qrCodeUrlDesc')}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('qrCodeSize')}
+                  </label>
+                  <select
+                    value={data.qrCode?.size || 'medium'}
+                    onChange={(e) => handleQrCodeChange('size', e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+                  >
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {t('qrCodePosition')}
+                  </label>
+                  <select
+                    value={data.qrCode?.position || 'right'}
+                    onChange={(e) => handleQrCodeChange('position', e.target.value)}
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+                  >
+                    <option value="left">{t('qrCodeLeft')}</option>
+                    <option value="center">{t('qrCodeCenter')}</option>
+                    <option value="right">{t('qrCodeRight')}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isClient && !limits.canUploadLogo && (
+            <p className="text-xs text-gray-500 mt-2">
+              {t('upgradeForQrCode')}
             </p>
+          )}
+        </div>
+
+        {/* Card Design Section */}
+        <div className="border-t border-gray-200 pt-6">
+          <h4 className="text-sm font-bold text-gray-900 mb-4">{t('cardDesign')}</h4>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('primaryColor')}
+                {isClient && !limits.canCustomizeColors && (
+                  <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
+                    🔒 PRO
+                  </span>
+                )}
+              </label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={data.primaryColor}
+                  onChange={(e) => handleChange('primaryColor', e.target.value)}
+                  disabled={isClient && !limits.canCustomizeColors}
+                  className={`h-10 w-20 border border-gray-300 rounded-lg ${
+                    !isClient || limits.canCustomizeColors ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+                  }`}
+                />
+                <input
+                  type="text"
+                  value={data.primaryColor}
+                  onChange={(e) => handleChange('primaryColor', e.target.value)}
+                  disabled={isClient && !limits.canCustomizeColors}
+                  className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
+                    isClient && !limits.canCustomizeColors ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
+                  }`}
+                  placeholder="#FFC400"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('secondaryColor')}
+                {isClient && !limits.canCustomizeColors && (
+                  <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
+                    🔒 PRO
+                  </span>
+                )}
+              </label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={data.secondaryColor}
+                  onChange={(e) => handleChange('secondaryColor', e.target.value)}
+                  disabled={isClient && !limits.canCustomizeColors}
+                  className={`h-10 w-20 border border-gray-300 rounded-lg ${
+                    !isClient || limits.canCustomizeColors ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+                  }`}
+                />
+                <input
+                  type="text"
+                  value={data.secondaryColor}
+                  onChange={(e) => handleChange('secondaryColor', e.target.value)}
+                  disabled={isClient && !limits.canCustomizeColors}
+                  className={`flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent ${
+                    isClient && !limits.canCustomizeColors ? 'bg-gray-50 cursor-not-allowed opacity-60' : ''
+                  }`}
+                  placeholder="#84087E"
+                />
+              </div>
+            </div>
           </div>
-        )}
+
+          {isClient && !limits.canCustomizeColors && (
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mt-4">
+              <p className="text-xs text-primary-purple">
+                {t('upgradeForColors')}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -2,9 +2,11 @@
 
 import { SignatureData } from "@/types/signature";
 import { useSubscription } from "@/contexts/SubscriptionContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { generateUserId } from "@/lib/generateUserId";
 import { generateRedirectLinks } from "@/lib/generateRedirectLinks";
 import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 interface SignaturePreviewProps {
   data: SignatureData;
@@ -12,13 +14,13 @@ interface SignaturePreviewProps {
 
 export default function SignaturePreview({ data }: SignaturePreviewProps) {
   const { limits } = useSubscription();
+  const { t } = useLanguage();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Gerar ID único do usuário e links de redirecionamento
   const userId = generateUserId(data.email);
   const redirectLinks = generateRedirectLinks(userId, {
     website: data.website,
@@ -27,6 +29,14 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
     linkedin: data.socialMedia?.linkedin || "",
     email: data.email,
   });
+
+  const getQRCodeSize = () => {
+    switch (data.qrCode?.size) {
+      case 'small': return 60;
+      case 'large': return 100;
+      default: return 80;
+    }
+  };
 
   const getSignatureHTML = (): string => {
     switch (data.template) {
@@ -38,28 +48,48 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         return getMinimalTemplate();
       case "corporate":
         return getCorporateTemplate();
+      case "creative":
+        return getCreativeTemplate();
+      case "elegant":
+        return getElegantTemplate();
       default:
-        return getModernTemplate();
+        return getMinimalTemplate();
     }
   };
 
-  const getModernTemplate = (): string => {
-    const watermark =
-      isClient && limits.hasWatermark
-        ? `
+  const getWatermark = () => {
+    return isClient && limits.hasWatermark
+      ? `
       <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
         <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
-          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">GenSign</a>
+          ⚡ ${t('brandName')} - <a href="#" style="color: #84087E; text-decoration: none; font-weight: bold;">${t('tagline')}</a>
         </div>
         <div style="font-size: 10px; color: #aaa;">
-          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
+          ${t('freeForeverPlan')} • <a href="#" style="color: #FFC400; text-decoration: none;">Upgrade PRO</a>
         </div>
       </div>
     `
-        : "";
+      : "";
+  };
+
+  const getQRCodeHTML = () => {
+    if (!data.qrCode?.enabled || !data.qrCode?.url) return "";
+
+    const qrCodeElement = document.getElementById('qr-code-temp');
+    if (!qrCodeElement) return "";
+
+    const svg = qrCodeElement.innerHTML;
 
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333;">
+      <div style="text-align: center; margin-top: 12px;">
+        ${svg}
+      </div>
+    `;
+  };
+
+  const getModernTemplate = (): string => {
+    return `
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Rubik', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333;">
         <tr>
           <td style="padding: 20px; border-left: 4px solid ${data.primaryColor};">
             <table cellpadding="0" cellspacing="0" border="0">
@@ -73,8 +103,9 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                   </div>
                   ${data.company ? `<div style="font-size: 14px; font-weight: bold; color: #333; margin-bottom: 12px;">${data.company}</div>` : ""}
                   <div style="margin-top: 12px;">
-                    ${redirectLinks.phone ? `<div style="margin-bottom: 4px;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
                     ${data.email ? `<div style="margin-bottom: 4px;">✉️ <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ""}
+                    ${redirectLinks.phone ? `<div style="margin-bottom: 4px;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
+                    ${data.whatsapp ? `<div style="margin-bottom: 4px;">💬 <a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">WhatsApp</a></div>` : ""}
                     ${redirectLinks.website ? `<div style="margin-bottom: 4px;">🌐 <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
                     ${data.address ? `<div style="margin-bottom: 4px;">📍 ${data.address}</div>` : ""}
                   </div>
@@ -90,20 +121,53 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                   }
                 </td>
                 ${
-                  data.logo
+                  data.logo || data.qrCode?.enabled
                     ? `
-                  <td style="padding-left: 20px; vertical-align: top;">
-                    <img src="${data.logo}" alt="Logo" style="max-width: 120px; height: auto;" />
+                  <td style="padding-left: 20px; vertical-align: top; text-align: center;">
+                    ${data.logo ? `<img src="${data.logo}" alt="Logo" style="max-width: 120px; height: auto; margin-bottom: 10px;" />` : ""}
+                    ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
                   </td>
                 `
                     : ""
                 }
               </tr>
             </table>
-            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; font-size: 11px; color: #999;">
-              Esta mensagem e seus anexos contêm informações confidenciais e protegidas pelo privilégio legal de comunicação entre advogado e cliente.
+            ${getWatermark()}
+          </td>
+        </tr>
+      </table>
+    `;
+  };
+
+  const getMinimalTemplate = (): string => {
+    return `
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #000;">
+        <tr>
+          <td style="padding: 15px 0;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 2px;">
+              ${data.name}
             </div>
-            ${watermark}
+            <div style="font-size: 13px; color: #666; margin-bottom: 10px;">
+              ${data.role}${data.company ? ` • ${data.company}` : ""}
+            </div>
+            <div style="font-size: 13px;">
+              ${data.email ? `<a href="mailto:${data.email}" style="color: #000; text-decoration: none;">${data.email}</a>` : ""}
+              ${redirectLinks.phone ? ` • <a href="${redirectLinks.phone}" style="color: #000; text-decoration: none;">${data.phone}</a>` : ""}
+            </div>
+            ${data.whatsapp ? `<div style="font-size: 13px; margin-top: 4px;"><a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">💬 WhatsApp</a></div>` : ""}
+            ${redirectLinks.website ? `<div style="font-size: 13px; margin-top: 4px;"><a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
+            ${
+              redirectLinks.instagram || redirectLinks.linkedin
+                ? `
+              <div style="font-size: 13px; margin-top: 4px;">
+                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="color: ${data.primaryColor}; text-decoration: none; margin-right: 8px;">Instagram</a>` : ""}
+                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ""}
+              </div>
+            `
+                : ""
+            }
+            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
+            ${getWatermark()}
           </td>
         </tr>
       </table>
@@ -111,20 +175,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getClassicTemplate = (): string => {
-    const watermark =
-      isClient && limits.hasWatermark
-        ? `
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
-        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
-          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">GenSign</a>
-        </div>
-        <div style="font-size: 10px; color: #aaa;">
-          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
-        </div>
-      </div>
-    `
-        : "";
-
     return `
       <table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, serif; font-size: 14px; line-height: 1.6; color: #333;">
         <tr>
@@ -148,8 +198,9 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
               ${data.company ? `<div style="font-size: 15px; font-weight: bold; color: #333; margin-top: 8px;">${data.company}</div>` : ""}
             </div>
             <div style="text-align: center;">
-              ${redirectLinks.phone ? `<div style="margin-bottom: 6px;"><strong>Tel:</strong> <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
               ${data.email ? `<div style="margin-bottom: 6px;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ""}
+              ${redirectLinks.phone ? `<div style="margin-bottom: 6px;"><strong>Tel:</strong> <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
+              ${data.whatsapp ? `<div style="margin-bottom: 6px;"><strong>WhatsApp:</strong> <a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">${data.whatsapp}</a></div>` : ""}
               ${redirectLinks.website ? `<div style="margin-bottom: 6px;"><strong>Web:</strong> <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
               ${data.address ? `<div style="margin-top: 10px; font-size: 12px; color: #666;">${data.address}</div>` : ""}
             </div>
@@ -163,54 +214,8 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${watermark}
-          </td>
-        </tr>
-      </table>
-    `;
-  };
-
-  const getMinimalTemplate = (): string => {
-    const watermark =
-      isClient && limits.hasWatermark
-        ? `
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
-        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
-          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">GenSign</a>
-        </div>
-        <div style="font-size: 10px; color: #aaa;">
-          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
-        </div>
-      </div>
-    `
-        : "";
-
-    return `
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #000;">
-        <tr>
-          <td style="padding: 15px 0;">
-            <div style="font-size: 16px; font-weight: 600; margin-bottom: 2px;">
-              ${data.name}
-            </div>
-            <div style="font-size: 13px; color: #666; margin-bottom: 10px;">
-              ${data.role}${data.company ? ` • ${data.company}` : ""}
-            </div>
-            <div style="font-size: 13px;">
-              ${redirectLinks.phone ? `<a href="${redirectLinks.phone}" style="color: #000; text-decoration: none;">${data.phone}</a> • ` : ""}
-              ${data.email ? `<a href="mailto:${data.email}" style="color: #000; text-decoration: none;">${data.email}</a>` : ""}
-            </div>
-            ${redirectLinks.website ? `<div style="font-size: 13px; margin-top: 4px;"><a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
-            ${
-              redirectLinks.instagram || redirectLinks.linkedin
-                ? `
-              <div style="font-size: 13px; margin-top: 4px;">
-                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="color: ${data.primaryColor}; text-decoration: none; margin-right: 8px;">Instagram</a>` : ""}
-                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="color: ${data.primaryColor}; text-decoration: none;">LinkedIn</a>` : ""}
-              </div>
-            `
-                : ""
-            }
-            ${watermark}
+            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
+            ${getWatermark()}
           </td>
         </tr>
       </table>
@@ -218,22 +223,8 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const getCorporateTemplate = (): string => {
-    const watermark =
-      isClient && limits.hasWatermark
-        ? `
-      <div style="margin-top: 16px; padding-top: 12px; border-top: 2px solid #eee; text-align: center;">
-        <div style="font-size: 11px; color: #999; margin-bottom: 4px;">
-          ⚡ Assinatura criada com <a href="#" style="color: #6366f1; text-decoration: none; font-weight: bold;">GenSign</a>
-        </div>
-        <div style="font-size: 10px; color: #aaa;">
-          Crie a sua gratuitamente • <a href="#" style="color: #6366f1; text-decoration: none;">Faça upgrade para PRO</a> e remova esta marca
-        </div>
-      </div>
-    `
-        : "";
-
     return `
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6;">
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Rubik', Arial, sans-serif; font-size: 14px; line-height: 1.6;">
         <tr>
           <td style="padding: 20px; background: linear-gradient(135deg, ${data.primaryColor} 0%, ${data.secondaryColor} 100%); color: white;">
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -263,8 +254,9 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         <tr>
           <td style="padding: 20px; background: #ffffff; border: 1px solid #e0e0e0; border-top: none;">
             <div>
-              ${redirectLinks.phone ? `<div style="margin-bottom: 6px; color: #333;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
               ${data.email ? `<div style="margin-bottom: 6px; color: #333;">✉️ <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ""}
+              ${redirectLinks.phone ? `<div style="margin-bottom: 6px; color: #333;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
+              ${data.whatsapp ? `<div style="margin-bottom: 6px; color: #333;">💬 <a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">WhatsApp</a></div>` : ""}
               ${redirectLinks.website ? `<div style="margin-bottom: 6px; color: #333;">🌐 <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
               ${data.address ? `<div style="margin-bottom: 6px; color: #666;">📍 ${data.address}</div>` : ""}
             </div>
@@ -278,7 +270,98 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${watermark}
+            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
+            ${getWatermark()}
+          </td>
+        </tr>
+      </table>
+    `;
+  };
+
+  const getCreativeTemplate = (): string => {
+    return `
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Rubik', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333; max-width: 500px;">
+        <tr>
+          <td style="padding: 25px; background: linear-gradient(135deg, ${data.primaryColor}15 0%, ${data.secondaryColor}15 100%); border-radius: 15px; border: 2px solid ${data.primaryColor};">
+            <div style="background: white; padding: 20px; border-radius: 10px;">
+              <div style="font-size: 22px; font-weight: bold; color: ${data.primaryColor}; margin-bottom: 5px;">
+                ${data.name}
+              </div>
+              <div style="font-size: 15px; color: ${data.secondaryColor}; font-weight: 600; margin-bottom: 15px;">
+                ${data.role}
+              </div>
+              ${data.company ? `<div style="font-size: 14px; color: #666; margin-bottom: 15px;">📍 ${data.company}</div>` : ""}
+
+              <div style="background: ${data.primaryColor}10; padding: 12px; border-radius: 8px; margin-top: 12px;">
+                ${data.email ? `<div style="margin-bottom: 6px;">✉️ <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none; font-weight: 500;">${data.email}</a></div>` : ""}
+                ${redirectLinks.phone ? `<div style="margin-bottom: 6px;">📱 <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
+                ${data.whatsapp ? `<div style="margin-bottom: 6px;">💬 <a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">WhatsApp</a></div>` : ""}
+                ${redirectLinks.website ? `<div>🌐 <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
+              </div>
+
+              ${
+                redirectLinks.instagram || redirectLinks.linkedin
+                  ? `
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid ${data.primaryColor}20;">
+                  ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="display: inline-block; margin-right: 8px; padding: 6px 12px; background: ${data.primaryColor}; color: white; text-decoration: none; border-radius: 20px; font-size: 12px; font-weight: 600;">Instagram</a>` : ""}
+                  ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="display: inline-block; padding: 6px 12px; background: ${data.secondaryColor}; color: white; text-decoration: none; border-radius: 20px; font-size: 12px; font-weight: 600;">LinkedIn</a>` : ""}
+                </div>
+              `
+                  : ""
+              }
+              ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
+            </div>
+            ${getWatermark()}
+          </td>
+        </tr>
+      </table>
+    `;
+  };
+
+  const getElegantTemplate = (): string => {
+    return `
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Rubik', Georgia, serif; font-size: 14px; line-height: 1.8; color: #2c2c2c;">
+        <tr>
+          <td style="padding: 30px; border: 1px solid #e0e0e0; background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);">
+            ${
+              data.logo
+                ? `
+              <div style="margin-bottom: 20px;">
+                <img src="${data.logo}" alt="Logo" style="max-width: 140px; height: auto;" />
+              </div>
+            `
+                : ""
+            }
+            <div style="border-left: 3px solid ${data.primaryColor}; padding-left: 15px; margin-bottom: 20px;">
+              <div style="font-size: 22px; font-weight: 600; color: ${data.secondaryColor}; margin-bottom: 5px; letter-spacing: 0.5px;">
+                ${data.name}
+              </div>
+              <div style="font-size: 14px; color: #666; font-style: italic;">
+                ${data.role}
+              </div>
+              ${data.company ? `<div style="font-size: 15px; color: #333; margin-top: 8px; font-weight: 500;">${data.company}</div>` : ""}
+            </div>
+
+            <div style="font-size: 13px; line-height: 1.8;">
+              ${data.email ? `<div style="margin-bottom: 5px;"><span style="color: #999;">✉</span> <a href="mailto:${data.email}" style="color: ${data.primaryColor}; text-decoration: none;">${data.email}</a></div>` : ""}
+              ${redirectLinks.phone ? `<div style="margin-bottom: 5px;"><span style="color: #999;">☎</span> <a href="${redirectLinks.phone}" style="color: #333; text-decoration: none;">${data.phone}</a></div>` : ""}
+              ${data.whatsapp ? `<div style="margin-bottom: 5px;"><span style="color: #999;">💬</span> <a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="color: #25D366; text-decoration: none;">WhatsApp</a></div>` : ""}
+              ${redirectLinks.website ? `<div style="margin-bottom: 5px;"><span style="color: #999;">🌐</span> <a href="${redirectLinks.website}" style="color: ${data.primaryColor}; text-decoration: none;">${data.website}</a></div>` : ""}
+              ${data.address ? `<div style="margin-top: 10px; color: #666; font-size: 12px;">${data.address}</div>` : ""}
+            </div>
+
+            ${
+              redirectLinks.instagram || redirectLinks.linkedin
+                ? `
+              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                ${redirectLinks.instagram ? `<a href="${redirectLinks.instagram}" style="display: inline-block; margin-right: 12px; color: ${data.primaryColor}; text-decoration: none; font-size: 13px;">Instagram →</a>` : ""}
+                ${redirectLinks.linkedin ? `<a href="${redirectLinks.linkedin}" style="display: inline-block; color: ${data.secondaryColor}; text-decoration: none; font-size: 13px;">LinkedIn →</a>` : ""}
+              </div>
+            `
+                : ""
+            }
+            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
+            ${getWatermark()}
           </td>
         </tr>
       </table>
@@ -286,11 +369,8 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   };
 
   const copySignature = async () => {
-    // Verificar se pode copiar
     if (!limits.canCopySignature) {
-      alert(
-        '⚠️ Assinatura Necessária\n\nVocê precisa de uma assinatura ativa para copiar assinaturas.\n\nClique em "Iniciar Teste Grátis" ou "Assinar Plano Anual" acima.'
-      );
+      alert(t('subscriptionNeeded'));
       return;
     }
 
@@ -300,7 +380,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
     try {
       const html = getSignatureHTML();
 
-      // Try modern Clipboard API first (works better with Gmail)
       if (navigator.clipboard && window.ClipboardItem) {
         const blob = new Blob([html], { type: "text/html" });
         const textBlob = new Blob([previewElement.innerText], {
@@ -313,14 +392,10 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         });
 
         await navigator.clipboard.write([clipboardItem]);
-
-        alert(
-          '✅ Assinatura copiada!\n\nAgora cole no Gmail:\nConfigurações → Ver todas as configurações → Assinatura → Ctrl+V\n\nNão esqueça de configurar os "Padrões de Assinatura" e salvar!'
-        );
+        alert(t('cardCopied') + '\n\n' + t('cardCopiedDesc'));
         return;
       }
 
-      // Fallback to execCommand
       const range = document.createRange();
       range.selectNodeContents(previewElement);
 
@@ -330,37 +405,43 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         selection.addRange(range);
         document.execCommand("copy");
         selection.removeAllRanges();
-
-        alert(
-          "✅ Assinatura copiada!\n\nCole no Gmail: Configurações → Assinatura → Ctrl+V"
-        );
+        alert(t('cardCopied'));
       }
     } catch (error) {
-      alert(
-        "Erro ao copiar. Tente selecionar a assinatura manualmente e copiar com Ctrl+C"
-      );
+      alert(t('copyError'));
     }
   };
 
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
+    <div className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 font-rubik">
+      {/* Hidden QR Code for copying */}
+      {data.qrCode?.enabled && data.qrCode?.url && (
+        <div id="qr-code-temp" style={{ display: 'none' }}>
+          <QRCodeSVG
+            value={data.qrCode.url}
+            size={getQRCodeSize()}
+            level="H"
+          />
+        </div>
+      )}
+
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900">Preview</h3>
+            <h3 className="text-xl font-bold text-gray-900">{t('preview')}</h3>
           </div>
           <button
             onClick={copySignature}
             disabled={isClient && !limits.canCopySignature}
-            className={`group px-6 py-3 rounded-xl transition-all duration-300 font-semibold shadow-lg flex items-center gap-2 ${
+            className={`group px-6 py-3 rounded-lg transition-all font-semibold flex items-center gap-2 ${
               !isClient || limits.canCopySignature
-                ? "bg-gradient-to-r from-indigo-600 to-cyan-600 text-white hover:shadow-xl hover:scale-105"
+                ? "bg-primary-purple hover:bg-primary-purple/90 text-white"
                 : "bg-gray-200 text-gray-500 cursor-not-allowed"
             }`}
           >
@@ -369,14 +450,14 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                Copy Signature
+                {t('copyCard')}
               </>
             ) : (
               <>
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
                 </svg>
-                Locked
+                {t('locked')}
               </>
             )}
           </button>
@@ -392,13 +473,13 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         dangerouslySetInnerHTML={{ __html: getSignatureHTML() }}
       />
       {isClient && !limits.canGenerateSignature && (
-        <div className="mt-4 bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-4">
+        <div className="mt-4 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-primary-purple/30 rounded-2xl p-4">
           <div className="flex items-center justify-center gap-2">
-            <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 text-primary-purple" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
             </svg>
-            <p className="text-sm text-red-800 font-semibold">
-              Subscription required to generate and copy email signatures
+            <p className="text-sm text-primary-purple font-semibold">
+              {t('subscriptionRequired')}
             </p>
           </div>
         </div>

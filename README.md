@@ -1,349 +1,307 @@
-# GenSign - Gerador de Assinaturas de Email Profissionais
+# BizzCard - Cartão Comercial Digital Profissional
 
 <div align="center">
 
-**Crie assinaturas de email personalizadas e profissionais em minutos**
+**Crie seu cartão comercial digital para usar em qualquer plataforma**
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![BizzCard](https://img.shields.io/badge/BizzCard-Digital%20Business%20Card-FFC400?style=for-the-badge&logo=creditcard)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+
+📧 Email · 📱 Instagram · 💼 LinkedIn · 💬 WhatsApp · 📲 QR Code · 🌐 Website
 
 </div>
 
 ---
 
-## 🎯 O Que É?
+## 🚀 Sobre o BizzCard
 
-**GenSign** é uma aplicação web SaaS que permite criar assinaturas de email profissionais e personalizadas para uso em Gmail, Outlook e outros clientes de email.
+**BizzCard** é uma plataforma moderna para criação de cartões comerciais digitais profissionais que vão muito além de simples assinaturas de email. Crie um cartão versátil que funciona em:
 
-### Funcionalidades Principais
+- 📧 **Emails** - Gmail, Outlook, Apple Mail e mais
+- 📱 **Redes Sociais** - Instagram, LinkedIn, Facebook
+- 💬 **Mensageria** - WhatsApp, Telegram, Signal
+- 🌐 **Websites** - Incorpore em seu site ou portfólio
+- 📲 **QR Code** - Para cartões de visita físicos
+- 💾 **vCard** - Formato padrão de contato digital
 
-- ✉️ **Gerador visual** de assinaturas de email
-- 🎨 **4+ templates profissionais** (Moderno, Clássico, Minimalista, Corporativo)
-- 🏢 **Templates pré-configurados por indústria** (Advogado, Tech, Corporativo, etc.)
-- 🎨 **Personalização completa** (cores, logo, redes sociais)
-- 📊 **Click Analytics** (rastreamento de engajamento em links)
-- 📋 **Copiar com um clique** direto para Gmail/Outlook
-- 📱 **Responsivo** - funciona perfeitamente em mobile
+## ✨ Funcionalidades Principais
 
----
+### 🎨 Design Profissional
+- **6 Templates Exclusivos**: Modern, Classic, Minimal, Corporate, Creative e Elegant
+- **Cores Customizáveis**: Use as cores da sua marca (Amarelo #FFC400 e Roxo #84087E por padrão)
+- **Logo Personalizado**: Adicione o logo da sua empresa
+- **Fonte Rubik**: Tipografia moderna e profissional do Google Fonts
 
-## 💼 Modelo de Negócio - Planos
+### 📲 QR Code Integrado
+- **Geração Automática**: Crie QR Codes personalizados para qualquer URL
+- **Link Customizável**: Direcione para WhatsApp, site, LinkedIn ou qualquer destino
+- **Tamanhos Variados**: Small (60px), Medium (80px) ou Large (100px)
+- **Posicionamento Flexível**: Esquerda, Centro ou Direita
+- **Alta Qualidade**: Level H com 30% de correção de erros
 
-### 🆓 **PLANO FREE** (Gratuito para sempre)
+### 🌍 Multi-Plataforma & Multi-Idioma
+- **WhatsApp Integration**: Link direto para conversas com número formatado
+- **Redes Sociais**: Instagram e LinkedIn integrados
+- **Responsivo**: Funciona perfeitamente em todos os dispositivos
+- **HTML Email-Safe**: Compatível com todos os clientes de email
+- **Internacionalização**: Português BR (padrão) e English completo
 
-**Objetivo:** Deixar o usuário experimentar e sentir necessidade do upgrade
+## 💼 Planos Disponíveis
 
-**Inclui:**
+### 🆓 FREE (Grátis para sempre)
+- ✅ 1 template (Minimal)
+- ✅ 1 rede social
+- ✅ Cores padrão
+- ✅ Pode copiar e usar
+- ⚠️ Marca d'água BizzCard
 
-- ✅ 1 template básico (Minimalista)
-- ✅ Campos essenciais (nome, cargo, empresa, email, telefone)
-- ✅ 1 rede social (Instagram OU LinkedIn)
-- ✅ **Pode copiar e usar** no email
-- ✅ Cores fixas (sem personalização)
-- ⚠️ **Marca d'água visível** no rodapé da assinatura
+### ⭐ PRO (R$ 9,90/mês)
+- ✅ **6+ templates profissionais**
+- ✅ **Múltiplas redes sociais**
+- ✅ **Personalização de cores**
+- ✅ **Logo customizado**
+- ✅ **Geração de QR Code**
+- ✅ **Campo WhatsApp dedicado**
+- ✅ **Sem marca d'água**
+- ✅ **Múltiplos formatos** (PNG, JPG, HTML)
+- ✅ **vCard export** (em desenvolvimento)
 
-**Limitações (gatilhos de conversão):**
+## 🎯 Casos de Uso
 
-- ❌ Marca d'água em todos os emails enviados
-- ❌ Sem logo customizado
-- ❌ Sem personalização de cores
-- ❌ Sem múltiplas redes sociais
-- ❌ Templates profissionais bloqueados
+### 👔 Profissionais Autônomos
+Crie um cartão com QR Code que leva direto ao seu WhatsApp ou portfólio. Perfeito para advogados, consultores, designers e freelancers.
 
----
+### 🏢 Empresas & Startups
+Padronize os cartões de toda equipe com as cores e logo da empresa. Mantenha consistência visual em todas as plataformas de comunicação.
 
-### ⭐ **PLANO PRO** (R$ 9,90/mês ou R$ 89/ano)
+### 🤝 Networking Digital
+Compartilhe seu cartão em eventos, redes sociais ou através de QR Code impresso em materiais físicos. Um único cartão para todos os canais.
 
-**Objetivo:** Profissionais e empresas que querem assinatura sem limitações
+### 🛍️ E-commerce & Varejo
+Adicione QR Code em notas fiscais ou embalagens facilitando o contato dos clientes via WhatsApp ou redes sociais.
 
-**Tudo do FREE + Recursos Premium:**
+## 🛠️ Tecnologias Utilizadas
 
-- ✅ **4+ templates profissionais** (Modern, Classic, Minimal, Corporate)
-- ✅ **Templates por indústria** (Advogado, Tech, Corporativo, Saúde, etc.)
-- ✅ **SEM marca d'água** - assinatura limpa e profissional
-- ✅ **Personalização de cores** (primária e secundária)
-- ✅ **Logo customizado** (upload ou URL)
-- ✅ **Múltiplas redes sociais** (Instagram, LinkedIn, Twitter, etc.)
-- ✅ **Click Analytics** (em desenvolvimento)
-  - Dashboard com métricas de engajamento
-  - Rastreamento de cliques em links
-  - Qual rede social gera mais resultado
-- ✅ **Múltiplas assinaturas** (formal, casual, vendas) - roadmap
-- ✅ Suporte prioritário
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| **Next.js** | 14 | Framework React com App Router |
+| **TypeScript** | 5 | Type safety e DX |
+| **Tailwind CSS** | 3 | Utility-first CSS |
+| **Rubik Font** | - | Google Fonts (400, 500, 600, 700) |
+| **qrcode.react** | - | Geração de QR Codes SVG |
+| **React Context** | - | State management |
+| **i18n Custom** | - | Sistema próprio sem deps externas |
 
-**Público-alvo:**
+## 🎨 Paleta de Cores
 
-- 👔 Profissionais liberais (advogados, consultores, contadores)
-- 🚀 Startups e pequenas empresas
-- 💼 Equipes comerciais e vendas
-- 🎯 Qualquer profissional que valoriza branding pessoal
+```css
+/* Cores Principais */
+--primary-yellow: #FFC400;   /* Pantone 7548 C */
+--primary-purple: #84087E;   /* Pantone 2355 C */
 
----
-
-## 🚀 Estratégia de Conversão (FREE → PRO)
-
-### Por que o plano FREE funciona:
-
-1. **Usuário testa no email real**
-   - Copia a assinatura e vê funcionando
-   - Marca d'água aparece em todos os emails enviados
-   - Cria "vergonha" profissional → upgrade
-
-2. **Limitações visíveis e frustrantes**
-   - Templates profissionais bloqueados com 🔒
-   - Cores fixas (não combina com marca)
-   - Sem logo da empresa
-   - Apenas 1 rede social
-
-3. **Preço baixo = baixa fricção**
-   - R$ 9,90/mês = menos que um café por dia
-   - R$ 89/ano = 25% de desconto
-   - Valor percebido > custo
-
-4. **Comparação constante**
-   - Banner sempre mostrando recursos PRO bloqueados
-   - CTAs estratégicos em toda a interface
-
----
-
-## 🏗️ Arquitetura Técnica
-
-### Frontend (Next.js 14)
-
-```
-src/
-├── app/                      # App Router do Next.js
-│   ├── layout.tsx            # Layout raiz
-│   ├── page.tsx              # Página principal do gerador
-│   ├── providers.tsx         # Context Providers
-│   └── globals.css           # Estilos globais
-├── components/               # Componentes React
-│   ├── SignatureForm.tsx     # Formulário de edição
-│   ├── SignaturePreview.tsx  # Preview em tempo real
-│   ├── SubscriptionBanner.tsx # Banner de planos
-│   ├── EmailInstructions.tsx # Instruções de uso
-│   └── SubscriptionMockControls.tsx # Controles de teste
-├── contexts/                 # React Contexts
-│   └── SubscriptionContext.tsx # Gerenciamento de planos
-├── lib/                      # Utilitários
-│   ├── generateUserId.ts     # Gerar ID único do usuário
-│   └── generateRedirectLinks.ts # Links de rastreamento
-└── types/                    # TypeScript types
-    ├── signature.ts          # Tipos de assinatura
-    └── subscription.ts       # Tipos de planos
+/* Cores Secundárias */
+--secondary-darkPurple: #6E5967;  /* Pantone 18-1708 TCX */
+--secondary-gray: #D1D1D1;        /* Cool Gray 2 XGC */
 ```
 
-### Tecnologias Utilizadas
+## 📦 Estrutura do Projeto
 
-- **Next.js 14** - Framework React com SSR
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling utility-first
-- **React Context** - State management
-- **Local Storage** - Persistência de dados (mock)
+```
+/workspace
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx              # Layout + Rubik font
+│   │   ├── page.tsx                # Página principal
+│   │   ├── providers.tsx           # Context providers
+│   │   └── globals.css             # Estilos globais
+│   ├── components/
+│   │   ├── SignatureForm.tsx       # Formulário com QR Code
+│   │   ├── SignaturePreview.tsx    # Preview + 6 templates
+│   │   ├── SubscriptionBanner.tsx  # Banner de planos
+│   │   └── SubscriptionMockControls.tsx
+│   ├── contexts/
+│   │   ├── LanguageContext.tsx     # Sistema i18n
+│   │   └── SubscriptionContext.tsx # Planos FREE/PRO
+│   ├── lib/
+│   │   ├── i18n.ts                 # 530+ strings traduzidas
+│   │   ├── generateUserId.ts       # ID único por usuário
+│   │   └── generateRedirectLinks.ts # Analytics tracking
+│   └── types/
+│       └── signature.ts            # TypeScript interfaces
+├── tailwind.config.ts              # Cores custom BizzCard
+└── package.json
+```
 
----
+## 🚀 Como Usar
 
-## 📊 Roadmap - Próximas Funcionalidades
-
-### Fase 1 - MVP (✅ COMPLETO)
-
-- ✅ Sistema de planos FREE/PRO
-- ✅ Limites e restrições por plano
-- ✅ Marca d'água no plano FREE
-- ✅ Templates bloqueados com UX clara
-- ✅ 4 templates profissionais
-
-### Fase 2 - Monetização (🚧 Em Planejamento)
-
-- [ ] Integração de pagamento (Stripe/Mercado Pago)
-- [ ] Backend com autenticação (NextAuth.js)
-- [ ] Banco de dados (PostgreSQL/Supabase)
-- [ ] Painel de administração
-
-### Fase 3 - Analytics (📋 Backlog)
-
-- [ ] API de rastreamento de cliques
-- [ ] Dashboard com métricas
-- [ ] Relatórios semanais/mensais
-- [ ] A/B testing de assinaturas
-
-### Fase 4 - Equipes (📋 Backlog)
-
-- [ ] Plano Business (gestão de equipe)
-- [ ] Gerenciamento centralizado
-- [ ] Aprovação de assinaturas
-- [ ] Branding corporativo
-
-### Fase 5 - Integrações (💡 Ideias)
-
-- [ ] Google Workspace integration
-- [ ] Microsoft 365 integration
-- [ ] CRM integrations (HubSpot, Salesforce)
-- [ ] API pública
-
----
-
-## 🚀 Como Executar
-
-### Opção 1: Localmente (Desenvolvimento)
+### Instalação Local
 
 ```bash
-# 1. Instalar dependências
+# Clone o repositório
+git clone <repository-url>
+cd bizzcard
+
+# Instale as dependências
 npm install
 
-# 2. Iniciar servidor de desenvolvimento
+# Execute em desenvolvimento
 npm run dev
 
-# 3. Abrir no navegador
-# http://localhost:3000
+# Acesse
+open http://localhost:3000
 ```
 
-### Opção 2: DevContainer (Recomendado)
+### DevContainer (Recomendado)
 
 1. Abra o projeto no VS Code
-2. Pressione `Cmd + Shift + P` (ou `F1`)
-3. Selecione `Dev Containers: Reopen in Container`
-4. Aguarde o build do container
-5. Execute `npm run dev`
-6. Acesse http://localhost:3000
+2. Pressione `F1` → "Dev Containers: Reopen in Container"
+3. Aguarde o build
+4. Execute `npm run dev`
 
-### Opção 3: Docker Compose (Produção)
+### Docker Compose
 
 ```bash
-# Build e executar
+# Desenvolvimento
+docker-compose up app-dev
+
+# Produção
 docker-compose up app-prod
-
-# Ou em background
-docker-compose up -d app-prod
 ```
 
----
+## 📱 Templates Disponíveis
 
-## 🧪 Como Testar os Planos
+| Template | Plano | Descrição |
+|----------|-------|-----------|
+| **Minimal** | FREE | Simples e direto, perfeito para profissionais |
+| **Modern** | PRO | Design limpo com borda colorida lateral |
+| **Classic** | PRO | Tradicional e elegante, centralizado |
+| **Corporate** | PRO | Profissional com header em gradiente |
+| **Creative** | PRO | Ousado e diferenciado com bordas arredondadas |
+| **Elegant** | PRO | Sofisticado com tipografia serif |
 
-### 1. Testar Plano FREE
+Todos os templates suportam:
+- ✅ WhatsApp dedicado
+- ✅ QR Code integrado
+- ✅ Logo customizado
+- ✅ Cores personalizadas
+- ✅ Múltiplas redes sociais (PRO)
 
-```bash
-# Abrir http://localhost:3000
-# 1. Clicar em "Plano FREE" no banner
-# 2. Observar limitações:
-#    - Apenas template Minimalista disponível
-#    - Templates profissionais bloqueados (🔒)
-#    - Cores desabilitadas (🔒)
-#    - Logo desabilitado (🔒)
-#    - Apenas 1 rede social
-# 3. Preencher dados e copiar assinatura
-# 4. Colar no Gmail e ver MARCA D'ÁGUA no rodapé
-```
+## 🌟 Diferenciais
 
-### 2. Testar Upgrade para PRO
+✅ **Multi-Plataforma**: Um cartão para email, redes sociais, WhatsApp, websites
+✅ **QR Code Nativo**: Perfeito para networking offline e materiais impressos
+✅ **WhatsApp First**: Campo dedicado com link wa.me/ automático
+✅ **100% Responsivo**: Funciona perfeitamente em qualquer dispositivo
+✅ **Email-Safe HTML**: Testado em Gmail, Outlook, Apple Mail
+✅ **Internacionalizado**: PT-BR e EN com 530+ strings
+✅ **TypeScript**: Type-safe e fácil de manter
+✅ **Modern Stack**: Next.js 14 + Tailwind CSS 3 + Rubik
 
-```bash
-# 1. No banner FREE, clicar "Upgrade para PRO"
-# 2. Ver todos recursos desbloqueados:
-#    - 4 templates disponíveis
-#    - Personalização de cores ativa
-#    - Logo habilitado
-#    - Múltiplas redes sociais
-# 3. Copiar assinatura → SEM marca d'água
-```
+## 📊 Roadmap
 
-### 3. Usar Controles Mock (Desenvolvimento)
+### ✅ Fase 1 - MVP (COMPLETO)
+- ✅ 6 templates profissionais
+- ✅ Sistema FREE/PRO
+- ✅ QR Code generation
+- ✅ WhatsApp integration
+- ✅ Internacionalização PT-BR/EN
 
-No canto inferior direito da tela há controles para testar:
+### 🚧 Fase 2 - Monetização (Em Progresso)
+- [ ] Integração Stripe/Mercado Pago
+- [ ] Backend com NextAuth.js
+- [ ] PostgreSQL/Supabase
+- [ ] Painel administrativo
 
-- Alternar entre planos (FREE/PRO/Trial)
+### 📋 Fase 3 - Features PRO (Backlog)
+- [ ] vCard download (.vcf)
+- [ ] PNG/JPG export
+- [ ] Analytics dashboard
+- [ ] A/B testing de cartões
+- [ ] Múltiplos cartões por usuário
+
+### 💡 Fase 4 - Integrações (Ideias)
+- [ ] Google Workspace sync
+- [ ] Microsoft 365 integration
+- [ ] HubSpot/Salesforce CRM
+- [ ] API pública REST
+- [ ] Zapier/Make webhooks
+
+## 🧪 Como Testar
+
+### Testar Plano FREE
+1. Acesse `http://localhost:3000`
+2. Clique em "Plano FREE" no banner
+3. Observe as limitações:
+   - Apenas template Minimal
+   - Templates PRO bloqueados (🔒)
+   - Cores desabilitadas
+   - Logo desabilitado
+   - QR Code bloqueado
+   - Apenas 1 rede social
+4. Preencha dados e copie o cartão
+5. Cole no Gmail → **Marca d'água visível**
+
+### Testar Plano PRO
+1. No banner FREE, clique "Upgrade para PRO"
+2. Veja recursos desbloqueados:
+   - 6 templates disponíveis
+   - Cores customizáveis
+   - Logo habilitado
+   - QR Code ativo
+   - Múltiplas redes sociais
+   - Campo WhatsApp
+3. Copie o cartão → **Sem marca d'água**
+
+### Controles Mock (Dev)
+Use os controles no canto inferior direito para:
+- Alternar entre FREE/PRO/Trial
 - Simular expiração
 - Testar fluxo completo
 
----
-
-## 📜 Scripts Disponíveis
+## 📜 Scripts NPM
 
 ```bash
-npm run dev       # Servidor de desenvolvimento
-npm run build     # Build de produção
-npm start         # Servidor de produção
-npm run lint      # Executar linter
+npm run dev       # Servidor desenvolvimento (turbo)
+npm run build     # Build produção otimizado
+npm start         # Servidor produção
+npm run lint      # ESLint check
 ```
-
----
 
 ## 🐳 Docker
 
-Este projeto possui **dois Dockerfiles separados**:
+### Dockerfile (Raiz) - PRODUÇÃO
+- Multi-stage build otimizado
+- Imagem mínima `node:20-alpine`
+- Apenas deps de produção
+- Non-root user
 
-### 1. Dockerfile (Raiz) - PRODUÇÃO
-
-- Build otimizado multi-stage
-- Imagem mínima (`node:20-alpine`)
-- Apenas dependências de produção
-- Usuário não-root para segurança
-
-### 2. .devcontainer/Dockerfile - DESENVOLVIMENTO
-
-- Imagem completa (`node:20-bullseye`)
-- Git + GitHub CLI instalados
+### .devcontainer/Dockerfile - DEV
+- Imagem completa `node:20-bullseye`
+- Git + GitHub CLI
 - Zsh + Oh My Zsh
-- Ferramentas de desenvolvimento
-
----
+- Dev tools
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Para contribuir:
+Contribuições são bem-vindas!
 
 1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+2. Crie uma branch (`git checkout -b feature/NovaFeature`)
+3. Commit (`git commit -m 'Add: Nova feature'`)
+4. Push (`git push origin feature/NovaFeature`)
 5. Abra um Pull Request
-
----
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT.
 
----
+## 📞 Contato
 
-## 📞 Contato & Suporte
-
-- 💬 Issues: [GitHub Issues](https://github.com/seu-usuario/signature-pro/issues)
-- 📧 Email: suporte@gensign.app
-- 🌐 Website: https://gensign.com
-
----
-
-## 💡 Por Que Este Produto Funciona?
-
-### 1. **Dor Real**
-
-Todo profissional precisa de assinatura de email, mas:
-
-- Gmail/Outlook são confusos de configurar
-- Manter consistência de marca é difícil
-- Sem dados de engajamento
-
-### 2. **Solução Simples**
-
-- Interface visual intuitiva
-- Copia com 1 clique
-- Templates prontos
-
-### 3. **Freemium que Converte**
-
-- FREE frustra na hora certa (marca d'água)
-- Upgrade de R$ 9,90 = impulso de compra
-- Valor percebido >>> preço
-
-### 4. **Mercado Grande**
-
-- Milhões de profissionais no Brasil
-- Crescimento de trabalho remoto
-- Branding pessoal em alta
+- 💬 Issues: [GitHub Issues](https://github.com/seu-usuario/bizzcard/issues)
+- 📧 Email: contato@bizzcard.app
+- 🌐 Website: https://bizzcard.com
 
 ---
 
@@ -351,6 +309,8 @@ Todo profissional precisa de assinatura de email, mas:
 
 **Feito com ❤️ usando Next.js, TypeScript e Tailwind CSS**
 
-[Documentação](./docs) • [Roadmap](#-roadmap---próximas-funcionalidades) • [Contribuir](#-contribuindo)
+© 2025 BizzCard - Seu Cartão Comercial Digital Profissional
+
+[Documentação](#) · [Roadmap](#-roadmap) · [Contribuir](#-contribuindo)
 
 </div>
