@@ -7,6 +7,7 @@ import { generateUserId } from "@/lib/generateUserId";
 import { generateRedirectLinks } from "@/lib/generateRedirectLinks";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
+import Toast from "./Toast";
 
 interface SignaturePreviewProps {
   data: SignatureData;
@@ -16,6 +17,7 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
   const { limits } = useSubscription();
   const { t } = useLanguage();
   const [isClient, setIsClient] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -370,7 +372,10 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
 
   const copySignature = async () => {
     if (!limits.canCopySignature) {
-      alert(t('subscriptionNeeded'));
+      setToast({
+        message: t('subscriptionNeeded'),
+        type: 'error'
+      });
       return;
     }
 
@@ -392,7 +397,10 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         });
 
         await navigator.clipboard.write([clipboardItem]);
-        alert(t('cardCopied') + '\n\n' + t('cardCopiedDesc'));
+        setToast({
+          message: t('cardCopied'),
+          type: 'success'
+        });
         return;
       }
 
@@ -405,25 +413,41 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         selection.addRange(range);
         document.execCommand("copy");
         selection.removeAllRanges();
-        alert(t('cardCopied'));
+        setToast({
+          message: t('cardCopied'),
+          type: 'success'
+        });
       }
     } catch (error) {
-      alert(t('copyError'));
+      setToast({
+        message: t('copyError'),
+        type: 'error'
+      });
     }
   };
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 font-rubik">
-      {/* Hidden QR Code for copying */}
-      {data.qrCode?.enabled && data.qrCode?.url && (
-        <div id="qr-code-temp" style={{ display: 'none' }}>
-          <QRCodeSVG
-            value={data.qrCode.url}
-            size={getQRCodeSize()}
-            level="H"
-          />
-        </div>
+    <>
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
+
+      <div className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 font-rubik">
+        {/* Hidden QR Code for copying */}
+        {data.qrCode?.enabled && data.qrCode?.url && (
+          <div id="qr-code-temp" style={{ display: 'none' }}>
+            <QRCodeSVG
+              value={data.qrCode.url}
+              size={getQRCodeSize()}
+              level="H"
+            />
+          </div>
+        )}
 
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
@@ -473,7 +497,7 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
         dangerouslySetInnerHTML={{ __html: getSignatureHTML() }}
       />
       {isClient && !limits.canGenerateSignature && (
-        <div className="mt-4 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-primary-purple/30 rounded-2xl p-4">
+        <div className="mt-4 bg-purple-50 border-2 border-purple-200 rounded-xl p-4">
           <div className="flex items-center justify-center gap-2">
             <svg className="w-5 h-5 text-primary-purple" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
@@ -484,6 +508,7 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
