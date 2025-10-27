@@ -84,12 +84,10 @@ export default function CreateCard() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 font-rubik">
-            {language === 'pt-BR' ? 'Criar Novo Cartão' : 'Create New Card'}
+            {t('createNewCard')}
           </h2>
           <p className="text-gray-600 mt-2 font-rubik">
-            {language === 'pt-BR'
-              ? 'Preencha as informações do seu cartão virtual'
-              : 'Fill in your digital card information'}
+            {t('fillCardInfo')}
           </p>
         </div>
 
@@ -101,13 +99,13 @@ export default function CreateCard() {
             onClick={handleSave}
             className="flex-1 px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik"
           >
-            {language === 'pt-BR' ? 'Salvar Cartão' : 'Save Card'}
+            {t('saveCard')}
           </button>
           <button
             onClick={handleCancel}
             className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-200 transition-colors font-rubik"
           >
-            {language === 'pt-BR' ? 'Cancelar' : 'Cancel'}
+            {t('cancel')}
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CardPreview from '@/components/CardPreview';
@@ -11,9 +11,8 @@ import { QRCodeSVG } from 'qrcode.react';
 
 export default function ViewCard() {
   const params = useParams();
-  const router = useRouter();
   const { getCard } = useCards();
-  const { language, setLanguage } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(true);
@@ -114,7 +113,7 @@ export default function ViewCard() {
                 <span className="text-white text-base font-bold font-rubik">B</span>
               </div>
               <h1 className="text-lg font-semibold text-gray-900 font-rubik">
-                BizzCard
+                {t('brandName')}
               </h1>
             </Link>
             <div className="flex items-center gap-3">

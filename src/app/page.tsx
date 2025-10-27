@@ -286,7 +286,7 @@ export default function Home() {
           </div>
           <div className="pt-8 border-t border-gray-800 text-center">
             <p className="text-gray-400 text-sm font-rubik">
-              © 2025 BizzCard. {t('allRightsReserved')}
+              © 2025 <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" className="text-primary-yellow hover:text-primary-yellow/80 transition-colors">Databizz</a>. {t('allRightsReserved')}
             </p>
           </div>
         </div>

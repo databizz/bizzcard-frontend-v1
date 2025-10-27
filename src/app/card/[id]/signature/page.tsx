@@ -6,12 +6,11 @@ import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/types/signature';
 import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
 
 export default function EmailSignature() {
   const params = useParams();
   const { getCard } = useCards();
-  const { language, setLanguage } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(true);
@@ -106,7 +105,7 @@ export default function EmailSignature() {
   <tr>
     <td style="padding-top: 12px;">
       <div style="font-size: 10px; color: #9ca3af; text-align: center;">
-        ${language === 'pt-BR' ? 'Criado com' : 'Created with'} <a href="${typeof window !== 'undefined' ? window.location.origin : ''}" style="color: ${card.primaryColor}; text-decoration: none; font-weight: 600;">BizzCard</a>
+        ${language === 'pt-BR' ? 'Criado com' : 'Created with'} <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style="color: ${card.primaryColor}; text-decoration: none;">Databizz</a>
       </div>
     </td>
   </tr>
@@ -166,7 +165,7 @@ export default function EmailSignature() {
                 <span className="text-white text-base font-bold font-rubik">B</span>
               </div>
               <h1 className="text-lg font-semibold text-gray-900 font-rubik">
-                BizzCard
+                {t('brandName')}
               </h1>
             </Link>
             <div className="flex items-center gap-3">

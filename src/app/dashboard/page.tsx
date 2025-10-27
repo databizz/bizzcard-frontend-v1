@@ -3,14 +3,13 @@
 import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
 
 export default function Dashboard() {
   const { cards, deleteCard } = useCards();
   const { t, language, setLanguage } = useLanguage();
 
   const handleDelete = (id: string) => {
-    if (confirm(language === 'pt-BR' ? 'Tem certeza que deseja excluir este cartão?' : 'Are you sure you want to delete this card?')) {
+    if (confirm(t('confirmDelete'))) {
       deleteCard(id);
     }
   };
@@ -51,12 +50,10 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 font-rubik">
-              {language === 'pt-BR' ? 'Meus Cartões' : 'My Cards'}
+              {t('myCards')}
             </h2>
             <p className="text-gray-600 mt-2 font-rubik">
-              {language === 'pt-BR'
-                ? 'Gerencie todos os seus cartões virtuais'
-                : 'Manage all your digital cards'}
+              {t('manageCards')}
             </p>
           </div>
           <Link
@@ -66,7 +63,7 @@ export default function Dashboard() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
-            {language === 'pt-BR' ? 'Novo Cartão' : 'New Card'}
+            {t('newCard')}
           </Link>
         </div>
 
@@ -79,12 +76,10 @@ export default function Dashboard() {
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2 font-rubik">
-              {language === 'pt-BR' ? 'Nenhum cartão ainda' : 'No cards yet'}
+              {t('noCardsYet')}
             </h3>
             <p className="text-gray-600 mb-6 font-rubik">
-              {language === 'pt-BR'
-                ? 'Crie seu primeiro cartão virtual para começar'
-                : 'Create your first digital card to get started'}
+              {t('createFirstCard')}
             </p>
             <Link
               href="/card/create"
@@ -93,7 +88,7 @@ export default function Dashboard() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              {language === 'pt-BR' ? 'Criar Primeiro Cartão' : 'Create First Card'}
+              {t('createFirstCardButton')}
             </Link>
           </div>
         ) : (
@@ -153,7 +148,7 @@ export default function Dashboard() {
                       {card.template}
                     </span>
                     <span className="font-rubik">
-                      {language === 'pt-BR' ? 'Criado em' : 'Created on'} {new Date(card.createdAt).toLocaleDateString(language)}
+                      {t('createdOn')} {new Date(card.createdAt).toLocaleDateString(language)}
                     </span>
                   </div>
                 </div>
@@ -164,18 +159,18 @@ export default function Dashboard() {
                     href={`/card/${card.id}`}
                     className="flex-1 px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg border border-gray-200 transition-colors font-rubik text-center text-sm"
                   >
-                    {language === 'pt-BR' ? 'Ver' : 'View'}
+                    {t('view')}
                   </Link>
                   <Link
                     href={`/card/edit/${card.id}`}
                     className="flex-1 px-4 py-2 bg-primary-purple hover:bg-primary-purple/90 text-white font-medium rounded-lg transition-colors font-rubik text-center text-sm"
                   >
-                    {language === 'pt-BR' ? 'Editar' : 'Edit'}
+                    {t('edit')}
                   </Link>
                   <button
                     onClick={() => handleDelete(card.id)}
                     className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg transition-colors text-sm"
-                    title={language === 'pt-BR' ? 'Excluir' : 'Delete'}
+                    title={t('delete')}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
