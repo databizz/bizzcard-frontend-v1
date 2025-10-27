@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CardForm from '@/components/CardForm';
+import CardPreview from '@/components/CardPreview';
 import { SignatureData } from '@/types/signature';
 import Link from 'next/link';
 
@@ -119,34 +120,66 @@ export default function EditCard() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 font-rubik">
-            {language === 'pt-BR' ? 'Editar Cartão' : 'Edit Card'}
+            {t('editCard')}
           </h2>
           <p className="text-gray-600 mt-2 font-rubik">
-            {language === 'pt-BR'
-              ? 'Atualize as informações do seu cartão virtual'
-              : 'Update your digital card information'}
+            {t('updateCardInfo')}
           </p>
         </div>
 
-        <CardForm data={cardData} onChange={setCardData} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form Column */}
+          <div>
+            <CardForm data={cardData} onChange={setCardData} />
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mt-8">
-          <button
-            onClick={handleSave}
-            className="flex-1 px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik"
-          >
-            {language === 'pt-BR' ? 'Salvar Alterações' : 'Save Changes'}
-          </button>
-          <button
-            onClick={handleCancel}
-            className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-200 transition-colors font-rubik"
-          >
-            {language === 'pt-BR' ? 'Cancelar' : 'Cancel'}
-          </button>
+            {/* Action Buttons */}
+            <div className="flex gap-4 mt-8">
+              <button
+                onClick={handleSave}
+                className="flex-1 px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik"
+              >
+                {t('saveChanges')}
+              </button>
+              <button
+                onClick={handleCancel}
+                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-200 transition-colors font-rubik"
+              >
+                {t('cancel')}
+              </button>
+            </div>
+          </div>
+
+          {/* Preview Column */}
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+              {/* Header com ícone */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-primary-purple rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 font-rubik">
+                  {t('preview')}
+                </h3>
+              </div>
+
+              {/* Preview do cartão */}
+              <CardPreview
+                card={{
+                  ...cardData,
+                  id: cardData.id || 'preview',
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                }}
+                showQRCode={false}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </main>

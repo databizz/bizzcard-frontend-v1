@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CardForm from '@/components/CardForm';
+import CardPreview from '@/components/CardPreview';
 import { SignatureData } from '@/types/signature';
 import Link from 'next/link';
 
@@ -12,6 +13,26 @@ export default function CreateCard() {
   const router = useRouter();
   const { addCard } = useCards();
   const { t, language, setLanguage } = useLanguage();
+
+  // Dados de exemplo para visualização inicial
+  const getExampleData = () => ({
+    name: language === 'pt-BR' ? 'Seu Nome' : 'Your Name',
+    role: language === 'pt-BR' ? 'Seu Cargo' : 'Your Position',
+    company: language === 'pt-BR' ? 'Sua Empresa' : 'Your Company',
+    phone: '+55 (11) 99999-9999',
+    email: 'seu@email.com',
+    website: 'www.seusite.com.br',
+    address: language === 'pt-BR' ? 'Seu Endereço' : 'Your Address',
+    whatsapp: '+5511999999999',
+    socialMedia: {
+      instagram: '@exemplo',
+      linkedin: 'linkedin.com/in/exemplo',
+      facebook: 'facebook.com/exemplo',
+      twitter: '@exemplo',
+      youtube: '@exemplo',
+      tiktok: '@exemplo',
+    },
+  });
 
   const [cardData, setCardData] = useState<SignatureData>({
     name: '',
@@ -81,7 +102,7 @@ export default function CreateCard() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 font-rubik">
             {t('createNewCard')}
@@ -91,22 +112,71 @@ export default function CreateCard() {
           </p>
         </div>
 
-        <CardForm data={cardData} onChange={setCardData} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form Column */}
+          <div>
+            <CardForm data={cardData} onChange={setCardData} />
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mt-8">
-          <button
-            onClick={handleSave}
-            className="flex-1 px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik"
-          >
-            {t('saveCard')}
-          </button>
-          <button
-            onClick={handleCancel}
-            className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-200 transition-colors font-rubik"
-          >
-            {t('cancel')}
-          </button>
+            {/* Action Buttons */}
+            <div className="flex gap-4 mt-8">
+              <button
+                onClick={handleSave}
+                className="flex-1 px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik"
+              >
+                {t('saveCard')}
+              </button>
+              <button
+                onClick={handleCancel}
+                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-200 transition-colors font-rubik"
+              >
+                {t('cancel')}
+              </button>
+            </div>
+          </div>
+
+          {/* Preview Column */}
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+              {/* Header com ícone */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-primary-purple rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 font-rubik">
+                  {t('preview')}
+                </h3>
+              </div>
+
+              {/* Aviso de dados de exemplo */}
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700 font-rubik text-center">
+                  {language === 'pt-BR'
+                    ? '📝 Dados de exemplo - Preencha o formulário para visualizar seu cartão'
+                    : '📝 Sample data - Fill the form to preview your card'}
+                </p>
+              </div>
+
+              {/* Preview do cartão */}
+              <CardPreview
+                card={{
+                  ...(Object.keys(cardData).some(key => {
+                    const value = cardData[key as keyof SignatureData];
+                    if (key === 'socialMedia') {
+                      return Object.values(value as any).some(v => v !== '');
+                    }
+                    return value !== '' && key !== 'primaryColor' && key !== 'secondaryColor' && key !== 'template';
+                  }) ? cardData : { ...cardData, ...getExampleData() }),
+                  id: 'preview',
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                }}
+                showQRCode={false}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </main>
