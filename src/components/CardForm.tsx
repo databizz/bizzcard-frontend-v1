@@ -262,6 +262,24 @@ export default function CardForm({ data, onChange }: CardFormProps) {
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
               placeholder="Twitter/X URL"
             />
+            <input
+              type="url"
+              value={data.socialMedia?.youtube || ""}
+              onChange={(e) =>
+                handleSocialMediaChange("youtube", e.target.value)
+              }
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+              placeholder="YouTube URL"
+            />
+            <input
+              type="url"
+              value={data.socialMedia?.tiktok || ""}
+              onChange={(e) =>
+                handleSocialMediaChange("tiktok", e.target.value)
+              }
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
+              placeholder="TikTok URL"
+            />
           </div>
         </div>
 
