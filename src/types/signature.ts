@@ -1,6 +1,6 @@
-export type PlatformType = 'email' | 'instagram' | 'linkedin' | 'whatsapp' | 'embed' | 'vcard';
-
-export interface SignatureData {
+// Card model for the simplified MVP
+export interface Card {
+  id: string;
   name: string;
   role: string;
   company: string;
@@ -9,8 +9,7 @@ export interface SignatureData {
   website: string;
   address: string;
   whatsapp?: string;
-  platform: PlatformType;
-  socialMedia?: {
+  socialMedia: {
     instagram?: string;
     linkedin?: string;
     facebook?: string;
@@ -21,13 +20,14 @@ export interface SignatureData {
   logo?: string;
   primaryColor: string;
   secondaryColor: string;
-  template: 'modern' | 'classic' | 'minimal' | 'corporate' | 'creative' | 'elegant';
-  qrCode?: {
-    enabled: boolean;
-    url: string;
-    size?: 'small' | 'medium' | 'large';
-    position?: 'left' | 'right' | 'center';
-  };
+  template: TemplateType;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type TemplateType = 'modern' | 'classic' | 'minimal' | 'corporate' | 'creative' | 'elegant';
+
+// For backward compatibility during migration
+export interface SignatureData extends Omit<Card, 'id' | 'createdAt' | 'updatedAt'> {
+  id?: string;
+}
