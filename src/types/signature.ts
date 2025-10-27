@@ -20,6 +20,9 @@ export interface Card {
   logo?: string;
   primaryColor: string;
   secondaryColor: string;
+  textColor: string;
+  headerTextColor: string;
+  fontFamily: string;
   template: TemplateType;
   createdAt: string;
   updatedAt: string;

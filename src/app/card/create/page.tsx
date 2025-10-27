@@ -53,6 +53,9 @@ export default function CreateCard() {
     },
     primaryColor: '#FFC400',
     secondaryColor: '#84087E',
+    textColor: '#000000',
+    headerTextColor: '#FFFFFF',
+    fontFamily: 'Arial, sans-serif',
     template: 'minimal',
   });
 
@@ -167,7 +170,7 @@ export default function CreateCard() {
                     if (key === 'socialMedia') {
                       return Object.values(value as any).some(v => v !== '');
                     }
-                    return value !== '' && key !== 'primaryColor' && key !== 'secondaryColor' && key !== 'template';
+                    return value !== '' && key !== 'primaryColor' && key !== 'secondaryColor' && key !== 'textColor' && key !== 'headerTextColor' && key !== 'fontFamily' && key !== 'template';
                   }) ? cardData : { ...cardData, ...getExampleData() }),
                   id: 'preview',
                   createdAt: new Date().toISOString(),
