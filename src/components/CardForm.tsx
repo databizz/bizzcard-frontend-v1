@@ -14,12 +14,109 @@ export default function CardForm({ data, onChange }: CardFormProps) {
   const [isFontDropdownOpen, setIsFontDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const [dropdownMaxHeight, setDropdownMaxHeight] = useState(200);
+  const [showScrollUpArrow, setShowScrollUpArrow] = useState(false);
+  const [showScrollDownArrow, setShowScrollDownArrow] = useState(false);
+  const [focusedFontIndex, setFocusedFontIndex] = useState(-1);
   const fontDropdownRef = useRef<HTMLDivElement>(null);
   const fontListRef = useRef<HTMLDivElement>(null);
   const fontButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleChange = (field: keyof SignatureData, value: any) => {
     onChange({ ...data, [field]: value });
+  };
+
+  // Check scroll position to show/hide arrows
+  const checkScrollPosition = () => {
+    if (fontListRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = fontListRef.current;
+      setShowScrollUpArrow(scrollTop > 5);
+      setShowScrollDownArrow(scrollTop + clientHeight < scrollHeight - 5);
+    }
+  };
+
+  // Scroll handlers
+  const scrollUp = () => {
+    if (fontListRef.current) {
+      fontListRef.current.scrollBy({ top: -100, behavior: 'smooth' });
+    }
+  };
+
+  const scrollDown = () => {
+    if (fontListRef.current) {
+      fontListRef.current.scrollBy({ top: 100, behavior: 'smooth' });
+    }
+  };
+
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!isFontDropdownOpen) return;
+
+    const fonts = [
+      { value: "Arial, sans-serif", label: "Arial" },
+      { value: "'Book Antiqua', serif", label: "Book Antiqua" },
+      { value: "Calibri, sans-serif", label: "Calibri" },
+      { value: "'Comic Sans MS', cursive", label: "Comic Sans MS" },
+      { value: "'Courier New', Courier, monospace", label: "Courier New" },
+      { value: "Garamond, serif", label: "Garamond" },
+      { value: "Georgia, serif", label: "Georgia" },
+      { value: "'Helvetica Neue', Helvetica, sans-serif", label: "Helvetica" },
+      { value: "Impact, sans-serif", label: "Impact" },
+      { value: "'Lucida Sans', sans-serif", label: "Lucida Sans" },
+      { value: "'Palatino Linotype', Palatino, serif", label: "Palatino" },
+      { value: "Tahoma, sans-serif", label: "Tahoma" },
+      { value: "'Times New Roman', Times, serif", label: "Times New Roman" },
+      { value: "'Trebuchet MS', sans-serif", label: "Trebuchet MS" },
+      { value: "Verdana, sans-serif", label: "Verdana" },
+    ];
+
+    const currentIndex = fonts.findIndex(f => f.value === data.fontFamily);
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      e.stopPropagation();
+      const nextIndex = currentIndex < fonts.length - 1 ? currentIndex + 1 : 0;
+      handleChange("fontFamily", fonts[nextIndex].value);
+      setFocusedFontIndex(nextIndex);
+
+      // Scroll manually without scrollIntoView to avoid page scroll
+      setTimeout(() => {
+        const selectedButton = fontListRef.current?.querySelector(`[data-font-index="${nextIndex}"]`) as HTMLElement;
+        const container = fontListRef.current;
+        if (selectedButton && container) {
+          const containerRect = container.getBoundingClientRect();
+          const buttonRect = selectedButton.getBoundingClientRect();
+          const scrollTop = container.scrollTop;
+          const targetScroll = scrollTop + (buttonRect.top - containerRect.top) - (containerRect.height / 2) + (buttonRect.height / 2);
+          container.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
+      }, 0);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      e.stopPropagation();
+      const prevIndex = currentIndex > 0 ? currentIndex - 1 : fonts.length - 1;
+      handleChange("fontFamily", fonts[prevIndex].value);
+      setFocusedFontIndex(prevIndex);
+
+      // Scroll manually without scrollIntoView to avoid page scroll
+      setTimeout(() => {
+        const selectedButton = fontListRef.current?.querySelector(`[data-font-index="${prevIndex}"]`) as HTMLElement;
+        const container = fontListRef.current;
+        if (selectedButton && container) {
+          const containerRect = container.getBoundingClientRect();
+          const buttonRect = selectedButton.getBoundingClientRect();
+          const scrollTop = container.scrollTop;
+          const targetScroll = scrollTop + (buttonRect.top - containerRect.top) - (containerRect.height / 2) + (buttonRect.height / 2);
+          container.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
+      }, 0);
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsFontDropdownOpen(false);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setIsFontDropdownOpen(false);
+    }
   };
 
   // Close dropdown when clicking outside
@@ -33,6 +130,25 @@ export default function CardForm({ data, onChange }: CardFormProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Prevent page scroll when dropdown is open - only prevent default on window, not document
+  useEffect(() => {
+    if (!isFontDropdownOpen) return;
+
+    const preventPageScroll = (e: KeyboardEvent) => {
+      // Only prevent default if the event is not coming from our button
+      if (['ArrowUp', 'ArrowDown', 'Space', ' '].includes(e.key)) {
+        const target = e.target as HTMLElement;
+        // Don't prevent if it's our font button or inside font dropdown
+        if (!fontDropdownRef.current?.contains(target)) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', preventPageScroll, { passive: false });
+    return () => window.removeEventListener('keydown', preventPageScroll);
+  }, [isFontDropdownOpen]);
 
   // Calculate dropdown position and scroll selected font into view
   useEffect(() => {
@@ -71,15 +187,17 @@ export default function CardForm({ data, onChange }: CardFormProps) {
         setDropdownMaxHeight(Math.max(heightIfOpenDown, minDropdownHeight));
       }
 
-      // Scroll selected font into view
+      // Scroll selected font into view (centered) and check scroll position
       setTimeout(() => {
         if (fontListRef.current) {
           const selectedButton = fontListRef.current.querySelector('[class*="bg-primary-purple/5"]') as HTMLElement;
           if (selectedButton) {
-            selectedButton.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            selectedButton.scrollIntoView({ block: 'center', behavior: 'smooth' });
           }
+          // Check scroll position after a brief delay to ensure scroll is complete
+          setTimeout(() => checkScrollPosition(), 200);
         }
-      }, 0);
+      }, 50);
     }
   }, [isFontDropdownOpen]);
 
@@ -481,6 +599,7 @@ export default function CardForm({ data, onChange }: CardFormProps) {
                   ref={fontButtonRef}
                   type="button"
                   onClick={() => setIsFontDropdownOpen(!isFontDropdownOpen)}
+                  onKeyDown={handleKeyDown}
                   className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all bg-white text-left"
                   style={{ fontFamily: data.fontFamily || 'Arial, sans-serif', fontSize: '15px' }}
                 >
@@ -501,45 +620,83 @@ export default function CardForm({ data, onChange }: CardFormProps) {
 
                 {/* Custom Dropdown Menu */}
                 {isFontDropdownOpen && (
-                  <div
-                    ref={fontListRef}
-                    className="absolute z-50 bg-white border-2 border-gray-300 rounded-lg shadow-xl"
-                    style={{
-                      left: 0,
-                      right: 0,
-                      maxHeight: `${dropdownMaxHeight}px`,
-                      overflowY: 'auto',
-                      overflowX: 'hidden',
-                      width: '100%',
-                      ...(dropdownPosition === 'top'
-                        ? { bottom: '100%', marginBottom: '4px' }
-                        : { top: '100%', marginTop: '4px' })
-                    }}
-                  >
-                    {fonts.map((font) => (
-                      <button
-                        key={font.value}
-                        type="button"
-                        onClick={() => {
-                          handleChange("fontFamily", font.value);
-                          setIsFontDropdownOpen(false);
-                        }}
-                        className={`w-full px-4 py-2.5 text-left hover:bg-primary-purple/10 transition-colors flex items-center ${
-                          data.fontFamily === font.value ? 'bg-primary-purple/5' : ''
-                        }`}
+                  <div className="absolute z-50" style={{
+                    left: 0,
+                    right: 0,
+                    ...(dropdownPosition === 'top'
+                      ? { bottom: '100%', marginBottom: '4px' }
+                      : { top: '100%', marginTop: '4px' })
+                  }}>
+                    <div className="bg-white border-2 border-gray-300 rounded-lg shadow-xl relative">
+                      {/* Scroll Up Arrow */}
+                      {showScrollUpArrow && (
+                        <button
+                          type="button"
+                          onClick={scrollUp}
+                          className="absolute top-0 left-0 right-0 z-10 h-10 bg-gradient-to-b from-white via-white to-transparent hover:from-gray-50 transition-colors flex items-center justify-center"
+                          style={{ borderRadius: '8px 8px 0 0' }}
+                        >
+                          <svg className="w-5 h-5 text-primary-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" />
+                          </svg>
+                        </button>
+                      )}
+
+                      {/* Font List */}
+                      <div
+                        ref={fontListRef}
+                        className="font-dropdown-scroll"
+                        onScroll={checkScrollPosition}
                         style={{
-                          fontFamily: font.value,
-                          fontSize: '15px'
+                          maxHeight: `${dropdownMaxHeight}px`,
+                          overflowY: 'auto',
+                          overflowX: 'hidden',
+                          width: '100%',
+                          paddingTop: showScrollUpArrow ? '40px' : '0',
+                          paddingBottom: showScrollDownArrow ? '40px' : '0'
                         }}
                       >
-                        <span className="flex-1 truncate mr-2">
-                          {font.label}
-                        </span>
-                        {data.fontFamily === font.value && (
-                          <span className="text-primary-purple font-bold flex-shrink-0" style={{ width: '20px', textAlign: 'center' }}>✓</span>
-                        )}
-                      </button>
-                    ))}
+                        {fonts.map((font, index) => (
+                          <button
+                            key={font.value}
+                            type="button"
+                            data-font-index={index}
+                            onClick={() => {
+                              handleChange("fontFamily", font.value);
+                              setIsFontDropdownOpen(false);
+                            }}
+                            className={`w-full px-4 py-2.5 text-left hover:bg-primary-purple/10 transition-colors flex items-center ${
+                              data.fontFamily === font.value ? 'bg-primary-purple/5' : ''
+                            }`}
+                            style={{
+                              fontFamily: font.value,
+                              fontSize: '15px'
+                            }}
+                          >
+                            <span className="flex-1 truncate mr-2">
+                              {font.label}
+                            </span>
+                            {data.fontFamily === font.value && (
+                              <span className="text-primary-purple font-bold flex-shrink-0" style={{ width: '20px', textAlign: 'center' }}>✓</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Scroll Down Arrow */}
+                      {showScrollDownArrow && (
+                        <button
+                          type="button"
+                          onClick={scrollDown}
+                          className="absolute bottom-0 left-0 right-0 z-10 h-10 bg-gradient-to-t from-white via-white to-transparent hover:from-gray-50 transition-colors flex items-center justify-center"
+                          style={{ borderRadius: '0 0 8px 8px' }}
+                        >
+                          <svg className="w-5 h-5 text-primary-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
