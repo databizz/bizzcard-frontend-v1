@@ -289,6 +289,7 @@ export default function CardForm({ data, onChange }: CardFormProps) {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent transition-all"
                 placeholder={t("cityState")}
               />
+              <p className="text-xs text-gray-500 mt-1">{t("addressTip")}</p>
             </div>
 
             {/* Logo URL */}

@@ -291,7 +291,14 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                         <circle cx="12" cy="10" r="3"/>
                       </svg>
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '500', color: textColor }}>{card.address}</span>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '15px', fontWeight: '500', color: textColor, textDecoration: 'none' }}
+                    >
+                      {card.address}
+                    </a>
                   </div>
                 )}
               </div>
@@ -393,7 +400,14 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                         <circle cx="12" cy="10" r="3"/>
                       </svg>
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '500', color: textColor }}>{card.address}</span>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '15px', fontWeight: '500', color: textColor, textDecoration: 'none' }}
+                    >
+                      {card.address}
+                    </a>
                   </div>
                 )}
               </div>
@@ -509,7 +523,14 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                         <circle cx="12" cy="10" r="3"/>
                       </svg>
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '500', color: '#1f2937' }}>{card.address}</span>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '15px', fontWeight: '500', color: textColor, textDecoration: 'none' }}
+                    >
+                      {card.address}
+                    </a>
                   </div>
                 )}
               </div>
@@ -610,7 +631,14 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                         <circle cx="12" cy="10" r="3"/>
                       </svg>
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '500', color: textColor }}>{card.address}</span>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '15px', fontWeight: '500', color: textColor, textDecoration: 'none' }}
+                    >
+                      {card.address}
+                    </a>
                   </div>
                 )}
               </div>
@@ -721,7 +749,14 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                             <circle cx="12" cy="10" r="3"/>
                           </svg>
                         </div>
-                        <span style={{ fontSize: '15px', color: '#374151' }}>{card.address}</span>
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(card.address)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ fontSize: '15px', color: textColor, textDecoration: 'none' }}
+                        >
+                          {card.address}
+                        </a>
                       </div>
                     )}
                   </div>
