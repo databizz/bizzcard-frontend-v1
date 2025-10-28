@@ -191,6 +191,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   {renderSocialIcons()}
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -308,6 +315,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   {renderSocialIcons()}
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #e5e7eb', textAlign: 'center' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -423,6 +437,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   <QRCodeSVG value={cardUrl} size={110} />
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #e5e7eb', textAlign: 'center' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -540,6 +561,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   {renderSocialIcons()}
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '2px solid #e5e7eb', textAlign: 'center' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -654,6 +682,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   <QRCodeSVG value={cardUrl} size={120} />
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid #e5e7eb', textAlign: 'center' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -773,6 +808,13 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                     <QRCodeSVG value={cardUrl} size={100} />
                   </div>
                 )}
+
+                {/* Copyright Databizz */}
+                <div style={{ marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #e5e7eb', textAlign: 'center' }}>
+                  <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>
+                  © <a href="https://databizz.com.br/" target="_blank" rel="noopener noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>Databizz</a>
+                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -836,6 +878,11 @@ export default function CardPreview({ card, showQRCode = true }: CardPreviewProp
                   {renderSocialIcons()}
                 </div>
               )}
+
+              {/* Copyright Databizz */}
+              <div style={{ marginTop: '32px', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
+                <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0, textAlign: 'center' }}>© Databizz</p>
+              </div>
             </div>
           </div>
         );
