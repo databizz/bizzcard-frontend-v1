@@ -5,13 +5,31 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 
 export default function Dashboard() {
-  const { cards, deleteCard } = useCards();
+  const { cards, deleteCard, exportCards, exportCard, importCards } = useCards();
   const { t, language, setLanguage } = useLanguage();
 
   const handleDelete = (id: string) => {
     if (confirm(t('confirmDelete'))) {
       deleteCard(id);
     }
+  };
+
+  const handleImport = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const result = await importCards(file);
+        if (result.success) {
+          alert(result.message);
+        } else {
+          alert(result.message);
+        }
+      }
+    };
+    input.click();
   };
 
   return (
@@ -47,7 +65,7 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 font-rubik">
               {t('myCards')}
@@ -56,15 +74,41 @@ export default function Dashboard() {
               {t('manageCards')}
             </p>
           </div>
-          <Link
-            href="/card/create"
-            className="px-6 py-3 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            {t('newCard')}
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            {cards.length > 0 && (
+              <>
+                <button
+                  onClick={exportCards}
+                  className="px-4 py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg border border-gray-300 transition-colors font-rubik flex items-center gap-2"
+                  title={language === 'pt-BR' ? 'Exportar cartões' : 'Export cards'}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span className="hidden sm:inline">{language === 'pt-BR' ? 'Exportar' : 'Export'}</span>
+                </button>
+                <button
+                  onClick={handleImport}
+                  className="px-4 py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg border border-gray-300 transition-colors font-rubik flex items-center gap-2"
+                  title={language === 'pt-BR' ? 'Importar cartões' : 'Import cards'}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L9 8m4-4v12" />
+                  </svg>
+                  <span className="hidden sm:inline">{language === 'pt-BR' ? 'Importar' : 'Import'}</span>
+                </button>
+              </>
+            )}
+            <Link
+              href="/card/create"
+              className="px-6 py-2.5 bg-primary-purple hover:bg-primary-purple/90 text-white font-semibold rounded-lg transition-colors font-rubik flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              {t('newCard')}
+            </Link>
+          </div>
         </div>
 
         {/* Cards Grid */}
@@ -93,7 +137,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cards.map((card) => (
+            {[...cards].sort((a, b) => a.name.localeCompare(b.name)).map((card) => (
               <div
                 key={card.id}
                 className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
@@ -167,6 +211,15 @@ export default function Dashboard() {
                   >
                     {t('edit')}
                   </Link>
+                  <button
+                    onClick={() => exportCard(card.id)}
+                    className="px-4 py-2 bg-green-50 hover:bg-green-100 text-green-600 font-medium rounded-lg transition-colors text-sm"
+                    title={language === 'pt-BR' ? 'Exportar cartão' : 'Export card'}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </button>
                   <button
                     onClick={() => handleDelete(card.id)}
                     className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-lg transition-colors text-sm"
