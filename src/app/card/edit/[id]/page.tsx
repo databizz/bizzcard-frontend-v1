@@ -37,6 +37,9 @@ export default function EditCard() {
         logo: card.logo,
         primaryColor: card.primaryColor,
         secondaryColor: card.secondaryColor,
+        textColor: card.textColor,
+        headerTextColor: card.headerTextColor,
+        fontFamily: card.fontFamily,
         template: card.template,
         id: card.id,
       });
