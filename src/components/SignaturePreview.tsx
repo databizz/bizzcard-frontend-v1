@@ -6,7 +6,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { generateUserId } from "@/lib/generateUserId";
 import { generateRedirectLinks } from "@/lib/generateRedirectLinks";
 import { useEffect, useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
 import Toast from "./Toast";
 
 interface SignaturePreviewProps {
@@ -32,160 +31,24 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
     email: data.email,
   });
 
-  const getQRCodeSize = () => {
-    switch (data.qrCode?.size) {
-      case 'small': return 60;
-      case 'large': return 100;
-      default: return 80;
-    }
-  };
-
   const getSignatureHTML = (): string => {
-    // Platform-specific previews
-    switch (data.platform) {
-      case "instagram":
-        return getInstagramPreview();
-      case "linkedin":
-        return getLinkedInPreview();
-      case "whatsapp":
-        return getWhatsAppPreview();
-      case "vcard":
-        return getVCardPreview();
-      case "embed":
-      case "email":
+    // Use template-based HTML
+    switch (data.template) {
+      case "modern":
+        return getModernTemplate();
+      case "classic":
+        return getClassicTemplate();
+      case "minimal":
+        return getMinimalTemplate();
+      case "corporate":
+        return getCorporateTemplate();
+      case "creative":
+        return getCreativeTemplate();
+      case "elegant":
+        return getElegantTemplate();
       default:
-        // For email and embed, use template-based HTML
-        switch (data.template) {
-          case "modern":
-            return getModernTemplate();
-          case "classic":
-            return getClassicTemplate();
-          case "minimal":
-            return getMinimalTemplate();
-          case "corporate":
-            return getCorporateTemplate();
-          case "creative":
-            return getCreativeTemplate();
-          case "elegant":
-            return getElegantTemplate();
-          default:
-            return getMinimalTemplate();
-        }
+        return getMinimalTemplate();
     }
-  };
-
-  // Instagram Preview (150 character limit, text only, 1 link)
-  const getInstagramPreview = (): string => {
-    const bioText = `${data.name}${data.role ? '\n' + data.role : ''}${data.company ? ' | ' + data.company : ''}${data.email ? '\n📧 ' + data.email : ''}${data.phone ? '\n📞 ' + data.phone : ''}`;
-    const charCount = bioText.length;
-    const isOverLimit = charCount > 150;
-
-    return `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 400px; margin: 0 auto;">
-        <div style="background: #fff; border: 1px solid #dbdbdb; border-radius: 12px; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 12px;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold;">
-              ${data.name.charAt(0).toUpperCase()}
-            </div>
-          </div>
-          <div style="text-align: center; font-size: 14px; line-height: 1.4; color: #262626; white-space: pre-wrap; ${isOverLimit ? 'color: #ed4956;' : ''}">${bioText.substring(0, 150)}</div>
-          ${isOverLimit ? `<div style="text-align: center; margin-top: 8px; color: #ed4956; font-size: 12px; font-weight: 600;">⚠️ ${charCount}/150 caracteres - Excedeu o limite!</div>` : `<div style="text-align: center; margin-top: 8px; color: #8e8e8e; font-size: 12px;">${charCount}/150 caracteres</div>`}
-          ${data.website ? `<div style="text-align: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #efefef;"><a href="${data.website}" style="color: #0095f6; text-decoration: none; font-weight: 600; font-size: 14px;">🔗 ${data.website}</a></div>` : ''}
-          <div style="margin-top: 16px; padding: 12px; background: #fafafa; border-radius: 8px; text-align: center; font-size: 11px; color: #8e8e8e;">
-            ℹ️ Instagram permite apenas 150 caracteres na bio e 1 link
-          </div>
-        </div>
-        ${getWatermark()}
-      </div>
-    `;
-  };
-
-  // LinkedIn Preview (2600 character limit, formatted text)
-  const getLinkedInPreview = (): string => {
-    const aboutText = `${data.role}${data.company ? ' na ' + data.company : ''}\n\n📧 ${data.email}${data.phone ? '\n📞 ' + data.phone : ''}${data.website ? '\n🌐 ' + data.website : ''}${data.address ? '\n📍 ' + data.address : ''}${data.socialMedia?.instagram || data.socialMedia?.linkedin ? '\n\nRedes Sociais:' : ''}${data.socialMedia?.instagram ? '\nInstagram: ' + data.socialMedia.instagram : ''}${data.socialMedia?.linkedin ? '\nLinkedIn: ' + data.socialMedia.linkedin : ''}`;
-    const charCount = aboutText.length;
-    const isOverLimit = charCount > 2600;
-
-    return `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: #fff; border: 1px solid #d9d9d9; border-radius: 8px; padding: 24px;">
-          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e8e8e8;">
-            <div style="width: 72px; height: 72px; border-radius: 50%; background: #0a66c2; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 600;">
-              ${data.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <div style="font-size: 20px; font-weight: 600; color: #000000e6; margin-bottom: 4px;">${data.name}</div>
-              <div style="font-size: 14px; color: #00000099;">${data.role}${data.company ? ' | ' + data.company : ''}</div>
-            </div>
-          </div>
-          <div style="font-size: 14px; line-height: 1.6; color: #000000e6; white-space: pre-wrap; ${isOverLimit ? 'color: #c92a2a;' : ''}">${aboutText.substring(0, 2600)}</div>
-          ${isOverLimit ? `<div style="margin-top: 12px; color: #c92a2a; font-size: 13px; font-weight: 600;">⚠️ ${charCount}/2600 caracteres - Excedeu o limite!</div>` : `<div style="margin-top: 12px; color: #00000099; font-size: 12px;">${charCount}/2600 caracteres</div>`}
-          <div style="margin-top: 16px; padding: 12px; background: #f3f6f8; border-radius: 8px; font-size: 12px; color: #00000099;">
-            ℹ️ LinkedIn permite até 2600 caracteres na seção "Sobre"
-          </div>
-        </div>
-        ${getWatermark()}
-      </div>
-    `;
-  };
-
-  // WhatsApp Preview (simple text)
-  const getWhatsAppPreview = (): string => {
-    const statusText = `${data.name}${data.role ? '\n' + data.role : ''}${data.company ? ' - ' + data.company : ''}${data.email ? '\n📧 ' + data.email : ''}${data.phone ? '\n📱 ' + data.phone : ''}${data.website ? '\n🌐 ' + data.website : ''}`;
-
-    return `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 400px; margin: 0 auto;">
-        <div style="background: #075e54; padding: 20px; border-radius: 12px 12px 0 0;">
-          <div style="text-align: center; color: white; font-size: 16px; font-weight: 600;">WhatsApp Business</div>
-        </div>
-        <div style="background: #ece5dd; padding: 20px; border-radius: 0 0 12px 12px;">
-          <div style="background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <div style="text-align: center; margin-bottom: 12px;">
-              <div style="width: 60px; height: 60px; border-radius: 50%; background: #25d366; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
-                ${data.name.charAt(0).toUpperCase()}
-              </div>
-            </div>
-            <div style="font-size: 14px; line-height: 1.5; color: #303030; white-space: pre-wrap; text-align: center;">${statusText}</div>
-            ${data.whatsapp ? `<div style="margin-top: 16px; text-align: center;"><a href="https://wa.me/${data.whatsapp.replace(/[^0-9]/g, '')}" style="display: inline-block; background: #25d366; color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 14px;">💬 Enviar Mensagem</a></div>` : ''}
-          </div>
-          <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 8px; text-align: center; font-size: 11px; color: #667781;">
-            ℹ️ Recado do WhatsApp Business
-          </div>
-        </div>
-        ${getWatermark()}
-      </div>
-    `;
-  };
-
-  // vCard Preview (structured data)
-  const getVCardPreview = (): string => {
-    return `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto;">
-        <div style="background: #fff; border: 2px solid #007aff; border-radius: 12px; padding: 24px;">
-          <div style="text-align: center; margin-bottom: 20px;">
-            <div style="width: 80px; height: 80px; border-radius: 50%; background: #007aff; margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold;">
-              ${data.name.charAt(0).toUpperCase()}
-            </div>
-          </div>
-          <div style="text-align: center; font-size: 24px; font-weight: 600; color: #000; margin-bottom: 8px;">${data.name}</div>
-          <div style="text-align: center; font-size: 16px; color: #666; margin-bottom: 20px;">${data.role}${data.company ? ' - ' + data.company : ''}</div>
-          <div style="background: #f5f5f7; border-radius: 8px; padding: 16px; margin-bottom: 12px;">
-            ${data.email ? `<div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e5e5e7;"><span style="font-size: 18px;">📧</span><span style="font-size: 14px; color: #000;">${data.email}</span></div>` : ''}
-            ${data.phone ? `<div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e5e5e7;"><span style="font-size: 18px;">📱</span><span style="font-size: 14px; color: #000;">${data.phone}</span></div>` : ''}
-            ${data.whatsapp ? `<div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e5e5e7;"><span style="font-size: 18px;">💬</span><span style="font-size: 14px; color: #000;">${data.whatsapp}</span></div>` : ''}
-            ${data.website ? `<div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #e5e5e7;"><span style="font-size: 18px;">🌐</span><span style="font-size: 14px; color: #007aff;">${data.website}</span></div>` : ''}
-            ${data.address ? `<div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;"><span style="font-size: 18px;">📍</span><span style="font-size: 14px; color: #000;">${data.address}</span></div>` : ''}
-          </div>
-          <div style="text-align: center; margin-top: 20px;">
-            <button style="background: #007aff; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">📥 Baixar vCard (.vcf)</button>
-          </div>
-          <div style="margin-top: 16px; padding: 12px; background: #f5f5f7; border-radius: 8px; text-align: center; font-size: 11px; color: #666;">
-            ℹ️ Arquivo compatível com iOS, Android e todos os sistemas
-          </div>
-        </div>
-        ${getWatermark()}
-      </div>
-    `;
   };
 
   const getWatermark = () => {
@@ -200,20 +63,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
       : "";
   };
 
-  const getQRCodeHTML = () => {
-    if (!data.qrCode?.enabled || !data.qrCode?.url) return "";
-
-    const qrCodeElement = document.getElementById('qr-code-temp');
-    if (!qrCodeElement) return "";
-
-    const svg = qrCodeElement.innerHTML;
-
-    return `
-      <div style="text-align: center; margin-top: 12px;">
-        ${svg}
-      </div>
-    `;
-  };
 
   const getModernTemplate = (): string => {
     return `
@@ -249,11 +98,10 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
                   }
                 </td>
                 ${
-                  data.logo || data.qrCode?.enabled
+                  data.logo
                     ? `
                   <td style="padding-left: 20px; vertical-align: top; text-align: center;">
                     ${data.logo ? `<img src="${data.logo}" alt="Logo" style="max-width: 120px; height: auto; margin-bottom: 10px;" />` : ""}
-                    ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
                   </td>
                 `
                     : ""
@@ -294,7 +142,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
             ${getWatermark()}
           </td>
         </tr>
@@ -342,7 +189,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
             ${getWatermark()}
           </td>
         </tr>
@@ -398,7 +244,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
             ${getWatermark()}
           </td>
         </tr>
@@ -437,7 +282,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
               `
                   : ""
               }
-              ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
             </div>
             ${getWatermark()}
           </td>
@@ -488,33 +332,11 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             `
                 : ""
             }
-            ${data.qrCode?.enabled && data.qrCode?.url ? getQRCodeHTML() : ""}
             ${getWatermark()}
           </td>
         </tr>
       </table>
     `;
-  };
-
-  // Generate plain text for platforms that need it
-  const getPlainTextForPlatform = (): string => {
-    switch (data.platform) {
-      case "instagram":
-        return `${data.name}${data.role ? '\n' + data.role : ''}${data.company ? ' | ' + data.company : ''}${data.email ? '\n📧 ' + data.email : ''}${data.phone ? '\n📞 ' + data.phone : ''}${data.website ? '\n🔗 ' + data.website : ''}`;
-
-      case "linkedin":
-        return `${data.role}${data.company ? ' na ' + data.company : ''}\n\n📧 ${data.email}${data.phone ? '\n📞 ' + data.phone : ''}${data.website ? '\n🌐 ' + data.website : ''}${data.address ? '\n📍 ' + data.address : ''}${data.socialMedia?.instagram || data.socialMedia?.linkedin ? '\n\nRedes Sociais:' : ''}${data.socialMedia?.instagram ? '\nInstagram: ' + data.socialMedia.instagram : ''}${data.socialMedia?.linkedin ? '\nLinkedIn: ' + data.socialMedia.linkedin : ''}`;
-
-      case "whatsapp":
-        return `${data.name}${data.role ? '\n' + data.role : ''}${data.company ? ' - ' + data.company : ''}${data.email ? '\n📧 ' + data.email : ''}${data.phone ? '\n📱 ' + data.phone : ''}${data.whatsapp ? '\n💬 WhatsApp: ' + data.whatsapp : ''}${data.website ? '\n🌐 ' + data.website : ''}`;
-
-      case "vcard":
-        return `BEGIN:VCARD\nVERSION:3.0\nFN:${data.name}\nORG:${data.company}\nTITLE:${data.role}\nEMAIL:${data.email}\nTEL:${data.phone}${data.whatsapp ? '\nTEL;TYPE=CELL:' + data.whatsapp : ''}${data.website ? '\nURL:' + data.website : ''}${data.address ? '\nADR:;;' + data.address + ';;;' : ''}\nEND:VCARD`;
-
-      default:
-        // For email and embed, return empty (will use HTML)
-        return '';
-    }
   };
 
   const copySignature = async () => {
@@ -530,35 +352,7 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
     if (!previewElement) return;
 
     try {
-      // For platforms that need plain text (Instagram, LinkedIn, WhatsApp, vCard)
-      if (['instagram', 'linkedin', 'whatsapp', 'vcard'].includes(data.platform)) {
-        const plainText = getPlainTextForPlatform();
-
-        if (navigator.clipboard) {
-          await navigator.clipboard.writeText(plainText);
-          setToast({
-            message: t('cardCopied'),
-            type: 'success'
-          });
-        } else {
-          // Fallback for older browsers
-          const textarea = document.createElement('textarea');
-          textarea.value = plainText;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-          setToast({
-            message: t('cardCopied'),
-            type: 'success'
-          });
-        }
-        return;
-      }
-
-      // For email and embed, use HTML
+      // Use HTML for email signatures
       const html = getSignatureHTML();
 
       if (navigator.clipboard && window.ClipboardItem) {
@@ -614,17 +408,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
       )}
 
       <div className="bg-white p-6 sm:p-8 rounded-xl border border-gray-200 font-rubik">
-        {/* Hidden QR Code for copying */}
-        {data.qrCode?.enabled && data.qrCode?.url && (
-          <div id="qr-code-temp" style={{ display: 'none' }}>
-            <QRCodeSVG
-              value={data.qrCode.url}
-              size={getQRCodeSize()}
-              level="H"
-            />
-          </div>
-        )}
-
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -636,14 +419,6 @@ export default function SignaturePreview({ data }: SignaturePreviewProps) {
             </div>
             <div>
               <h3 className="text-xl font-bold text-gray-900">{t('preview')}</h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                {data.platform === 'email' && t('platformEmail')}
-                {data.platform === 'instagram' && t('platformInstagram')}
-                {data.platform === 'linkedin' && t('platformLinkedin')}
-                {data.platform === 'whatsapp' && t('platformWhatsapp')}
-                {data.platform === 'embed' && t('platformEmbed')}
-                {data.platform === 'vcard' && t('platformVcard')}
-              </p>
             </div>
           </div>
           <button
