@@ -11,7 +11,7 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
-    container_name: bizzsign-frontend-prod
+    container_name: bizzcard-frontend-prod
 
   # Ambiente de Desenvolvimento (opcional - use DevContainer para desenvolvimento)
   app-dev:
@@ -27,7 +27,7 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
-    container_name: bizzsign-frontend-dev
+    container_name: bizzcard-frontend-dev
     profiles:
       - dev
 

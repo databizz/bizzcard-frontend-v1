@@ -78,11 +78,11 @@ git push
 
 ### Volume Docker
 
-As chaves SSH ficam em um **Docker Volume** chamado `bizzsign-ssh-volume`:
+As chaves SSH ficam em um **Docker Volume** chamado `bizzcard-ssh-volume`:
 
 ```json
 "mounts": [
-  "source=bizzsign-ssh-volume,target=/home/node/.ssh,type=volume"
+  "source=bizzcard-ssh-volume,target=/home/node/.ssh,type=volume"
 ]
 ```
 
@@ -125,13 +125,13 @@ ssh -T git@github.com
 
 ```bash
 # Ver volumes Docker
-docker volume ls | grep bizzsign-ssh
+docker volume ls | grep bizzcard-ssh
 
 # Inspecionar volume
-docker volume inspect bizzsign-ssh-volume
+docker volume inspect bizzcard-ssh-volume
 
 # CUIDADO: Deletar volume (perde chaves!)
-# docker volume rm bizzsign-ssh-volume
+# docker volume rm bizzcard-ssh-volume
 ```
 
 ### Git Config
@@ -185,7 +185,7 @@ ssh -T git@github.com
 git remote -v
 
 # Se estiver usando HTTPS, mudar para SSH
-git remote set-url origin git@github.com:databizz/bizzsign-frontend-v1.git
+git remote set-url origin git@github.com:databizz/bizzcard-frontend-v1.git
 ```
 
 ### Problema: Perdeu as chaves SSH

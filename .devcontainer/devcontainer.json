@@ -1,15 +1,15 @@
 {
-  "name": "bizzsign-frontend-v1",
+  "name": "bizzcard-frontend-v1",
   "build": {
     "dockerfile": "Dockerfile",
     "context": "."
   },
 
-  "runArgs": ["--name=bizzsign-frontend-v1"],
+  "runArgs": ["--name=bizzcard-frontend-v1"],
 
   // Montar volume para persistir chaves SSH entre rebuilds do container
   "mounts": [
-    "source=bizzsign-ssh-volume,target=/home/node/.ssh,type=volume"
+    "source=bizzcard-ssh-volume,target=/home/node/.ssh,type=volume"
   ],
 
   // Features do DevContainer para Git e SSH
