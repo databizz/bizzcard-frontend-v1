@@ -6,6 +6,7 @@ import { useCards } from '@/contexts/CardsContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CardForm from '@/components/CardForm';
 import CardPreview from '@/components/CardPreview';
+import EmailSignaturePreview from '@/components/EmailSignaturePreview';
 import { SignatureData } from '@/types/signature';
 import Link from 'next/link';
 
@@ -177,6 +178,43 @@ export default function CreateCard() {
                   updatedAt: new Date().toISOString(),
                 }}
                 showQRCode={false}
+              />
+            </div>
+
+            {/* Email Signature Preview */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 mt-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-primary-purple rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 font-rubik">
+                  {language === 'pt-BR' ? 'Assinatura de Email' : 'Email Signature'}
+                </h3>
+              </div>
+
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-700 font-rubik text-center">
+                  {language === 'pt-BR'
+                    ? '✉️ Prévia da assinatura de email que será gerada'
+                    : '✉️ Preview of the email signature that will be generated'}
+                </p>
+              </div>
+
+              <EmailSignaturePreview
+                card={{
+                  ...(Object.keys(cardData).some(key => {
+                    const value = cardData[key as keyof SignatureData];
+                    if (key === 'socialMedia') {
+                      return Object.values(value as any).some(v => v !== '');
+                    }
+                    return value !== '' && key !== 'primaryColor' && key !== 'secondaryColor' && key !== 'textColor' && key !== 'headerTextColor' && key !== 'fontFamily' && key !== 'template';
+                  }) ? cardData : { ...cardData, ...getExampleData() }),
+                  id: 'preview',
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString(),
+                }}
               />
             </div>
           </div>
