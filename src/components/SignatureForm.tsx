@@ -33,39 +33,9 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
     });
   };
 
-  const handleQrCodeChange = (field: string, value: any) => {
-    onChange({
-      ...data,
-      qrCode: {
-        enabled: data.qrCode?.enabled || false,
-        url: data.qrCode?.url || '',
-        size: data.qrCode?.size || 'medium',
-        position: data.qrCode?.position || 'right',
-        ...data.qrCode,
-        [field]: value,
-      },
-    });
-  };
-
-  // Helper function to check if a field should be shown for the current platform
+  // All fields are shown for card signatures
   const shouldShowField = (fieldName: string): boolean => {
-    const platform = data.platform;
-
-    // Fields shown for all platforms
-    const alwaysShow = ['name', 'role', 'company', 'email'];
-    if (alwaysShow.includes(fieldName)) return true;
-
-    // Platform-specific fields
-    const platformFields: Record<string, string[]> = {
-      email: ['phone', 'website', 'address', 'logo', 'socialMedia'],
-      instagram: ['phone', 'website', 'socialMedia'],
-      linkedin: ['phone', 'website', 'address', 'logo', 'socialMedia'],
-      whatsapp: ['phone', 'whatsapp', 'website'],
-      embed: ['phone', 'website', 'address', 'logo', 'socialMedia'],
-      vcard: ['phone', 'whatsapp', 'website', 'address', 'socialMedia'],
-    };
-
-    return platformFields[platform]?.includes(fieldName) || false;
+    return true;
   };
 
   const templates: { value: TemplateType; label: string; description: string }[] = [
@@ -326,86 +296,6 @@ export default function SignatureForm({ data, onChange }: SignatureFormProps) {
             )}
           </div>
         )}
-
-        {/* QR Code Section */}
-        <div className="border-t border-gray-200 pt-6">
-          <div className="flex items-center justify-between mb-4">
-            <label className="text-sm font-bold text-gray-900">
-              {t('qrCodeSettings')}
-              {isClient && !limits.canUploadLogo && (
-                <span className="ml-2 text-xs text-primary-purple bg-purple-50 px-2 py-1 rounded">
-                  🔒 PRO
-                </span>
-              )}
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={data.qrCode?.enabled || false}
-                onChange={(e) => handleQrCodeChange('enabled', e.target.checked)}
-                disabled={isClient && !limits.canUploadLogo}
-                className="sr-only peer"
-              />
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-yellow/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-purple"></div>
-            </label>
-          </div>
-
-          {data.qrCode?.enabled && (
-            <div className="space-y-4 pl-4 border-l-2 border-primary-yellow">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('qrCodeUrl')}
-                </label>
-                <input
-                  type="url"
-                  value={data.qrCode?.url || ''}
-                  onChange={(e) => handleQrCodeChange('url', e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
-                  placeholder={t('qrCodeExample')}
-                />
-                <p className="text-xs text-gray-500 mt-1">{t('qrCodeUrlDesc')}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('qrCodeSize')}
-                  </label>
-                  <select
-                    value={data.qrCode?.size || 'medium'}
-                    onChange={(e) => handleQrCodeChange('size', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
-                  >
-                    <option value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="large">Large</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('qrCodePosition')}
-                  </label>
-                  <select
-                    value={data.qrCode?.position || 'right'}
-                    onChange={(e) => handleQrCodeChange('position', e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-purple focus:border-transparent"
-                  >
-                    <option value="left">{t('qrCodeLeft')}</option>
-                    <option value="center">{t('qrCodeCenter')}</option>
-                    <option value="right">{t('qrCodeRight')}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {isClient && !limits.canUploadLogo && (
-            <p className="text-xs text-gray-500 mt-2">
-              {t('upgradeForQrCode')}
-            </p>
-          )}
-        </div>
 
         {/* Card Design Section */}
         <div className="border-t border-gray-200 pt-6">
