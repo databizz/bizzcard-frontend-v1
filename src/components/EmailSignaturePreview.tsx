@@ -55,22 +55,22 @@ export default function EmailSignaturePreview({
   // Minimal signature - clean and simple
   const generateMinimalSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; max-width: 800px;">
   <tr>
     <td style="padding: 16px 0; border-bottom: 1px solid #e5e7eb;">
-      <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-          <td style="vertical-align: top;">
+          <td style="vertical-align: top; white-space: nowrap;">
             <div style="font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 2px;">
               ${card.name}
             </div>
             <div style="font-size: 13px; color: #6b7280; margin-bottom: 10px;">
               ${card.role}${card.company ? ` • ${card.company}` : ""}
             </div>
-            <div style="font-size: 12px; color: #4b5563; line-height: 1.6;">
-              ${card.email ? `<div style="margin-bottom: 2px;">${getSvgIcon("email", "#6b7280")} <a href="mailto:${card.email}" style="color: #4b5563; text-decoration: none;">${card.email}</a></div>` : ""}
-              ${card.phone ? `<div style="margin-bottom: 2px;">${getSvgIcon("phone", "#6b7280")} <a href="tel:${card.phone}" style="color: #4b5563; text-decoration: none;">${card.phone}</a></div>` : ""}
-              ${card.website ? `<div>${getSvgIcon("website", "#6b7280")} <a href="${card.website}" style="color: #4b5563; text-decoration: none;">${card.website}</a></div>` : ""}
+            <div style="font-size: 12px; color: #4b5563; line-height: 1.6; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 16px; white-space: nowrap;">${getSvgIcon("email", "#6b7280")} <a href="mailto:${card.email}" style="color: #4b5563; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 16px; white-space: nowrap;">${getSvgIcon("phone", "#6b7280")} <a href="tel:${card.phone}" style="color: #4b5563; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.website ? `<span style="white-space: nowrap;">${getSvgIcon("website", "#6b7280")} <a href="${card.website}" style="color: #4b5563; text-decoration: none;">${card.website}</a></span>` : ""}
             </div>
           </td>
         </tr>
@@ -91,33 +91,33 @@ export default function EmailSignaturePreview({
   // Modern signature - bold colors and geometric design
   const generateModernSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.5; color: #333333; max-width: 850px;">
   <tr>
     <td style="padding: 20px 0; border-bottom: 3px solid ${card.primaryColor};">
-      <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           ${
             card.logo
               ? `
-          <td style="padding-right: 20px; vertical-align: top;">
+          <td style="padding-right: 20px; vertical-align: middle;">
             <img src="${card.logo}" alt="${card.company}" width="80" height="80" style="display: block; border-radius: 8px;" />
           </td>
           `
               : ""
           }
-          <td style="vertical-align: top;">
-            <div style="font-size: 18px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 4px;">
+          <td style="vertical-align: middle;">
+            <div style="font-size: 18px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 4px; white-space: nowrap;">
               ${card.name}
             </div>
-            <div style="font-size: 14px; color: ${card.secondaryColor}; font-weight: 600; margin-bottom: 2px;">
+            <div style="font-size: 14px; color: ${card.secondaryColor}; font-weight: 600; margin-bottom: 2px; white-space: nowrap;">
               ${card.role}
             </div>
-            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">${card.company}</div>` : ""}
-            <div style="font-size: 13px; color: #4b5563; line-height: 1.8;">
-              ${card.email ? `<div style="margin-bottom: 4px;">${getSvgIcon("email", card.secondaryColor)} <a href="mailto:${card.email}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.email}</a></div>` : ""}
-              ${card.phone ? `<div style="margin-bottom: 4px;">${getSvgIcon("phone", card.secondaryColor)} <a href="tel:${card.phone}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.phone}</a></div>` : ""}
-              ${card.whatsapp ? `<div style="margin-bottom: 4px;">${getSvgIcon("whatsapp", card.secondaryColor)} <a href="https://wa.me/${card.whatsapp.replace(/\D/g, "")}" style="color: ${card.secondaryColor}; text-decoration: none;">WhatsApp</a></div>` : ""}
-              ${card.website ? `<div>${getSvgIcon("website", card.secondaryColor)} <a href="${card.website}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.website}</a></div>` : ""}
+            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; white-space: nowrap;">${card.company}</div>` : ""}
+            <div style="font-size: 13px; color: #4b5563; line-height: 1.8; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("email", card.secondaryColor)} <a href="mailto:${card.email}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("phone", card.secondaryColor)} <a href="tel:${card.phone}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.whatsapp ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("whatsapp", card.secondaryColor)} <a href="https://wa.me/${card.whatsapp.replace(/\D/g, "")}" style="color: ${card.secondaryColor}; text-decoration: none;">WhatsApp</a></span>` : ""}
+              ${card.website ? `<span style="white-space: nowrap;">${getSvgIcon("website", card.secondaryColor)} <a href="${card.website}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.website}</a></span>` : ""}
             </div>
             ${
               card.socialMedia.instagram ||
@@ -161,7 +161,7 @@ export default function EmailSignaturePreview({
   // Corporate signature - professional with structured layout
   const generateCorporateSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 850px;">
   <tr>
     <td style="padding: 20px; background-color: #f9fafb; border-left: 4px solid ${card.primaryColor};">
       <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -169,28 +169,28 @@ export default function EmailSignaturePreview({
           ${
             card.logo
               ? `
-          <td style="padding-right: 24px; vertical-align: top;">
+          <td style="padding-right: 24px; vertical-align: middle;">
             <img src="${card.logo}" alt="${card.company}" width="90" height="90" style="display: block; border-radius: 4px;" />
           </td>
           `
               : ""
           }
-          <td style="vertical-align: top;">
-            <div style="font-size: 19px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 6px;">
+          <td style="vertical-align: middle;">
+            <div style="font-size: 19px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 6px; white-space: nowrap;">
               ${card.name}
             </div>
-            <div style="font-size: 14px; color: #374151; font-weight: 600; margin-bottom: 4px;">
+            <div style="font-size: 14px; color: #374151; font-weight: 600; margin-bottom: 4px; white-space: nowrap;">
               ${card.role}
             </div>
-            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 14px; font-style: italic;">${card.company}</div>` : ""}
-            <table cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; color: #4b5563;">
-              ${card.email ? `<tr><td style="padding-bottom: 6px; vertical-align: top;">${getSvgIcon("email", card.primaryColor)}</td><td style="padding-bottom: 6px; padding-left: 4px;"><a href="mailto:${card.email}" style="color: #4b5563; text-decoration: none;">${card.email}</a></td></tr>` : ""}
-              ${card.phone ? `<tr><td style="padding-bottom: 6px; vertical-align: top;">${getSvgIcon("phone", card.primaryColor)}</td><td style="padding-bottom: 6px; padding-left: 4px;"><a href="tel:${card.phone}" style="color: #4b5563; text-decoration: none;">${card.phone}</a></td></tr>` : ""}
-              ${card.website ? `<tr><td style="padding-bottom: 6px; vertical-align: top;">${getSvgIcon("website", card.primaryColor)}</td><td style="padding-bottom: 6px; padding-left: 4px;"><a href="${card.website}" style="color: #4b5563; text-decoration: none;">${card.website}</a></td></tr>` : ""}
-              ${card.address ? `<tr><td style="vertical-align: top;">${getSvgIcon("location", card.primaryColor)}</td><td style="padding-left: 4px;">${card.address}</td></tr>` : ""}
-            </table>
+            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 14px; font-style: italic; white-space: nowrap;">${card.company}</div>` : ""}
+            <div style="font-size: 13px; color: #4b5563; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("email", card.primaryColor)}<a href="mailto:${card.email}" style="color: #4b5563; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("phone", card.primaryColor)}<a href="tel:${card.phone}" style="color: #4b5563; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.website ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("website", card.primaryColor)}<a href="${card.website}" style="color: #4b5563; text-decoration: none;">${card.website}</a></span>` : ""}
+              ${card.address ? `<span style="white-space: nowrap;">${getSvgIcon("location", card.primaryColor)}${card.address}</span>` : ""}
+            </div>
           </td>
-          <td style="padding-left: 20px; vertical-align: top; text-align: center;">
+          <td style="padding-left: 20px; vertical-align: middle; text-align: center;">
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(cardUrl)}" alt="QR Code" width="100" height="100" style="display: block;" />
           </td>
         </tr>
@@ -211,10 +211,10 @@ export default function EmailSignaturePreview({
   // Classic signature - traditional and timeless
   const generateClassicSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Times New Roman', Times, serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Times New Roman', Times, serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 850px;">
   <tr>
     <td style="padding: 18px 0; border-top: 2px solid #1f2937; border-bottom: 2px solid #1f2937;">
-      <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           ${
             card.logo
@@ -226,17 +226,17 @@ export default function EmailSignaturePreview({
               : ""
           }
           <td style="vertical-align: middle;">
-            <div style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 4px; letter-spacing: 0.5px;">
+            <div style="font-size: 20px; font-weight: bold; color: #1f2937; margin-bottom: 4px; letter-spacing: 0.5px; white-space: nowrap;">
               ${card.name}
             </div>
-            <div style="font-size: 13px; color: ${card.primaryColor}; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">
+            <div style="font-size: 13px; color: ${card.primaryColor}; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;">
               ${card.role}
             </div>
-            ${card.company ? `<div style="font-size: 12px; color: #6b7280; margin-bottom: 12px;">${card.company}</div>` : ""}
-            <div style="font-size: 12px; color: #4b5563; line-height: 1.7;">
-              ${card.email ? `<div style="margin-bottom: 3px;">${getSvgIcon("email", "#1f2937")} <a href="mailto:${card.email}" style="color: #1f2937; text-decoration: none;">${card.email}</a></div>` : ""}
-              ${card.phone ? `<div style="margin-bottom: 3px;">${getSvgIcon("phone", "#1f2937")} <a href="tel:${card.phone}" style="color: #1f2937; text-decoration: none;">${card.phone}</a></div>` : ""}
-              ${card.website ? `<div>${getSvgIcon("website", "#1f2937")} <a href="${card.website}" style="color: #1f2937; text-decoration: none;">${card.website}</a></div>` : ""}
+            ${card.company ? `<div style="font-size: 12px; color: #6b7280; margin-bottom: 12px; white-space: nowrap;">${card.company}</div>` : ""}
+            <div style="font-size: 12px; color: #4b5563; line-height: 1.7; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("email", "#1f2937")} <a href="mailto:${card.email}" style="color: #1f2937; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("phone", "#1f2937")} <a href="tel:${card.phone}" style="color: #1f2937; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.website ? `<span style="white-space: nowrap;">${getSvgIcon("website", "#1f2937")} <a href="${card.website}" style="color: #1f2937; text-decoration: none;">${card.website}</a></span>` : ""}
             </div>
           </td>
           <td style="padding-left: 24px; vertical-align: middle; text-align: center;">
@@ -260,10 +260,10 @@ export default function EmailSignaturePreview({
   // Creative signature - playful and colorful
   const generateCreativeSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 850px;">
   <tr>
     <td style="padding: 22px; background: linear-gradient(135deg, ${card.primaryColor}15 0%, ${card.secondaryColor}15 100%); border-radius: 12px;">
-      <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           ${
             card.logo
@@ -275,18 +275,18 @@ export default function EmailSignaturePreview({
               : ""
           }
           <td style="vertical-align: middle;">
-            <div style="font-size: 20px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 4px;">
+            <div style="font-size: 20px; font-weight: bold; color: ${card.primaryColor}; margin-bottom: 4px; white-space: nowrap;">
               ${card.name}
             </div>
-            <div style="font-size: 15px; color: ${card.secondaryColor}; font-weight: 600; margin-bottom: 10px;">
+            <div style="font-size: 15px; color: ${card.secondaryColor}; font-weight: 600; margin-bottom: 10px; white-space: nowrap;">
               ${card.role}
             </div>
-            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 12px;">${card.company}</div>` : ""}
-            <div style="font-size: 13px; color: #4b5563; line-height: 1.7;">
-              ${card.email ? `<div style="margin-bottom: 5px;">${getSvgIcon("email", card.secondaryColor)} <a href="mailto:${card.email}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.email}</a></div>` : ""}
-              ${card.phone ? `<div style="margin-bottom: 5px;">${getSvgIcon("phone", card.secondaryColor)} <a href="tel:${card.phone}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.phone}</a></div>` : ""}
-              ${card.whatsapp ? `<div style="margin-bottom: 5px;">${getSvgIcon("whatsapp", card.secondaryColor)} <a href="https://wa.me/${card.whatsapp.replace(/\D/g, "")}" style="color: ${card.secondaryColor}; text-decoration: none;">WhatsApp</a></div>` : ""}
-              ${card.website ? `<div>${getSvgIcon("website", card.secondaryColor)} <a href="${card.website}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.website}</a></div>` : ""}
+            ${card.company ? `<div style="font-size: 13px; color: #6b7280; margin-bottom: 12px; white-space: nowrap;">${card.company}</div>` : ""}
+            <div style="font-size: 13px; color: #4b5563; line-height: 1.7; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("email", card.secondaryColor)} <a href="mailto:${card.email}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("phone", card.secondaryColor)} <a href="tel:${card.phone}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.whatsapp ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("whatsapp", card.secondaryColor)} <a href="https://wa.me/${card.whatsapp.replace(/\D/g, "")}" style="color: ${card.secondaryColor}; text-decoration: none;">WhatsApp</a></span>` : ""}
+              ${card.website ? `<span style="white-space: nowrap;">${getSvgIcon("website", card.secondaryColor)} <a href="${card.website}" style="color: ${card.secondaryColor}; text-decoration: none;">${card.website}</a></span>` : ""}
             </div>
             ${
               card.socialMedia.instagram ||
@@ -327,10 +327,10 @@ export default function EmailSignaturePreview({
   // Elegant signature - sophisticated and refined
   const generateElegantSignature = (): string => {
     return `
-<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Playfair Display', Georgia, serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 700px;">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family: 'Playfair Display', Georgia, serif; font-size: 14px; line-height: 1.5; color: #1f2937; max-width: 850px;">
   <tr>
     <td style="padding: 24px 0; border-top: 1px solid ${card.primaryColor}; border-bottom: 1px solid ${card.primaryColor};">
-      <table cellpadding="0" cellspacing="0" border="0">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
           ${
             card.logo
@@ -342,17 +342,17 @@ export default function EmailSignaturePreview({
               : ""
           }
           <td style="vertical-align: middle;">
-            <div style="font-size: 22px; font-weight: 600; color: ${card.primaryColor}; margin-bottom: 6px; font-style: italic;">
+            <div style="font-size: 22px; font-weight: 600; color: ${card.primaryColor}; margin-bottom: 6px; font-style: italic; white-space: nowrap;">
               ${card.name}
             </div>
-            <div style="font-size: 14px; color: ${card.secondaryColor}; margin-bottom: 4px; letter-spacing: 1px;">
+            <div style="font-size: 14px; color: ${card.secondaryColor}; margin-bottom: 4px; letter-spacing: 1px; white-space: nowrap;">
               ${card.role}
             </div>
-            ${card.company ? `<div style="font-size: 12px; color: #9ca3af; margin-bottom: 14px;">${card.company}</div>` : ""}
-            <div style="font-size: 12px; color: #6b7280; line-height: 1.8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-              ${card.email ? `<div style="margin-bottom: 4px;">${getSvgIcon("email", card.primaryColor)} <a href="mailto:${card.email}" style="color: ${card.primaryColor}; text-decoration: none;">${card.email}</a></div>` : ""}
-              ${card.phone ? `<div style="margin-bottom: 4px;">${getSvgIcon("phone", card.primaryColor)} <a href="tel:${card.phone}" style="color: ${card.primaryColor}; text-decoration: none;">${card.phone}</a></div>` : ""}
-              ${card.website ? `<div>${getSvgIcon("website", card.primaryColor)} <a href="${card.website}" style="color: ${card.primaryColor}; text-decoration: none;">${card.website}</a></div>` : ""}
+            ${card.company ? `<div style="font-size: 12px; color: #9ca3af; margin-bottom: 14px; white-space: nowrap;">${card.company}</div>` : ""}
+            <div style="font-size: 12px; color: #6b7280; line-height: 1.8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; white-space: nowrap;">
+              ${card.email ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("email", card.primaryColor)} <a href="mailto:${card.email}" style="color: ${card.primaryColor}; text-decoration: none;">${card.email}</a></span>` : ""}
+              ${card.phone ? `<span style="margin-right: 14px; white-space: nowrap;">${getSvgIcon("phone", card.primaryColor)} <a href="tel:${card.phone}" style="color: ${card.primaryColor}; text-decoration: none;">${card.phone}</a></span>` : ""}
+              ${card.website ? `<span style="white-space: nowrap;">${getSvgIcon("website", card.primaryColor)} <a href="${card.website}" style="color: ${card.primaryColor}; text-decoration: none;">${card.website}</a></span>` : ""}
             </div>
             ${
               card.socialMedia.instagram ||
